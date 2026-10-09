@@ -1,0 +1,844 @@
+syntax = "proto3";
+
+package pipeline.v1beta;
+
+// Google API
+import "google/api/annotations.proto";
+import "google/api/visibility.proto";
+// Pipeline definitions
+import "pipeline/v1beta/component_definition.proto";
+import "pipeline/v1beta/integration.proto";
+import "pipeline/v1beta/pipeline.proto";
+import "pipeline/v1beta/secret.proto";
+// OpenAPI definition
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// Pipeline
+//
+// PipelinePublicService exposes the public endpoints that allow clients to
+// manage pipelines.
+service PipelinePublicService {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {description: "Public Pipeline endpoints"};
+
+  // Check if the pipeline server is alive
+  //
+  // See https://github.com/grpc/grpc/blob/master/doc/health-checking.md.
+  rpc Liveness(LivenessRequest) returns (LivenessResponse) {
+    option (google.api.http) = {
+      get: "/v1beta/__liveness"
+      additional_bindings: [
+        {get: "/v1beta/health/pipeline"}]
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Check if the pipeline server is ready
+  //
+  // See https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+  rpc Readiness(ReadinessRequest) returns (v1beta.ReadinessResponse) {
+    option (google.api.http) = {get: "/v1beta/__readiness"};
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Get hub status
+  //
+  // Return the stats of the hub
+  rpc GetHubStats(GetHubStatsRequest) returns (GetHubStatsResponse) {
+    option (google.api.http) = {get: "/v1beta/hub-stats"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // List accessible pipelines
+  //
+  // Returns a paginated list of pipelines that are visible to the requester.
+  rpc ListPublicPipelines(ListPublicPipelinesRequest) returns (ListPublicPipelinesResponse) {
+    option (google.api.http) = {get: "/v1beta/pipelines"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List namespace pipelines
+  //
+  // Returns a paginated list of pipelines of a namespace
+  rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*}/pipelines"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Create a new pipeline
+  //
+  // Creates a new pipeline under a namespace.
+  rpc CreatePipeline(CreatePipelineRequest) returns (CreatePipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{parent=namespaces/*}/pipelines"
+      body: "pipeline"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a pipeline
+  //
+  // Returns the details of a pipeline.
+  rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=namespaces/*/pipelines/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update a pipeline
+  //
+  // Udpates a pipeline, accessing it by its resource name, which is defined by
+  // the parent namespace and the ID of the pipeline. The authenticated
+  // namespace must be the parent of the pipeline in order to modify it.
+  //
+  // In REST requests, only the supplied pipeline fields will be taken into
+  // account when updating the resource.
+  rpc UpdatePipeline(UpdatePipelineRequest) returns (UpdatePipelineResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/{pipeline.name=namespaces/*/pipelines/*}"
+      body: "pipeline"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete a pipeline
+  //
+  // Deletes a pipeline, accesing it by its resource name, which is defined by
+  // the parent namespace and the ID of the pipeline. The authenticated
+  // namespace must be the parent of the pipeline in order to delete it.
+  rpc DeletePipeline(DeletePipelineRequest) returns (DeletePipelineResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=namespaces/*/pipelines/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Validate a pipeline
+  //
+  // Validates a pipeline by its resource name, which is defined by the parent
+  // namespace and the ID of the pipeline.
+  //
+  // Validation checks the recipe of the pipeline and the status of its
+  // components.
+  rpc ValidatePipeline(ValidatePipelineRequest) returns (ValidatePipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/validate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Rename a pipeline
+  //
+  // Updates the ID of a pipeline. Since this is an output-only field, a custom
+  // method is required to modify it.
+  //
+  // The pipeline name will be updated accordingly, as it is  composed by the
+  // parent namespace and ID of the pipeline (e.g.
+  // `namespaces/luigi/pipelines/pizza-recipe-generator`).
+  //
+  // The authenticated namespace must be the parent of the pipeline in order to
+  // perform this action.
+  rpc RenamePipeline(RenamePipelineRequest) returns (RenamePipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/rename"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Clone a pipeline
+  //
+  // Clones a pipeline owned by a namespace. The new pipeline may have a
+  // different parent, and this can be either a namespace or an organization.
+  rpc ClonePipeline(ClonePipelineRequest) returns (ClonePipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/clone"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Dispatch Pipeline Webhook Event
+  //
+  // Handles webhook events by routing them to the appropriate pipeline based on
+  // the webhook type and message. The webhook type determines which component
+  // processes the event, while the message payload contains data that triggers
+  // pipeline execution. The pipeline processes the event using configured
+  // handlers and returns a response to the webhook sender.
+  rpc DispatchPipelineWebhookEvent(DispatchPipelineWebhookEventRequest) returns (DispatchPipelineWebhookEventResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/pipeline-webhooks/{webhook_type}"
+      body: "message"
+      response_body: "response"
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Trigger a pipeline
+  //
+  // Triggers the execution of a pipeline synchronously, i.e., the result is
+  // sent back to the namespace right after the data is processed. This method
+  // is intended for real-time inference when low latency is of concern.
+  //
+  // The pipeline is identified by its resource name, formed by the parent
+  // namespace and ID of the pipeline.
+  //
+  // For more information, see [Run
+  // Pipeline](https://instill-ai.dev/docs/pipeline/run-pipeline).
+  rpc TriggerPipeline(TriggerPipelineRequest) returns (TriggerPipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/trigger"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // Trigger a pipeline via streaming
+  //
+  // Triggers the execution of a pipeline asynchronously and streams back the
+  // response. This method is intended for real-time inference when low latency
+  // is of concern and the response needs to be processed incrementally.
+  //
+  // The pipeline is identified by its resource name, formed by the parent
+  // namespace and ID of the pipeline.
+  rpc TriggerPipelineWithStream(TriggerPipelineWithStreamRequest) returns (stream TriggerPipelineWithStreamResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/trigger-stream"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // Trigger a pipeline asynchronously
+  //
+  // Triggers the execution of a pipeline asynchronously, i.e., the result
+  // contains the necessary information to access the result and status of the
+  // operation. This method is intended for cases that require long-running
+  // workloads.
+  //
+  // The pipeline is identified by its resource name, formed by the parent
+  // namespace and ID of the pipeline.
+  //
+  // For more information, see [Run
+  // Pipeline](https://instill-ai.dev/docs/pipeline/run-pipeline).
+  rpc TriggerAsyncPipeline(TriggerAsyncPipelineRequest) returns (TriggerAsyncPipelineResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*}/trigger-async"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // Create a pipeline release
+  //
+  // Commits the version of a pipeline, identified by its resource name, which
+  // is formed by the parent namespace and ID of the pipeline.
+  //
+  // The authenticated namespace must be the parent of the pipeline in order to
+  // perform this action.
+  rpc CreatePipelineRelease(CreatePipelineReleaseRequest) returns (CreatePipelineReleaseResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{parent=namespaces/*/pipelines/*}/releases"
+      body: "release"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List the releases in a pipeline
+  //
+  // Lists the commited versions of a pipeline, identified by its resource
+  // name, which is formed by the parent namespace and ID of the pipeline.
+  rpc ListPipelineReleases(ListPipelineReleasesRequest) returns (ListPipelineReleasesResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*/pipelines/*}/releases"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a pipeline release
+  //
+  // Gets the details of a pipeline release, where the pipeline is identified
+  // by its resource name, formed by its parent namespace and ID.
+  rpc GetPipelineRelease(GetPipelineReleaseRequest) returns (GetPipelineReleaseResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=namespaces/*/pipelines/*/releases/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update a pipeline release
+  //
+  // Updates the details of a pipeline release, where the pipeline is
+  // identified by its resource name, formed by its parent namespace and ID.
+  //
+  // The authenticated namespace must be the parent of the pipeline in order to
+  // perform this action.
+  rpc UpdatePipelineRelease(UpdatePipelineReleaseRequest) returns (UpdatePipelineReleaseResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/{release.name=namespaces/*/pipelines/*/releases/*}"
+      body: "release"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete a pipeline release
+  //
+  // Deletes a pipeline release, where the pipeline is identified by its
+  // resource name, formed by its parent namespace and ID.
+  //
+  // The authenticated namespace must be the parent of the pipeline in order to
+  // perform this action.
+  rpc DeletePipelineRelease(DeletePipelineReleaseRequest) returns (DeletePipelineReleaseResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=namespaces/*/pipelines/*/releases/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Clone a pipeline release
+  //
+  // Clones a pipeline release owned by a namespace. The new pipeline may have a
+  // different parent, and this can be either a namespace or an organization.
+  rpc ClonePipelineRelease(ClonePipelineReleaseRequest) returns (ClonePipelineReleaseResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*/releases/*}/clone"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Trigger a pipeline release
+  //
+  // Triggers the synchronous execution of of a pipeline. While the trigger
+  // endpoint (where the release version isn't specified) triggers the pipeline
+  // at its latest release, this method allows the client to specified any
+  // committed release.
+  //
+  // The pipeline is identified by its resource name, formed by its parent
+  // namespace and ID.
+  rpc TriggerPipelineRelease(TriggerPipelineReleaseRequest) returns (TriggerPipelineReleaseResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*/releases/*}/trigger"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // Trigger a pipeline release asynchronously
+  //
+  // Triggers the asynchronous execution of of a pipeline. While the trigger
+  // endpoint (where the release version isn't specified) triggers the pipeline
+  // at its latest release, this method allows the client to specified any
+  // committed release.
+  //
+  // The pipeline is identified by its resource name, formed by its parent
+  // namespace and ID.
+  rpc TriggerAsyncPipelineRelease(TriggerAsyncPipelineReleaseRequest) returns (TriggerAsyncPipelineReleaseResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{name=namespaces/*/pipelines/*/releases/*}/trigger-async"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // Create a secret
+  //
+  // Creates a new secret under the parenthood of an namespace.
+  rpc CreateNamespaceSecret(CreateNamespaceSecretRequest) returns (CreateNamespaceSecretResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{parent=namespaces/*}/secrets"
+      body: "secret"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List secrets
+  //
+  // Returns a paginated list of secrets that belong to the specified
+  // namespace.
+  rpc ListNamespaceSecrets(ListNamespaceSecretsRequest) returns (ListNamespaceSecretsResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*}/secrets"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a secret
+  //
+  // Returns the details of an namespace-owned secret by its resource name,
+  // which is defined by the parent namespace and the ID of the secret.
+  rpc GetNamespaceSecret(GetNamespaceSecretRequest) returns (GetNamespaceSecretResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=namespaces/*/secrets/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update a secret
+  //
+  // Udpates a secret, accessing it by its resource name, which is defined by
+  //
+  // In REST requests, only the supplied secret fields will be taken into
+  // account when updating the resource.
+  rpc UpdateNamespaceSecret(UpdateNamespaceSecretRequest) returns (UpdateNamespaceSecretResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/{secret.name=namespaces/*/secrets/*}"
+      body: "secret"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete a secret
+  //
+  // Deletes a secret, accesing it by its resource name, which is defined by
+  // the parent namespace and the ID of the secret.
+  rpc DeleteNamespaceSecret(DeleteNamespaceSecretRequest) returns (DeleteNamespaceSecretResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=namespaces/*/secrets/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List component definitions
+  //
+  // Returns a paginated list of component definitions, regardless their type.
+  // This offers a single source of truth, with pagination and filter
+  // capabilities, for the components that might be used in a pipeline.
+  rpc ListComponentDefinitions(ListComponentDefinitionsRequest) returns (ListComponentDefinitionsResponse) {
+    option (google.api.http) = {get: "/v1beta/component-definitions"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get the details of a long-running operation
+  //
+  // This method allows requesters to request the status and outcome of
+  // long-running operations such as asynchronous pipeline triggers.
+  rpc GetOperation(GetOperationRequest) returns (GetOperationResponse) {
+    option (google.api.http) = {get: "/v1beta/operations/{operation_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated user is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // List Pipeline Runs
+  //
+  // Returns a paginated list of runs for a given pipeline. When the requester
+  // is the owner of the pipeline, they will be able to all the pipeline runs,
+  // regardless who requested the trigger (the view will be partial to hide
+  // sensitive data like e.g. the trigger input and output). Other requesters
+  // will only be able to see the runs requested by themselves.
+  rpc ListPipelineRuns(ListPipelineRunsRequest) returns (ListPipelineRunsResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*/pipelines/*}/runs"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // List Component Runs
+  //
+  // Returns the information of each component execution within a pipeline run.
+  rpc ListComponentRuns(ListComponentRunsRequest) returns (ListComponentRunsResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*/pipelines/*/runs/*}/component-runs"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+      parameters: {
+        headers: {
+          name: "Instill-Requester-Uid"
+          description:
+            "Indicates the authenticated namespace is making the "
+            "request on behalf of another entity, typically an "
+            "organization they belong to"
+          type: STRING
+        }
+      }
+    };
+  }
+
+  // List Pipeline Runs By Requester
+  //
+  // Returns a paginated list of runs for requested by a namespace. The
+  // response may contain runs from several pipelines.
+  rpc ListPipelineRunsByRequester(ListPipelineRunsByRequesterRequest) returns (ListPipelineRunsByRequesterResponse) {
+    option (google.api.http) = {get: "/v1beta/dashboard/pipelines/runs"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Pipeline"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List integrations
+  //
+  // Returns a paginated list of available integrations.
+  rpc ListIntegrations(ListIntegrationsRequest) returns (ListIntegrationsResponse) {
+    option (google.api.http) = {get: "/v1beta/integrations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Integration"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get an integration
+  //
+  // Returns the details of an integration.
+  rpc GetIntegration(GetIntegrationRequest) returns (GetIntegrationResponse) {
+    option (google.api.http) = {get: "/v1beta/integrations/{integration_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Integration"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List connections
+  //
+  // Returns a paginated list of connections created by a namespace.
+  rpc ListConnections(ListConnectionsRequest) returns (ListConnectionsResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*}/connections"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a connection
+  //
+  // Returns the details of a connection.
+  rpc GetConnection(GetConnectionRequest) returns (GetConnectionResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=namespaces/*/connections/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Create a connection
+  //
+  // Creates a connection under the ownership of a namespace.
+  rpc CreateConnection(CreateConnectionRequest) returns (CreateConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{parent=namespaces/*}/connections"
+      body: "connection"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update a connection
+  //
+  // Updates a connection with the supplied connection fields.
+  rpc UpdateConnection(UpdateConnectionRequest) returns (UpdateConnectionResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/{connection.name=namespaces/*/connections/*}"
+      body: "connection"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete a connection
+  //
+  // Deletes a connection.
+  rpc DeleteConnection(DeleteConnectionRequest) returns (DeleteConnectionResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=namespaces/*/connections/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Test a connection
+  //
+  // Makes a request to the 3rd party app that the connection is configured to
+  // communicate with, and checks the result of the call. If the test fails,
+  // the response status and error message will provide more information about
+  // the failure.
+  //
+  // Note that this action might affect the quota or billing of the integrated
+  // account in the 3rd party app.
+  rpc TestConnection(TestConnectionRequest) returns (TestConnectionResponse) {
+    option (google.api.http) = {post: "/v1beta/{name=namespaces/*/connections/*}/test"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List pipelines that reference a connection
+  //
+  // Returns a paginated list with the IDs of the pipelines that reference a
+  // given connection. All the pipelines will belong to the same namespace as
+  // the connection.
+  rpc ListPipelineIDsByConnectionID(ListPipelineIDsByConnectionIDRequest) returns (ListPipelineIDsByConnectionIDResponse) {
+    option (google.api.http) = {get:
+        "/v1beta/namespaces/{namespace_id}/connections/{connection_id}/"
+        "referenced-pipelines"
+};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+}

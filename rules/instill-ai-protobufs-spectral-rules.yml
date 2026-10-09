@@ -1,0 +1,31 @@
+# harvested from https://github.com/instill-ai/protobufs/blob/196f236ed9af8f57c672ad730a445de5daef5299/.spectral.yaml on 2026-10-09 — a Spectral ruleset published in the provider's own GitHub repository (instill-ai/protobufs); found by GitHub code search, fetched verbatim
+x-method: harvested
+x-stamped: 2026-10-09
+x-source-url: https://github.com/instill-ai/protobufs/blob/196f236ed9af8f57c672ad730a445de5daef5299/.spectral.yaml
+extends: ["spectral:oas"]
+rules:
+  # When uploading the specs to readme.com, this field will be used to render
+  # information about an endpoint.
+  operation-description: error
+  # Unused or missing tags produce an empty group in readme.com.
+  operation-tag-defined: error
+
+  # Exceptions
+
+  # [`grpc-gateway` issue 3058](https://github.com/grpc-ecosystem/grpc-gateway/issues/3058):
+  # Most tooling ignores keywords next to `$ref`. However, `grpc-gateway`
+  # produces such keywords.
+  no-$ref-siblings: off
+  # `grpc-gateway` generates types for nested types, but sometimes these are
+  # only used by requests (e.g. `ComponentDefinition.View`). Request structures
+  # are defined as part of the endpoint definition, so these nested types end
+  # up defined but not referenced.
+  oas2-unused-definition: off
+  # `grpc-gateway` generates path parameters that don't match OpenAPI spec
+  # requirements when using AIP-134 style update operations (PATCH with nested
+  # field names like `{resource.name=pattern}`) and when multiple endpoints
+  # resolve to similar path patterns. This is a known limitation:
+  # - PATCH operations generate mismatched parameter names (e.g., `knowledgeBase.name`)
+  # - Multiple GET/DELETE endpoints create equivalent paths like `/v1alpha/{name_1}`
+  # See: https://github.com/grpc-ecosystem/grpc-gateway/issues/2578
+  path-params: off

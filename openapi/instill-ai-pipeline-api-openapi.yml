@@ -1,0 +1,4045 @@
+openapi: 3.2.0
+info:
+  title: Instill Ai Pipeline API
+  version: v0.57.0
+  contact:
+    name: Instill AI
+    url: https://github.com/instill-ai
+    email: support@instill-ai.com
+  license:
+    name: MIT
+    url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
+  description: 'Operations tagged Pipeline across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.instill-ai.com
+- url: http://api.instill-ai.com
+security:
+- Bearer: []
+tags:
+- name: Pipeline
+  description: Pipeline orchestration.
+paths:
+  /v1beta/{name_2}:
+    delete:
+      summary: Delete a pipeline
+      description: 'Deletes a pipeline, accesing it by its resource name, which is defined by
+
+        the parent namespace and the ID of the pipeline. The authenticated
+
+        namespace must be the parent of the pipeline in order to delete it.'
+      operationId: PipelinePublicService_DeletePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_2
+        description: 'The resource name of the pipeline to delete.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/pipelines:
+    get:
+      summary: List accessible pipelines
+      description: Returns a paginated list of pipelines that are visible to the requester.
+      operationId: PipelinePublicService_ListPublicPipelines
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPublicPipelinesResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pageSize
+        description: 'The maximum number of pipelines to return. If this parameter is
+
+          unspecified, at most 10 pipelines will be returned. The cap value for this
+
+          parameter is 100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired pipeline view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.
+
+          - Example:
+
+          `recipe.components.definition_name:"operator-definitions/2ac8be70-0f7a-4b61-a33d-098b8acfa6f3"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: showDeleted
+        description: Include soft-deleted pipelines in the result.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: visibility
+        description: "Limit results to pipelines with the specified visibility.\n\n - VISIBILITY_PRIVATE: Only the user can see the pipeline.\n - VISIBILITY_PUBLIC: Other users can see the pipeline."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VISIBILITY_PRIVATE
+          - VISIBILITY_PUBLIC
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/pipelines:
+    get:
+      summary: List namespace pipelines
+      description: Returns a paginated list of pipelines of a namespace
+      operationId: PipelinePublicService_ListPipelines
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPipelinesResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      - name: pageSize
+        description: 'The maximum number of pipelines to return. If this parameter is
+
+          unspecified, at most 10 pipelines will be returned. The cap value for this
+
+          parameter is 100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired pipeline view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.
+
+          - Example:
+
+          `recipe.components.definition_name:"operator-definitions/2ac8be70-0f7a-4b61-a33d-098b8acfa6f3"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: showDeleted
+        description: Include soft-deleted pipelines in the result.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: visibility
+        description: "Limit results to pipelines with the specified visibility.\n\n - VISIBILITY_PRIVATE: Only the user can see the pipeline.\n - VISIBILITY_PUBLIC: Other users can see the pipeline."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VISIBILITY_PRIVATE
+          - VISIBILITY_PUBLIC
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    post:
+      summary: Create a new pipeline
+      description: Creates a new pipeline under a namespace.
+      operationId: PipelinePublicService_CreatePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pipeline'
+        description: The properties of the pipeline to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_3}:
+    get:
+      summary: Get a pipeline
+      description: Returns the details of a pipeline.
+      operationId: PipelinePublicService_GetPipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_3
+        description: 'The resource name of the pipeline.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired pipeline view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      tags:
+      - Pipeline
+      x-stage: beta
+    delete:
+      summary: Delete a pipeline release
+      description: 'Deletes a pipeline release, where the pipeline is identified by its
+
+        resource name, formed by its parent namespace and ID.
+
+
+        The authenticated namespace must be the parent of the pipeline in order to
+
+        perform this action.'
+      operationId: PipelinePublicService_DeletePipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_3
+        description: 'The resource name of the release to delete.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{pipeline.name}:
+    patch:
+      summary: Update a pipeline
+      description: 'Udpates a pipeline, accessing it by its resource name, which is defined by
+
+        the parent namespace and the ID of the pipeline. The authenticated
+
+        namespace must be the parent of the pipeline in order to modify it.
+
+
+        In REST requests, only the supplied pipeline fields will be taken into
+
+        account when updating the resource.'
+      operationId: PipelinePublicService_UpdatePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pipeline.name
+        description: 'Field 1: Canonical resource name.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+                    Example: "pip-8f3a2k9E7c1"'
+                  readOnly: true
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  description: 'Field 4: URL-friendly slug (NO prefix).
+
+                    If omitted, server generates from display_name.
+
+                    Slug is NOT part of resource identity.'
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Optional description.'
+                createTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 7: Creation time.'
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 8: Last update time.'
+                  readOnly: true
+                recipe:
+                  type: object
+                  description: Recipe describes the components of a Pipeline and how they are connected.
+                rawRecipe:
+                  type: string
+                  description: Recipe in YAML format.
+                visibility:
+                  description: Pipeline visibility.
+                  allOf:
+                  - $ref: '#/components/schemas/Pipeline.Visibility'
+                sharing:
+                  description: Pipeline sharing information.
+                  allOf:
+                  - $ref: '#/components/schemas/Sharing'
+                permission:
+                  description: Permission defines how a pipeline can be used.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/pipeline.v1beta.Permission'
+                dataSpecification:
+                  description: Data specifications.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/DataSpecification'
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Tags.
+                stats:
+                  description: Statistic data.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Pipeline.Stats'
+                metadata:
+                  type: object
+                  description: Metadata holds console-related data such as the pipeline builder layout.
+                readme:
+                  type: string
+                  description: README holds the pipeline documentation.
+                releases:
+                  type: array
+                  items:
+                    type: object
+                    $ref: '#/components/schemas/PipelineRelease'
+                  description: Releases holds the history of pipeline versions.
+                  readOnly: true
+                endpoints:
+                  description: Pipeline endpoints.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Endpoints'
+                sourceUrl:
+                  type: string
+                  description: A link to the source code of the pipeline (e.g. to a GitHub repository).
+                documentationUrl:
+                  type: string
+                  description: A link to any extra information.
+                license:
+                  type: string
+                  description: License under which the pipeline is distributed.
+                profileImage:
+                  type: string
+                  description: Pipeline profile image in base64 format.
+                ownerName:
+                  type: string
+                  description: Resource name of the owner namespace.
+                  readOnly: true
+                owner:
+                  description: Pipeline owner (User or Organization).
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Owner'
+                creatorName:
+                  type: string
+                  title: 'Full resource name of the user who created this pipeline.
+
+                    Format: `users/{user}`'
+                  readOnly: true
+                creator:
+                  description: The user who created this pipeline.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/v1beta.User'
+                deleteTime:
+                  type: string
+                  format: date-time
+                  description: Soft delete timestamp.
+                  readOnly: true
+              title: 'The pipeline resource to update. The pipeline''s `name` field identifies
+
+                the resource. Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+              required:
+              - displayName
+              - recipe
+              - visibility
+        description: 'The pipeline resource to update. The pipeline''s `name` field identifies
+
+          the resource. Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/validate:
+    post:
+      summary: Validate a pipeline
+      description: 'Validates a pipeline by its resource name, which is defined by the parent
+
+        namespace and the ID of the pipeline.
+
+
+        Validation checks the recipe of the pipeline and the status of its
+
+        components.'
+      operationId: PipelinePublicService_ValidatePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the pipeline to validate.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatePipelineBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/rename:
+    post:
+      summary: Rename a pipeline
+      description: 'Updates the ID of a pipeline. Since this is an output-only field, a custom
+
+        method is required to modify it.
+
+
+        The pipeline name will be updated accordingly, as it is composed by the
+
+        parent namespace and ID of the pipeline (e.g.
+
+        `namespaces/luigi/pipelines/pizza-recipe-generator`).
+
+
+        The authenticated namespace must be the parent of the pipeline in order to
+
+        perform this action.'
+      operationId: PipelinePublicService_RenamePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenamePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the pipeline to rename.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenamePipelineBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/clone:
+    post:
+      summary: Clone a pipeline
+      description: 'Clones a pipeline owned by a namespace. The new pipeline may have a
+
+        different parent, and this can be either a namespace or an organization.'
+      operationId: PipelinePublicService_ClonePipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClonePipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the source pipeline to clone.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClonePipelineBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/trigger:
+    post:
+      summary: Trigger a pipeline
+      description: 'Triggers the execution of a pipeline synchronously, i.e., the result is
+
+        sent back to the namespace right after the data is processed. This method
+
+        is intended for real-time inference when low latency is of concern.
+
+
+        The pipeline is identified by its resource name, formed by the parent
+
+        namespace and ID of the pipeline.
+
+
+        For more information, see Run
+
+        Pipeline.'
+      operationId: PipelinePublicService_TriggerPipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerPipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the pipeline to trigger.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerPipelineBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/trigger-stream:
+    post:
+      summary: Trigger a pipeline via streaming
+      description: 'Triggers the execution of a pipeline asynchronously and streams back the
+
+        response. This method is intended for real-time inference when low latency
+
+        is of concern and the response needs to be processed incrementally.
+
+
+        The pipeline is identified by its resource name, formed by the parent
+
+        namespace and ID of the pipeline.'
+      operationId: PipelinePublicService_TriggerPipelineWithStream
+      responses:
+        '200':
+          description: A successful response.(streaming responses)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    $ref: '#/components/schemas/TriggerPipelineWithStreamResponse'
+                  error:
+                    $ref: '#/components/schemas/rpc.Status'
+                title: Stream result of TriggerPipelineWithStreamResponse
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the pipeline to trigger.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerPipelineWithStreamBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/trigger-async:
+    post:
+      summary: Trigger a pipeline asynchronously
+      description: 'Triggers the execution of a pipeline asynchronously, i.e., the result
+
+        contains the necessary information to access the result and status of the
+
+        operation. This method is intended for cases that require long-running
+
+        workloads.
+
+
+        The pipeline is identified by its resource name, formed by the parent
+
+        namespace and ID of the pipeline.
+
+
+        For more information, see Run
+
+        Pipeline.'
+      operationId: PipelinePublicService_TriggerAsyncPipeline
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerAsyncPipelineResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the pipeline to trigger.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerAsyncPipelineBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/releases:
+    get:
+      summary: List the releases in a pipeline
+      description: 'Lists the commited versions of a pipeline, identified by its resource
+
+        name, which is formed by the parent namespace and ID of the pipeline.'
+      operationId: PipelinePublicService_ListPipelineReleases
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPipelineReleasesResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name (pipeline).
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: pageSize
+        description: 'The maximum number of releases to return. If this parameter is
+
+          unspecified, at most 10 pipelines will be returned. The cap value for this
+
+          parameter is 100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired pipeline view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: showDeleted
+        description: Include soft-deleted pipelines in the result.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - Pipeline
+      x-stage: beta
+    post:
+      summary: Create a pipeline release
+      description: 'Commits the version of a pipeline, identified by its resource name, which
+
+        is formed by the parent namespace and ID of the pipeline.
+
+
+        The authenticated namespace must be the parent of the pipeline in order to
+
+        perform this action.'
+      operationId: PipelinePublicService_CreatePipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name (pipeline).
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineRelease'
+        description: The release information.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_4}:
+    get:
+      summary: Get a pipeline release
+      description: 'Gets the details of a pipeline release, where the pipeline is identified
+
+        by its resource name, formed by its parent namespace and ID.'
+      operationId: PipelinePublicService_GetPipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_4
+        description: 'The resource name of the release.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired pipeline view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      tags:
+      - Pipeline
+      x-stage: beta
+    delete:
+      summary: Delete a secret
+      description: 'Deletes a secret, accesing it by its resource name, which is defined by
+
+        the parent namespace and the ID of the secret.'
+      operationId: PipelinePublicService_DeleteNamespaceSecret
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNamespaceSecretResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_4
+        description: 'The resource name of the secret to delete.
+
+          Format: `namespaces/{namespace}/secrets/{secret}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/secrets/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{release.name}:
+    patch:
+      summary: Update a pipeline release
+      description: 'Updates the details of a pipeline release, where the pipeline is
+
+        identified by its resource name, formed by its parent namespace and ID.
+
+
+        The authenticated namespace must be the parent of the pipeline in order to
+
+        perform this action.'
+      operationId: PipelinePublicService_UpdatePipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: release.name
+        description: 'Field 1: The name of the release.
+
+          - Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: 'Field 2: Release resource ID (used in `name` as the last segment). It must
+
+                    be a sematic version vX.Y.Z.'
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  description: 'Field 4: URL-friendly slug (alias for the release).'
+                  readOnly: true
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Release description.'
+                recipe:
+                  type: object
+                  description: Recipe of the versioned pipeline.
+                  readOnly: true
+                createTime:
+                  type: string
+                  format: date-time
+                  description: Pipeline creation time.
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: Pipeline update time.
+                  readOnly: true
+                deleteTime:
+                  type: string
+                  format: date-time
+                  description: Pipeline deletion time.
+                  readOnly: true
+                metadata:
+                  type: object
+                  description: 'Key-value object with console-related data such as the pipeline builder
+
+                    layout.'
+                readme:
+                  type: string
+                  description: README.
+                dataSpecification:
+                  description: Data specifications.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/DataSpecification'
+                rawRecipe:
+                  type: string
+                  description: 'Recipe in YAML format describes the components of a pipeline and how they
+
+                    are connected.'
+                endpoints:
+                  description: Pipeline endpoints.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Endpoints'
+              title: 'The pipeline release resource to update. The release''s `name` field
+
+                identifies the resource.
+
+                Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`'
+        description: 'The pipeline release resource to update. The release''s `name` field
+
+          identifies the resource.
+
+          Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_1}/clone:
+    post:
+      summary: Clone a pipeline release
+      description: 'Clones a pipeline release owned by a namespace. The new pipeline may have a
+
+        different parent, and this can be either a namespace or an organization.'
+      operationId: PipelinePublicService_ClonePipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClonePipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the pipeline release to clone.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}/releases/{release}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClonePipelineReleaseBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_1}/trigger:
+    post:
+      summary: Trigger a pipeline release
+      description: 'Triggers the synchronous execution of of a pipeline. While the trigger
+
+        endpoint (where the release version isn''t specified) triggers the pipeline
+
+        at its latest release, this method allows the client to specified any
+
+        committed release.
+
+
+        The pipeline is identified by its resource name, formed by its parent
+
+        namespace and ID.'
+      operationId: PipelinePublicService_TriggerPipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerPipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the pipeline release to trigger.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}/releases/{release}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerPipelineReleaseBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_1}/trigger-async:
+    post:
+      summary: Trigger a pipeline release asynchronously
+      description: 'Triggers the asynchronous execution of of a pipeline. While the trigger
+
+        endpoint (where the release version isn''t specified) triggers the pipeline
+
+        at its latest release, this method allows the client to specified any
+
+        committed release.
+
+
+        The pipeline is identified by its resource name, formed by its parent
+
+        namespace and ID.'
+      operationId: PipelinePublicService_TriggerAsyncPipelineRelease
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerAsyncPipelineReleaseResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the pipeline release to trigger.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}/releases/{release}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/releases/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerAsyncPipelineReleaseBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/secrets:
+    get:
+      summary: List secrets
+      description: 'Returns a paginated list of secrets that belong to the specified
+
+        namespace.'
+      operationId: PipelinePublicService_ListNamespaceSecrets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNamespaceSecretsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      - name: pageSize
+        description: 'The maximum number of secrets to return. If this parameter is unspecified,
+
+          at most 10 pipelines will be returned. The cap value for this parameter is
+
+          100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    post:
+      summary: Create a secret
+      description: Creates a new secret under the parenthood of an namespace.
+      operationId: PipelinePublicService_CreateNamespaceSecret
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNamespaceSecretResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Secret'
+        description: The properties of the secret to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_5}:
+    get:
+      summary: Get a secret
+      description: 'Returns the details of an namespace-owned secret by its resource name,
+
+        which is defined by the parent namespace and the ID of the secret.'
+      operationId: PipelinePublicService_GetNamespaceSecret
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceSecretResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_5
+        description: 'The resource name of the secret.
+
+          Format: `namespaces/{namespace}/secrets/{secret}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/secrets/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{secret.name}:
+    patch:
+      summary: Update a secret
+      description: 'Udpates a secret, accessing it by its resource name, which is defined by
+
+
+        In REST requests, only the supplied secret fields will be taken into
+
+        account when updating the resource.'
+      operationId: PipelinePublicService_UpdateNamespaceSecret
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNamespaceSecretResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: secret.name
+        description: 'Field 1: Canonical resource name.
+
+          Format: `namespaces/{namespace}/secrets/{secret}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/secrets/[^/]+
+      tags:
+      - Pipeline
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+                    Example: "sec-8f3a2k9E7c1"'
+                  readOnly: true
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  title: 'Field 4: URL-friendly slug (NO prefix).
+
+                    If omitted, server generates from display_name.
+
+                    If provided, server validates and persists it.
+
+                    Slug is NOT part of resource identity.
+
+                    Example: "openai-api-key"'
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.
+
+                    When display_name changes, a new slug is generated and old slugs are stored here.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Optional description.'
+                createTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 7: Creation time.'
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 8: Last update time.'
+                  readOnly: true
+                value:
+                  type: string
+                  description: 'Field 9: The value of the secret, which is input-only and will never be returned in API responses.'
+              title: 'The secret resource to update. The secret''s `name` field identifies
+
+                the resource. Format: `namespaces/{namespace}/secrets/{secret}`'
+              required:
+              - displayName
+        description: 'The secret resource to update. The secret''s `name` field identifies
+
+          the resource. Format: `namespaces/{namespace}/secrets/{secret}`'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/component-definitions:
+    get:
+      summary: List component definitions
+      description: 'Returns a paginated list of component definitions, regardless their type.
+
+        This offers a single source of truth, with pagination and filter
+
+        capabilities, for the components that might be used in a pipeline.'
+      operationId: PipelinePublicService_ListComponentDefinitions
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListComponentDefinitionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pageSize
+        description: 'The maximum number of component definitions to return. If this parameter
+
+          is unspecified, at most 10 definitions will be returned. The cap value for
+
+          this parameter is 100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: view
+        description: "View allows clients to specify the desired resource view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (removes the `spec`\nfield).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `component_type="COMPONENT_TYPE_AI"`.
+
+          - Example: `tasks:"TASK_TEXT_GENERATION"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        description: Page number.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/operations/{operationId}:
+    get:
+      summary: Get the details of a long-running operation
+      description: 'This method allows requesters to request the status and outcome of
+
+        long-running operations such as asynchronous pipeline triggers.'
+      operationId: PipelinePublicService_GetOperation
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1beta.GetOperationResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: operationId
+        description: 'The name of the operation resource. Asynchronous methods will contain this
+
+          information in their response.'
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated user is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/runs:
+    get:
+      summary: List Pipeline Runs
+      description: 'Returns a paginated list of runs for a given pipeline. When the requester
+
+        is the owner of the pipeline, they will be able to all the pipeline runs,
+
+        regardless who requested the trigger (the view will be partial to hide
+
+        sensitive data like e.g. the trigger input and output). Other requesters
+
+        will only be able to see the runs requested by themselves.'
+      operationId: PipelinePublicService_ListPipelineRuns
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPipelineRunsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent pipeline resource name.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+
+      - name: page
+        description: The page number to retrieve.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        description: 'The maximum number of items per page to return. The default and cap values
+
+          are 10 and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/component-runs:
+    get:
+      summary: List Component Runs
+      description: Returns the information of each component execution within a pipeline run.
+      operationId: PipelinePublicService_ListComponentRuns
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListComponentRunsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent pipeline run resource name.
+
+          Format: namespaces/{namespace}/pipelines/{pipeline}/runs/{run}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/pipelines/[^/]+/runs/[^/]+
+      - name: page
+        description: The page number to retrieve.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        description: 'The maximum number of items per page to return. The default and cap values
+
+          are 10 and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired run view in the response.\nThe basic view excludes input / output data.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation.\n - VIEW_RECIPE: Contains the recipe of the resource."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+          - VIEW_RECIPE
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/dashboard/pipelines/runs:
+    get:
+      summary: List Pipeline Runs By Requester
+      description: 'Returns a paginated list of runs for requested by a namespace. The
+
+        response may contain runs from several pipelines.'
+      operationId: PipelinePublicService_ListPipelineRunsByRequester
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPipelineRunsByRequesterResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: requester
+        description: 'Requester namespace resource name.
+
+          Format: namespaces/{namespace}'
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: page
+        description: The page number to retrieve.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        description: 'The maximum number of items per page to return. The default and cap values
+
+          are 10 and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          The following filters are supported:
+
+          - `status`
+
+          - `source`
+
+
+          **Example**: `status="RUN_STATUS_COMPLETED"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: start
+        description: 'Beginning of the time range from which the records will be fetched.
+
+          The default value is the beginning of the current day, in UTC.'
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: stop
+        description: 'End of the time range from which the records will be fetched.
+
+          The default value is the current timestamp.'
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - Pipeline
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+components:
+  schemas:
+    ClonePipelineReleaseResponse:
+      type: object
+      description: ClonePipelineReleaseResponse contains a cloned pipeline.
+    TriggerPipelineReleaseResponse:
+      type: object
+      properties:
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+        metadata:
+          description: Traces of the pipeline inference.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/TriggerMetadata'
+      description: 'TriggerPipelineReleaseResponse contains the pipeline execution
+
+        results, i.e., the multiple model inference outputs.'
+    RunStatus:
+      type: string
+      enum:
+      - RUN_STATUS_PROCESSING
+      - RUN_STATUS_COMPLETED
+      - RUN_STATUS_FAILED
+      - RUN_STATUS_QUEUED
+      description: "RunStatus defines the status of a pipeline or model run.\n\n - RUN_STATUS_PROCESSING: Run in progress.\n - RUN_STATUS_COMPLETED: Run succeeded.\n - RUN_STATUS_FAILED: Run failed.\n - RUN_STATUS_QUEUED: Run is waiting to be executed."
+    FileReference:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the file.
+        type:
+          type: string
+          description: Format of the file (e.g., PDF, TXT, JPG).
+        size:
+          type: string
+          format: int64
+          description: Size of the file in bytes.
+        url:
+          type: string
+          description: URL of the file (e.g., S3 URL).
+      description: FileReference represents metadata for a file.
+      required:
+      - name
+      - type
+      - size
+      - url
+    pipeline.v1beta.Permission:
+      type: object
+      properties:
+        canEdit:
+          type: boolean
+          description: Defines whether the pipeline can be modified.
+        canTrigger:
+          type: boolean
+          description: Defines whether the pipeline can be executed.
+        canRelease:
+          type: boolean
+          description: Defines whether the pipeline can be released.
+      description: Permission defines how a pipeline can be used.
+    ShareCode:
+      type: object
+      properties:
+        user:
+          type: string
+          description: 'Defines which users will be able to access the resource through the
+
+            code. This is a pattern that will be checked against user names.
+
+
+            For now, the only accepted value is `*/*`.'
+        code:
+          type: string
+          description: The public URL that allows users to access the resource.
+        enabled:
+          type: boolean
+          description: Defines whether the sharing option via link is enabled.
+        role:
+          description: Defines the role users will have over the resource.
+          allOf:
+          - $ref: '#/components/schemas/Role'
+      description: ShareCode describes a sharing configuration through a link.
+    GetPipelineReleaseResponse:
+      type: object
+      properties:
+        release:
+          description: The pipeline release resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/PipelineRelease'
+      description: GetPipelineReleaseResponse contains the requested pipeline release.
+    ClonePipelineBody:
+      type: object
+      properties:
+        target:
+          type: string
+          title: 'The resource name of the target pipeline.
+
+            Format: namespaces/{namespace}/pipelines/{pipeline}'
+        description:
+          type: string
+          description: Pipeline description.
+        sharing:
+          description: Pipeline sharing information.
+          allOf:
+          - $ref: '#/components/schemas/Sharing'
+      description: 'ClonePipelineRequest represents a request to clone a pipeline owned
+
+        by a user.'
+      required:
+      - target
+    UpdateNamespaceSecretResponse:
+      type: object
+      properties:
+        secret:
+          description: The updated secret resource.
+          allOf:
+          - $ref: '#/components/schemas/Secret'
+      description: UpdateNamespaceSecretResponse contains the updated secret.
+    Trace.Status:
+      type: string
+      enum:
+      - STATUS_COMPLETED
+      - STATUS_SKIPPED
+      - STATUS_ERROR
+      description: "Status holds the the component execution outcome.\n\n - STATUS_COMPLETED: Successfully completed.\n - STATUS_SKIPPED: Skipped.\n - STATUS_ERROR: Aborted with error."
+    DeletePipelineReleaseResponse:
+      type: object
+      description: DeletePipelineReleaseResponse is an empty response.
+    TriggerAsyncPipelineReleaseBody:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters, it will be deprecated soon.
+        data:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/TriggerData'
+          title: Data
+      description: 'TriggerPipelineReleaseRequest represents a request to trigger a
+
+        pinned release of a user-owned pipeline asynchronously.'
+    CreateNamespaceSecretResponse:
+      type: object
+      properties:
+        secret:
+          description: The created secret resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Secret'
+      description: CreateNamespaceSecretResponse contains the created secret.
+    v1beta.GetOperationResponse:
+      type: object
+      properties:
+        operation:
+          description: The long-running operation.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: GetOperationResponse contains the long-running operation details.
+    ClonePipelineResponse:
+      type: object
+      description: ClonePipelineResponse contains a cloned pipeline.
+    PipelineRun:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The resource name of the pipeline run.
+
+            Format: namespaces/{namespace}/pipelines/{pipeline}/runs/{run}'
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier for each run (immutable).
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Time when the run was created.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Time when the run was last updated.
+          readOnly: true
+        runner:
+          type: string
+          description: 'Runner who triggered the run.
+
+            Full resource name: users/{user}.'
+          readOnly: true
+        pipeline:
+          type: string
+          title: 'The pipeline resource name.
+
+            Full resource name: namespaces/{namespace}/pipelines/{pipeline}'
+          readOnly: true
+        requester:
+          type: string
+          description: 'Requester namespace.
+
+            Full resource name: namespaces/{namespace}.'
+          readOnly: true
+        pipelineVersion:
+          type: string
+          description: Pipeline version used in the run.
+          readOnly: true
+        status:
+          description: Current status of the run.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/RunStatus'
+        source:
+          description: Origin of the run.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/RunSource'
+        totalDuration:
+          type: integer
+          format: int32
+          description: Time taken to complete the run in milliseconds.
+          readOnly: true
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters.
+          readOnly: true
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline inference outputs.
+          readOnly: true
+        recipeSnapshot:
+          type: object
+          description: Snapshot of the pipeline recipe used for this run.
+          readOnly: true
+        startTime:
+          type: string
+          format: date-time
+          description: Time when the run started execution.
+          readOnly: true
+        completeTime:
+          type: string
+          format: date-time
+          description: Time when the run completed.
+          readOnly: true
+        error:
+          type: string
+          description: Error message if the run failed.
+          readOnly: true
+        creditAmount:
+          type: number
+          format: float
+          description: Credits used of internal accounting metric.
+          readOnly: true
+        dataSpecification:
+          description: Data specifications.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/DataSpecification'
+        blobDataExpirationTime:
+          type: string
+          format: date-time
+          description: Expiration time for the blob data associated with the pipeline run.
+          readOnly: true
+      description: PipelineRun represents a single execution of a pipeline.
+    ListPublicPipelinesResponse:
+      type: object
+      properties:
+        pipelines:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Pipeline'
+          description: A list of pipeline resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of pipelines.
+          readOnly: true
+      description: ListPublicPipelinesResponse contains a list of public pipelines.
+    TriggerPipelineReleaseBody:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters, it will be deprecated soon.
+        data:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/TriggerData'
+          title: Data
+      description: 'TriggerPipelineReleaseRequest represents a request to trigger a
+
+        pinned release of a user-owned pipeline.'
+    Pipeline.Visibility:
+      type: string
+      enum:
+      - VISIBILITY_PRIVATE
+      - VISIBILITY_PUBLIC
+      description: "Visibility defines who can access the pipeline.\n\n - VISIBILITY_PRIVATE: Only the user can see the pipeline.\n - VISIBILITY_PUBLIC: Other users can see the pipeline."
+    TriggerMetadata:
+      type: object
+      properties:
+        traces:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Trace'
+          description: 'Each key in the `traces` object is a component ID. The value is a Trace
+
+            object containing the execution details.'
+          readOnly: true
+      description: TriggerMetadata contains the traces of the pipeline inference.
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
+
+            Format: `organizations/{organization}`.
+
+            Example: "organizations/acme-corp"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "org-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "org-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        owner:
+          type: string
+          description: 'Field 9: Owner reference (the user that owns the organization).
+
+            Format: `users/{user}`.'
+          readOnly: true
+        profile:
+          description: Profile containing additional organization information.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationProfile'
+        permission:
+          title: Permission
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Permission'
+        stats:
+          description: The organization stats.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization.Stats'
+      description: 'Organizations group several users. As entities, they can own resources such
+
+        as pipelines or releases.
+
+        Organization represents a group of users working together.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp
+
+        - owner (field 9): Owner reference (string, not embedded object)'
+      required:
+      - profile
+    ListPipelineRunsByRequesterResponse:
+      type: object
+      properties:
+        pipelineRuns:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/PipelineRun'
+          description: The list of pipeline runs.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: The total number of pipeline runs matching the request.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The current page number.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The number of items per page.
+          readOnly: true
+      description: 'ListPipelineRunsByRequesterResponse is the response message for
+
+        ListPipelineRunsByRequester.'
+    TriggerAsyncPipelineResponse:
+      type: object
+      properties:
+        operation:
+          description: Long-running operation information.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'TriggerAsyncPipelineResponse contains the information to access the
+
+        status of an asynchronous pipeline execution.'
+    PipelineRelease:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: The name of the release.
+
+            - Format: `namespaces/{namespace}/pipelines/{pipeline}/releases/{release}`.'
+          readOnly: true
+        id:
+          type: string
+          description: 'Field 2: Release resource ID (used in `name` as the last segment). It must
+
+            be a sematic version vX.Y.Z.'
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (alias for the release).'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Release description.'
+        recipe:
+          type: object
+          description: Recipe of the versioned pipeline.
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Pipeline creation time.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Pipeline update time.
+          readOnly: true
+        deleteTime:
+          type: string
+          format: date-time
+          description: Pipeline deletion time.
+          readOnly: true
+        metadata:
+          type: object
+          description: 'Key-value object with console-related data such as the pipeline builder
+
+            layout.'
+        readme:
+          type: string
+          description: README.
+        dataSpecification:
+          description: Data specifications.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/DataSpecification'
+        rawRecipe:
+          type: string
+          description: 'Recipe in YAML format describes the components of a pipeline and how they
+
+            are connected.'
+        endpoints:
+          description: Pipeline endpoints.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Endpoints'
+      title: 'Pipeline releases contain the version control information of a pipeline.
+
+        This allows users to track changes in the pipeline over time.
+
+        Field ordering follows AIP standard: name (1), id (2), display_name (3), slug
+
+        (4), aliases (5), description (6)'
+    Sharing:
+      type: object
+      properties:
+        users:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Sharing.User'
+          description: 'Defines sharing rules for a set of user resource names.
+
+
+            Each key in this object should contain a pattern that can be matched
+
+            against user names.
+
+
+            Each value is a user sharing configuration.
+
+
+            **NOTE**: For now, the only accepted key is `*/*`.'
+        shareCode:
+          description: Defines the configuration to share a resource via link.
+          allOf:
+          - $ref: '#/components/schemas/ShareCode'
+      description: 'Sharing contains the information to share a resource with other users.
+
+
+        For more information, see [Share Pipelines](https://instill-ai.dev/docs/pipeline/share-pipeline).'
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    Spec:
+      type: object
+      properties:
+        componentSpecification:
+          type: object
+          description: Component specification.
+          readOnly: true
+        dataSpecifications:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataSpecification'
+          description: 'Data specifications.
+
+            The key represents the task, and the value is the corresponding data_specification.
+
+            Note: This field will be renamed to task_specifications in the future.'
+          readOnly: true
+        eventSpecifications:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EventSpecification'
+          description: 'Event specifications.
+
+            The key represents the event, and the value is the corresponding event_specification.'
+          readOnly: true
+      description: Spec represents a specification data model.
+    RenamePipelineResponse:
+      type: object
+      properties:
+        pipeline:
+          description: The renamed pipeline resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Pipeline'
+      description: RenamePipelineResponse contains a renamed pipeline.
+    CreatePipelineResponse:
+      type: object
+      properties:
+        pipeline:
+          description: The created pipeline resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Pipeline'
+      description: CreatePipelineResponse contains the created pipeline.
+    ComponentType:
+      type: string
+      enum:
+      - COMPONENT_TYPE_AI
+      - COMPONENT_TYPE_DATA
+      - COMPONENT_TYPE_OPERATOR
+      - COMPONENT_TYPE_APPLICATION
+      - COMPONENT_TYPE_GENERIC
+      description: "ComponentType defines the component type based on its task features.\n\n - COMPONENT_TYPE_AI: Connect with an AI model.\n - COMPONENT_TYPE_DATA: Connect with a remote data source.\n - COMPONENT_TYPE_OPERATOR: Manipulate data.\n - COMPONENT_TYPE_APPLICATION: Connect with an external application.\n - COMPONENT_TYPE_GENERIC: Generic."
+    Owner:
+      type: object
+      properties:
+        user:
+          description: User.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+        organization:
+          description: Organization.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+      description: 'Owner is a wrapper for User and Organization, used to embed owner information
+
+        in other resources.'
+    ListPipelinesResponse:
+      type: object
+      properties:
+        pipelines:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Pipeline'
+          description: A list of pipeline resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of pipelines.
+          readOnly: true
+      description: ListPipelinesResponse contains a list of pipelines.
+    TriggerPipelineWithStreamBody:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters, it will be deprecated soon.
+        data:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/TriggerData'
+          title: Data
+      description: 'TriggerPipelineWithStreamRequest represents a request to trigger a
+
+        user-owned pipeline synchronously and streams back the results.'
+    UpdatePipelineResponse:
+      type: object
+      properties:
+        pipeline:
+          description: The updated pipeline resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Pipeline'
+      description: UpdatePipelineResponse contains the updated pipeline.
+    TriggerPipelineBody:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters, it will be deprecated soon.
+        data:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/TriggerData'
+          title: Data
+      description: 'TriggerPipelineRequest represents a request to trigger a user-owned
+
+        pipeline synchronously.'
+      required:
+      - inputs
+      - data
+    GetPipelineResponse:
+      type: object
+      properties:
+        pipeline:
+          description: The pipeline resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Pipeline'
+      description: GetPipelineResponse contains the requested pipeline.
+    ListComponentDefinitionsResponse:
+      type: object
+      properties:
+        componentDefinitions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ComponentDefinition'
+          description: A list of component definition resources.
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of component definitions.
+        pageSize:
+          type: integer
+          format: int32
+          description: The requested page size.
+        page:
+          type: integer
+          format: int32
+          description: The requested page offset.
+      description: ListComponentDefinitionsResponse contains a list of component definitions.
+    mgmt.v1beta.Permission:
+      type: object
+      properties:
+        canEdit:
+          type: boolean
+          description: Defines whether the resource can be modified.
+          readOnly: true
+      description: Permission defines how a resource can be used.
+    UpdatePipelineReleaseResponse:
+      type: object
+      properties:
+        release:
+          description: The updated pipeline release resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/PipelineRelease'
+      description: UpdatePipelineReleaseResponse contains the updated pipeline release.
+    ValidatePipelineBody:
+      type: object
+      description: 'ValidatePipelineRequest represents a request to validate a pipeline
+
+        owned by a user.'
+    OrganizationProfile:
+      type: object
+      properties:
+        displayName:
+          type: string
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "Instill AI" for organization ID "instill-ai"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the organization''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        metadata:
+          type: object
+          title: Flexible metadata
+        fullName:
+          type: string
+          description: Full legal name. Used for formal communications.
+      description: OrganizationProfile describes the public data of an organization.
+      required:
+      - displayName
+    ComponentDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The name of the component definition, defined by its ID.
+
+            - Format: `component-definitions/{id}`'
+          readOnly: true
+        uid:
+          type: string
+          description: Component definition UUID.
+          readOnly: true
+        id:
+          type: string
+          description: 'Component definition resource ID (used in `name` as the last segment). This
+
+            conforms to RFC-1034, which restricts to letters, numbers, and hyphen,
+
+            with the first character a letter, the last a letter or a number, and a 63
+
+            character maximum.'
+        title:
+          type: string
+          description: Component definition title.
+          readOnly: true
+        documentationUrl:
+          type: string
+          description: Component definition documentation URL.
+          readOnly: true
+        icon:
+          type: string
+          description: 'Component definition icon. This is a path that''s relative to the root of
+
+            the component implementation (see `source_url`) and that allows
+
+            frontend applications to pull and locate the icons.'
+          readOnly: true
+        spec:
+          description: Component definition specification.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Spec'
+        type:
+          description: Component definition type.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ComponentType'
+        tombstone:
+          type: boolean
+          description: 'Component definition tombstone. If true, this configuration is permanently
+
+            off. Otherwise, the configuration is active.'
+          readOnly: true
+        public:
+          type: boolean
+          description: 'The public flag determines whether this connector definition is available
+
+            to all workspaces.'
+          readOnly: true
+        custom:
+          type: boolean
+          description: 'Component definition custom flag, i.e., whether this is a custom
+
+            component definition.'
+          readOnly: true
+        vendor:
+          type: string
+          description: Component definition vendor name.
+          readOnly: true
+        vendorAttributes:
+          type: object
+          description: Vendor-specific attributes.
+          readOnly: true
+        sourceUrl:
+          type: string
+          description: 'Source code URL. This points to the source code where the component is
+
+            implemented.'
+          readOnly: true
+        version:
+          type: string
+          description: 'Component definition version. This is a string that fulfills the SemVer
+
+            specification (e.g. `1.0.0-beta`).'
+          readOnly: true
+        tasks:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ComponentTask'
+          description: List of tasks that can be executed by the component.
+          readOnly: true
+        description:
+          type: string
+          description: Short description of the component.
+          readOnly: true
+        releaseStage:
+          description: Release stage.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ComponentDefinition.ReleaseStage'
+        events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ComponentEvent'
+          description: List of events that can be produced by the component.
+          readOnly: true
+      description: ComponentDefinition describes a certain type of Component.
+    ComponentRun:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The resource name of the component run.
+
+            Format:
+
+            namespaces/{namespace}/pipelines/{pipeline}/runs/{run}/components/{component}'
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier for the component within the pipeline.
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Time when the component run was created.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Time when the component run was last updated.
+          readOnly: true
+        pipelineRun:
+          type: string
+          title: 'Parent pipeline run resource name.
+
+            Full resource name: namespaces/{namespace}/pipelines/{pipeline}/runs/{run}'
+          readOnly: true
+        status:
+          description: Completion status of the component.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/RunStatus'
+        totalDuration:
+          type: integer
+          format: int32
+          description: Time taken to execute the component in milliseconds.
+          readOnly: true
+        startTime:
+          type: string
+          format: date-time
+          description: Time when the component started execution.
+          readOnly: true
+        completeTime:
+          type: string
+          format: date-time
+          description: Time when the component finished execution.
+          readOnly: true
+        error:
+          type: string
+          description: Error message if the component failed.
+          readOnly: true
+        inputsReference:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/FileReference'
+          description: Input files for the run.
+          readOnly: true
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Component input parameters.
+          readOnly: true
+        outputsReference:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/FileReference'
+          description: Output files from the run.
+          readOnly: true
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Component inference outputs.
+          readOnly: true
+        creditAmount:
+          type: number
+          format: float
+          description: Credits used of internal accounting metric.
+          readOnly: true
+        blobDataExpirationTime:
+          type: string
+          format: date-time
+          description: Expiration time for the blob data associated with the component run.
+          readOnly: true
+      description: 'ComponentRun represents the execution details of a single component within a
+
+        pipeline run.'
+    Secret:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `namespaces/{namespace}/secrets/{secret}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+            Example: "sec-8f3a2k9E7c1"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          title: 'Field 4: URL-friendly slug (NO prefix).
+
+            If omitted, server generates from display_name.
+
+            If provided, server validates and persists it.
+
+            Slug is NOT part of resource identity.
+
+            Example: "openai-api-key"'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.
+
+            When display_name changes, a new slug is generated and old slugs are stored here.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description.'
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Last update time.'
+          readOnly: true
+        value:
+          type: string
+          description: 'Field 9: The value of the secret, which is input-only and will never be returned in API responses.'
+      title: 'API secrets allow users to make requests to the Instill AI API.
+
+        Field ordering follows AIP standard: name(1), id(2), display_name(3), slug(4), aliases(5), description(6)'
+      required:
+      - displayName
+    RenamePipelineBody:
+      type: object
+      properties:
+        newPipelineId:
+          type: string
+          description: 'The new resource ID. This will transform the resource name into
+
+            `namespaces/{namespace}/pipelines/{new_pipeline_id}`.'
+      description: 'RenamePipelineRequest represents a request to rename the name of a
+
+        pipeline owned by a namespace.'
+      required:
+      - newPipelineId
+    ComponentDefinition.ReleaseStage:
+      type: string
+      enum:
+      - RELEASE_STAGE_OPEN_FOR_CONTRIBUTION
+      - RELEASE_STAGE_COMING_SOON
+      - RELEASE_STAGE_ALPHA
+      - RELEASE_STAGE_BETA
+      - RELEASE_STAGE_GA
+      description: "- RELEASE_STAGE_OPEN_FOR_CONTRIBUTION: This component is unimplemented and community contributions are welcome\nfor this component.\n\nIt is recommended that the major and minor versions for definitions at\nthis release stage is kept at 0, e.g., `0.0.1`, `0.0.4`, etc.\n - RELEASE_STAGE_COMING_SOON: The implementation of this component is planned and will be tackled by\nthe Instill AI team.\n\nIt is recommended that the major and minor versions for definitions at\nthis release stage is kept at 0, e.g., `0.0.1`, `0.0.4`, etc.\n - RELEASE_STAGE_ALPHA: Initial implementation intended to gather feedback and issues from early\nadopters. Alpha releases are discouraged for production use cases.\n\nThe `version` field in the definition must have `alpha` as its first\npre-release identifier, e.g., `0.1.0-alpha`, `0.1.3-alpha.1`.\n - RELEASE_STAGE_BETA: The component has reached stability and no backwards incompatible\nchanges are expected. Before reaching general availability, it should be\nvalidated by a broader group of users. Some fixes might be added during\nthis process.\n\nThe `version` field in the definition must have `beta` as its first\npre-release identifier, e.g., `0.1.0-beta`, `0.1.3-beta.1`.\n - RELEASE_STAGE_GA: Generally available - ready for use in production and fully supported by\nInstill AI."
+      title: 'ReleaseStage defines the release stage of a component. This is used to
+
+        group components with the same pre-relase groups (e.g. `0.1.0-beta`,
+
+        `0.1.0-beta.1` -> `RELEASE_STAGE_BETA`) and to include other "in progress"
+
+        (i.e. coming soon, open for contributions) stages that may not be relevant
+
+        within semantic versioning.
+
+        See the documentation of each value for potential constraints between
+
+        `version` and `release_stage` fields.`'
+    ListPipelineRunsResponse:
+      type: object
+      properties:
+        pipelineRuns:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/PipelineRun'
+          description: The list of pipeline runs.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: The total number of pipeline runs matching the request.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The current page number.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The number of items per page.
+          readOnly: true
+      description: ListPipelineRunsResponse is the response message for ListPipelineRuns.
+    ListNamespaceSecretsResponse:
+      type: object
+      properties:
+        secrets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Secret'
+          description: A list of secret resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of secret resources.
+          readOnly: true
+      description: ListNamespaceSecretsResponse contains a list of secrets.
+    EventSpecification:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Event title.
+          readOnly: true
+        description:
+          type: string
+          description: Event description.
+          readOnly: true
+        configSchema:
+          type: object
+          description: JSON schema describing the component event config data.
+          readOnly: true
+        messageSchema:
+          type: object
+          description: JSON schema describing the component event message data.
+          readOnly: true
+        messageExamples:
+          type: array
+          items:
+            type: object
+          description: JSON schema describing the component event examples.
+          readOnly: true
+      description: EventSpecification describes the JSON schema of component event setup and examples.
+    v1beta.User:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
+
+            Format: `users/{user}`.
+
+            Example: "users/john-doe"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "usr-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        profile:
+          description: Profile containing additional user information.
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+        email:
+          type: string
+          description: Email.
+          readOnly: true
+      description: 'User describes an individual that interacts with Instill AI. It doesn''t
+
+        contain any private information about the user.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp'
+    Organization.Stats:
+      type: object
+      properties:
+        userCount:
+          type: integer
+          format: int32
+          description: The number of users in the organization.
+      description: The Organization stats.
+    ErrPipelineValidation:
+      type: object
+      properties:
+        location:
+          type: string
+          title: Location
+        error:
+          type: string
+          title: error
+      description: 'ErrPipelineValidation contains information about a failed pipeline
+
+        validation.'
+    ComponentEvent:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The event name, e.g. `EVENT_NEW`.
+          readOnly: true
+        title:
+          type: string
+          description: Title is the event name in a human-friendly format.
+          readOnly: true
+        description:
+          type: string
+          description: Description contains information about the event.
+          readOnly: true
+      description: 'ComponentEvent contains information about an event that a component can
+
+        produce.'
+    ValidatePipelineResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          title: Success
+          readOnly: true
+        errors:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ErrPipelineValidation'
+          description: The validated pipeline resource.
+          readOnly: true
+      description: ValidatePipelineResponse contains a validated pipeline.
+    GetNamespaceSecretResponse:
+      type: object
+      properties:
+        secret:
+          description: The secret resource.
+          allOf:
+          - $ref: '#/components/schemas/Secret'
+      description: GetNamespaceSecretResponse contains the requested secret.
+    UserProfile:
+      type: object
+      properties:
+        displayName:
+          type: string
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "John" for user ID "john-doe-8f3A2k9E"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        companyName:
+          type: string
+          description: Company name.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the user''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        fullName:
+          type: string
+          description: 'Full legal name. Used for formal communications.
+
+            Example: "John Doe" - this is also used to auto-generate the user ID.'
+        metadata:
+          type: object
+          title: Flexible metadata
+      description: UserProfile describes the public data of a user.
+      required:
+      - displayName
+    TriggerAsyncPipelineReleaseResponse:
+      type: object
+      properties:
+        operation:
+          description: Long-running operation information.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'TriggerAsyncPipelineReleaseResponse contains the information to
+
+        access the status of an asynchronous pipeline execution.'
+    Pipeline:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `namespaces/{namespace}/pipelines/{pipeline}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+            Example: "pip-8f3a2k9E7c1"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            If omitted, server generates from display_name.
+
+            Slug is NOT part of resource identity.'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description.'
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Last update time.'
+          readOnly: true
+        recipe:
+          type: object
+          description: Recipe describes the components of a Pipeline and how they are connected.
+        rawRecipe:
+          type: string
+          description: Recipe in YAML format.
+        visibility:
+          description: Pipeline visibility.
+          allOf:
+          - $ref: '#/components/schemas/Pipeline.Visibility'
+        sharing:
+          description: Pipeline sharing information.
+          allOf:
+          - $ref: '#/components/schemas/Sharing'
+        permission:
+          description: Permission defines how a pipeline can be used.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Permission'
+        dataSpecification:
+          description: Data specifications.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/DataSpecification'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags.
+        stats:
+          description: Statistic data.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Pipeline.Stats'
+        metadata:
+          type: object
+          description: Metadata holds console-related data such as the pipeline builder layout.
+        readme:
+          type: string
+          description: README holds the pipeline documentation.
+        releases:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/PipelineRelease'
+          description: Releases holds the history of pipeline versions.
+          readOnly: true
+        endpoints:
+          description: Pipeline endpoints.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Endpoints'
+        sourceUrl:
+          type: string
+          description: A link to the source code of the pipeline (e.g. to a GitHub repository).
+        documentationUrl:
+          type: string
+          description: A link to any extra information.
+        license:
+          type: string
+          description: License under which the pipeline is distributed.
+        profileImage:
+          type: string
+          description: Pipeline profile image in base64 format.
+        ownerName:
+          type: string
+          description: Resource name of the owner namespace.
+          readOnly: true
+        owner:
+          description: Pipeline owner (User or Organization).
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Owner'
+        creatorName:
+          type: string
+          title: 'Full resource name of the user who created this pipeline.
+
+            Format: `users/{user}`'
+          readOnly: true
+        creator:
+          description: The user who created this pipeline.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+        deleteTime:
+          type: string
+          format: date-time
+          description: Soft delete timestamp.
+          readOnly: true
+      description: 'A Pipeline is an end-to-end workflow that automates a sequence of components
+
+        to process data.
+
+
+        For more information, see
+
+        [Pipeline](https://instill-ai.dev/docs/pipeline/introduction) in the official
+
+        documentation. Pipeline represents a data pipeline for AI/ML workflows. Field
+
+        ordering follows AIP standard: name(1), id(2), display_name(3), slug(4),
+
+        aliases(5), description(6)'
+      required:
+      - displayName
+      - recipe
+      - visibility
+    TriggerPipelineResponse:
+      type: object
+      properties:
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+        metadata:
+          description: Traces of the pipeline inference.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/TriggerMetadata'
+      description: 'TriggerPipelineResponse contains the pipeline execution results,
+
+        i.e., the multiple model inference outputs.'
+    Role:
+      type: string
+      enum:
+      - ROLE_VIEWER
+      - ROLE_EXECUTOR
+      description: "Role describes the permissions a user has over a resource.\n\n - ROLE_VIEWER: Viewers can see the resource properties.\n - ROLE_EXECUTOR: Executors can execute the resource (e.g. trigger a pipeline)."
+    Endpoints:
+      type: object
+      properties:
+        webhooks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/WebhookEndpoint'
+          description: Webhook endpoints.
+          readOnly: true
+      description: Endpoints describe the endpoints of a pipeline.
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    Pipeline.Stats:
+      type: object
+      properties:
+        numberOfRuns:
+          type: integer
+          format: int32
+          description: Number of pipeline runs.
+          readOnly: true
+        lastRunTime:
+          type: string
+          format: date-time
+          description: Last run time.
+          readOnly: true
+        numberOfClones:
+          type: integer
+          format: int32
+          description: Number of times this pipeline has been cloned.
+          readOnly: true
+      title: Statistic data
+    ListComponentRunsResponse:
+      type: object
+      properties:
+        componentRuns:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ComponentRun'
+          description: The list of component runs.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: The total number of component runs matching the request.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The current page number.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The number of items per page.
+          readOnly: true
+      description: ListComponentRunsResponse is the response message for ListComponentRuns.
+    TriggerData:
+      type: object
+      properties:
+        variable:
+          type: object
+          description: The values of the pipeline variables.
+        secret:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'A collection of secrets. By default, if a pipeline references any secret
+
+            (`${secret.<id>}`), its value is read from the namespace''s secrets.
+
+            This object provides a way to override these secret values: if one of its
+
+            keys matches the ID of a reference secret, its value will be read from
+
+            here instead of from the namespace secret collection.'
+        connectionReferences:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'A collection of connection references. By default, connection references
+
+            (`${connection.<id>}`) in a pipeline will be resolved by fetching the
+
+            value from the requester''s connections. Connections contain sensitive data
+
+            and can''t be shared across namespaces, so this means that, in order to
+
+            successfully run a pipeline owned by another namespace, the requester will
+
+            need to have a connection with the same ID.
+
+            This object provides a way to override the connection references with
+
+            connections that the requester owns. Each element in the object maps a
+
+            connection ID present in the pipeline (key) to the ID of a connection
+
+            owned by the requester (value).
+
+            Note that, since only references are accepted (this object shouldn''t
+
+            contain connection **values**), the reference syntax shouldn''t be used
+
+            here.'
+      description: TriggerData contains the input data for a pipeline run.
+    CreatePipelineReleaseResponse:
+      type: object
+      properties:
+        release:
+          description: The created pipeline release object.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/PipelineRelease'
+      description: CreatePipelineReleaseResponse contains the created release.
+    Sharing.User:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Defines whether the sharing option with this user is enabled.
+        role:
+          description: Defines the role the user will have over the resource.
+          allOf:
+          - $ref: '#/components/schemas/Role'
+      description: Describes the sharing configuration with a given user.
+    Trace:
+      type: object
+      properties:
+        statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trace.Status'
+          description: Statuses contains an execution status per input.
+          readOnly: true
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Component inputs.
+          readOnly: true
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Component outputs.
+          readOnly: true
+        error:
+          type: object
+          description: Error details.
+          readOnly: true
+        computeTimeInSeconds:
+          type: number
+          format: float
+          description: Computation time in seconds.
+          readOnly: true
+      description: Trace contains the execution details of a component.
+    DeletePipelineResponse:
+      type: object
+      description: DeletePipelineResponse is an empty response.
+    longrunning.Operation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'The server-assigned name, which is only unique within the same service that
+
+            originally returns it. If you use the default HTTP mapping, the
+
+            `name` should be a resource name ending with `operations/{unique_id}`.'
+        metadata:
+          description: 'Service-specific metadata associated with the operation.  It typically
+
+            contains progress information and common metadata such as create time.
+
+            Some services might not provide such metadata.  Any method that returns a
+
+            long-running operation should document the metadata type, if any.'
+          allOf:
+          - $ref: '#/components/schemas/Any'
+        done:
+          type: boolean
+          description: 'If the value is `false`, it means the operation is still in progress.
+
+            If `true`, the operation is completed, and either `error` or `response` is
+
+            available.'
+        error:
+          description: The error result of the operation in case of failure or cancellation.
+          allOf:
+          - $ref: '#/components/schemas/rpc.Status'
+        response:
+          description: 'The normal, successful response of the operation.  If the original
+
+            method returns no data on success, such as `Delete`, the response is
+
+            `google.protobuf.Empty`.  If the original method is standard
+
+            `Get`/`Create`/`Update`, the response should be the resource.  For other
+
+            methods, the response should have the type `XxxResponse`, where `Xxx`
+
+            is the original method name.  For example, if the original method name
+
+            is `TakeSnapshot()`, the inferred response type is
+
+            `TakeSnapshotResponse`.'
+          allOf:
+          - $ref: '#/components/schemas/Any'
+      description: 'This resource represents a long-running operation that is the result of a
+
+        network API call.'
+    ListPipelineReleasesResponse:
+      type: object
+      properties:
+        releases:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/PipelineRelease'
+          description: A list of pipeline release resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of pipeline releases.
+          readOnly: true
+      description: ListPipelineReleasesResponse contains a list of pipeline releases.
+    TriggerPipelineWithStreamResponse:
+      type: object
+      properties:
+        outputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+        metadata:
+          description: Traces of the pipeline inference.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/TriggerMetadata'
+      description: 'TriggerPipelineWithStreamResponse contains the pipeline execution
+
+        results, i.e., the multiple model inference outputs.'
+    ComponentTask:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The task name, e.g. `TASK_TEXT_GENERATION`.
+          readOnly: true
+        title:
+          type: string
+          description: Title is the task name in a human-friendly format.
+          readOnly: true
+        description:
+          type: string
+          description: Description contains information about the task.
+          readOnly: true
+      description: 'ComponentTask contains information about a task that a component can
+
+        perform.'
+    ClonePipelineReleaseBody:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Pipeline description.
+        sharing:
+          description: Pipeline sharing information.
+          allOf:
+          - $ref: '#/components/schemas/Sharing'
+        target:
+          type: string
+          title: 'The target pipeline resource name.
+
+            Format: namespaces/{namespace}/pipelines/{pipeline}'
+      description: 'ClonePipelineReleaseRequest represents a request to clone a pipeline
+
+        release owned by a user.'
+      required:
+      - target
+    WebhookEndpoint:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Webhook URL.
+          readOnly: true
+        description:
+          type: string
+          description: Description.
+          readOnly: true
+      description: WebhookEndpoint describe a webhook endpoint.
+    DataSpecification:
+      type: object
+      properties:
+        input:
+          type: object
+          description: JSON schema describing the component input data.
+          readOnly: true
+        output:
+          type: object
+          description: JSON schema describing the component output data.
+          readOnly: true
+      description: 'DataSpecification describes the JSON schema of component input and output.
+
+        Note: This message will be renamed to TaskSpecifications in the future.'
+    TriggerAsyncPipelineBody:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+          description: Pipeline input parameters, it will be deprecated soon.
+        data:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/TriggerData'
+          title: Data
+      description: 'TriggerPipelineRequest represents a request to trigger a user-owned
+
+        pipeline synchronously.'
+    RunSource:
+      type: string
+      enum:
+      - RUN_SOURCE_CONSOLE
+      - RUN_SOURCE_API
+      description: "RunSource defines the source of a pipeline or model run.\n\n - RUN_SOURCE_CONSOLE: Run from frontend UI.\n - RUN_SOURCE_API: Run from API or SDK."
+    DeleteNamespaceSecretResponse:
+      type: object
+      description: DeleteNamespaceSecretResponse is an empty response.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`
+      name: Authorization
+      in: header
+      x-default: Bearer instill_sk_***
+externalDocs:
+  description: More about Instill Core
+  url: https://docs.instill-ai.com
+x-refined-from:
+- service.swagger.yaml
+- instill-ai-openapi.yml

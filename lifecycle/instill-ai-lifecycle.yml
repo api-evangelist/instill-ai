@@ -1,0 +1,15 @@
+name: Instill AI Lifecycle
+generated: '2026-10-09'
+method: derived
+source: openapi/instill-ai-openapi.yml
+versioning:
+  scheme: URL path prefix per service
+  api_version: v0.57.0
+  path_versions: {v1beta: 46, v1alpha: 34}
+  note: Path counts from the contract; the alpha/beta labels mark pre-GA surfaces. No written versioning policy could be read (docs host returned a bot challenge).
+deprecation:
+  deprecated_operations: []
+  policy: null
+  note: No operation carries deprecated:true in the contract.
+status_page: null
+changelog_index: https://docs.instill-ai.com/llms.txt  # Changelog section lists 10 undated entries, e.g. "Version Pinning by Default"

@@ -1,0 +1,137 @@
+generated: '2026-10-09'
+method: derived
+source:
+- https://docs.instill-ai.com/mcp
+- openapi/instill-ai-openapi.yml
+purpose: Binds the live docs MCP server tools to the Instill Core REST operations. The server exposes generic meta-tools over
+  the reference, not one tool per operation, so no tool has a fixed backing operationId.
+surfaces:
+  rest_openapi: openapi/instill-ai-openapi.yml
+  graphql: null
+  mcp: https://docs.instill-ai.com/mcp
+  gating: MCP endpoint is open (tools/list answered without credentials); REST calls require an Authorization Bearer key.
+crosswalk: []
+meta_tools:
+- tool: list-endpoints
+  reason: Reads the API reference index (all paths and methods). Covers every REST operation as documentation and invokes
+    none.
+- tool: get-endpoint
+  reason: Returns the reference detail for one path and method. This is documentation, not an invocation.
+- tool: search-endpoints
+  reason: Searches the reference by keyword. This is documentation, not an invocation.
+- tool: get-server-variables
+  reason: Returns OpenAPI server variables (reference metadata).
+- tool: execute-request
+  reason: A generic HAR passthrough that can call ANY REST operation. Its input is a harRequest, not a single operation, so
+    it is not bound to one operationId.
+mcp_only: []
+rest_only:
+- ArtifactPublicService_ListKnowledgeBases
+- ArtifactPublicService_CreateKnowledgeBase
+- ArtifactPublicService_GetKnowledgeBase
+- ArtifactPublicService_DeleteKnowledgeBase
+- ArtifactPublicService_UpdateChunk
+- ArtifactPublicService_UpdateKnowledgeBase
+- ArtifactPublicService_ListFiles
+- ArtifactPublicService_CreateFile
+- ArtifactPublicService_GetFile
+- ArtifactPublicService_DeleteFile
+- ArtifactPublicService_UpdateFile
+- ArtifactPublicService_ReprocessFile
+- ArtifactPublicService_GetChunk
+- ArtifactPublicService_DeleteObject
+- ArtifactPublicService_ListChunks
+- ArtifactPublicService_SearchChunks
+- ArtifactPublicService_GetObjectUploadURL
+- ArtifactPublicService_GetObjectDownloadURL
+- ArtifactPublicService_GetObject
+- ModelPublicService_DeleteModel
+- ArtifactPublicService_UpdateObject
+- MgmtPublicService_GetAuthenticatedUser
+- MgmtPublicService_PatchAuthenticatedUser
+- MgmtPublicService_ListUsers
+- MgmtPublicService_GetUser
+- MgmtPublicService_DeleteToken
+- MgmtPublicService_ListTokens
+- MgmtPublicService_CreateToken
+- MgmtPublicService_GetToken
+- MgmtPublicService_DeleteNamespaceConnection
+- MgmtPublicService_ValidateToken
+- MgmtPublicService_CheckNamespace
+- MgmtPublicService_ListPipelineTriggerChartRecords
+- MgmtPublicService_ListModelTriggerChartRecords
+- MgmtPublicService_ListNamespaceConnections
+- MgmtPublicService_CreateNamespaceConnection
+- MgmtPublicService_GetNamespaceConnection
+- PipelinePublicService_DeletePipeline
+- MgmtPublicService_UpdateNamespaceConnection
+- MgmtPublicService_TestNamespaceConnection
+- MgmtPublicService_ListPipelineIDsByConnectionID
+- PipelinePublicService_ListIntegrations
+- MgmtPublicService_GetIntegration
+- ModelPublicService_ListModelDefinitions
+- ModelPublicService_ListAvailableRegions
+- ModelPublicService_GetModelDefinition
+- ModelPublicService_ListPublicModels
+- ModelPublicService_ListModels
+- ModelPublicService_CreateModel
+- ModelPublicService_GetModel
+- ModelPublicService_DeleteModelVersion
+- ModelPublicService_UpdateModel
+- ModelPublicService_RenameModel
+- ModelPublicService_WatchModelVersion
+- ModelPublicService_WatchModel
+- ModelPublicService_ListModelVersions
+- ModelPublicService_TriggerModelVersion
+- ModelPublicService_TriggerAsyncModelVersion
+- ModelPublicService_TriggerModel
+- ModelPublicService_TriggerAsyncModel
+- ModelPublicService_GetModelVersionOperation
+- ModelPublicService_GetModelOperation
+- ModelPublicService_GetOperation
+- ModelPublicService_ListModelRuns
+- ModelPublicService_ListModelRunsByRequester
+- PipelinePublicService_ListPublicPipelines
+- PipelinePublicService_ListPipelines
+- PipelinePublicService_CreatePipeline
+- PipelinePublicService_GetPipeline
+- PipelinePublicService_DeletePipelineRelease
+- PipelinePublicService_UpdatePipeline
+- PipelinePublicService_ValidatePipeline
+- PipelinePublicService_RenamePipeline
+- PipelinePublicService_ClonePipeline
+- PipelinePublicService_TriggerPipeline
+- PipelinePublicService_TriggerPipelineWithStream
+- PipelinePublicService_TriggerAsyncPipeline
+- PipelinePublicService_ListPipelineReleases
+- PipelinePublicService_CreatePipelineRelease
+- PipelinePublicService_GetPipelineRelease
+- PipelinePublicService_DeleteNamespaceSecret
+- PipelinePublicService_UpdatePipelineRelease
+- PipelinePublicService_ClonePipelineRelease
+- PipelinePublicService_TriggerPipelineRelease
+- PipelinePublicService_TriggerAsyncPipelineRelease
+- PipelinePublicService_ListNamespaceSecrets
+- PipelinePublicService_CreateNamespaceSecret
+- PipelinePublicService_GetNamespaceSecret
+- PipelinePublicService_DeleteConnection
+- PipelinePublicService_UpdateNamespaceSecret
+- PipelinePublicService_ListComponentDefinitions
+- PipelinePublicService_GetOperation
+- PipelinePublicService_ListPipelineRuns
+- PipelinePublicService_ListComponentRuns
+- PipelinePublicService_ListPipelineRunsByRequester
+- PipelinePublicService_GetIntegration
+- PipelinePublicService_ListConnections
+- PipelinePublicService_CreateConnection
+- PipelinePublicService_GetConnection
+- PipelinePublicService_UpdateConnection
+- PipelinePublicService_TestConnection
+- PipelinePublicService_ListPipelineIDsByConnectionID
+coverage:
+  mcp_tools_named: 5
+  mcp_bound_to_rest: 0
+  meta_tools: 5
+  rest_operations_total: 102
+  rest_operations_with_dedicated_tool: 0
+rest_only_note: No REST operation has a dedicated MCP tool. Every one is reachable only through execute-request.

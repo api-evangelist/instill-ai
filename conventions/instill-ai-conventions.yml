@@ -1,0 +1,33 @@
+name: Instill AI Conventions
+generated: '2026-10-09'
+method: derived
+source: openapi/instill-ai-openapi.yml
+note: Derived from the Swagger 2.0 contract (info.version v0.57.0, host api.instill-ai.com). The docs site (docs.instill-ai.com / instill-ai.readme.io) served a bot challenge / HTTP 429 to every fetch on 2026-10-09, so no prose conventions page could be read.
+auth:
+  style: bearer API token in Authorization header
+  detail: "securityDefinitions.Bearer: apiKey in header Authorization — 'Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`'"
+  see: authentication/instill-ai-authentication.yml
+pagination:
+  style: cursor (page token)
+  params: [pageSize, pageToken]
+  also_seen: [page, filter, orderBy]
+filtering: filter and orderBy query parameters on list operations
+field_selection:
+  param: view
+request_context:
+  header: Instill-Requester-Uid
+  note: Header parameter in the contract used to act on behalf of a namespace (requester).
+versioning:
+  style: URL path prefix
+  observed: [v1alpha, v1beta]
+  see: lifecycle/instill-ai-lifecycle.yml
+error_envelope:
+  shape: google.rpc.Status
+  fields: [code, message, details]
+  responses_declared: ["200", "401", "default"]
+idempotency:
+  coverage: none
+  note: No Idempotency-Key header or request-id replay parameter is declared on any of the 51 write operations (29 POST, 11 PATCH, 11 DELETE).
+reversibility:
+  status: none-documented
+  note: "No restore / undelete / cancel / rollback operation is declared. List operations for pipelines and models accept a showDeleted parameter, suggesting soft delete, but no restore path or window is published, so none is asserted."

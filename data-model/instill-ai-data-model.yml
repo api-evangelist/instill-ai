@@ -1,0 +1,1098 @@
+generated: '2026-10-09'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/instill-ai-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 183
+  entities_in_spec: 183
+  relationships: 138
+entities:
+- name: Any
+  fields: 1
+  description: '`Any` contains an arbitrary serialized protocol buffer message along with a'
+- name: ApiToken
+  fields: 10
+  description: API tokens allow users to make requests to the Instill AI API.
+- name: AuthenticatedUser
+  fields: 15
+  description: AuthenticatedUser contains the information of an authenticated user, i.e.,
+- name: CheckNamespaceRequest
+  fields: 1
+  description: CheckNamespaceRequest represents a request to verify if a namespace is
+- name: CheckNamespaceResponse
+  fields: 1
+  description: CheckNamespaceResponse contains the availability of a namespace or the type
+- name: Chunk
+  fields: 9
+  description: The Chunk message represents a chunk of data in the artifact system.
+- name: ClonePipelineBody
+  fields: 3
+  description: ClonePipelineRequest represents a request to clone a pipeline owned
+- name: ClonePipelineReleaseBody
+  fields: 3
+  description: ClonePipelineReleaseRequest represents a request to clone a pipeline
+- name: ClonePipelineReleaseResponse
+  fields: 0
+  description: ClonePipelineReleaseResponse contains a cloned pipeline.
+- name: ClonePipelineResponse
+  fields: 0
+  description: ClonePipelineResponse contains a cloned pipeline.
+- name: ComponentDefinition
+  fields: 19
+  description: ComponentDefinition describes a certain type of Component.
+- name: ComponentEvent
+  fields: 3
+  description: ComponentEvent contains information about an event that a component can
+- name: ComponentRun
+  fields: 16
+  description: ComponentRun represents the execution details of a single component within a
+- name: ComponentTask
+  fields: 3
+  description: ComponentTask contains information about a task that a component can
+- name: CreateConnectionResponse
+  fields: 1
+  description: CreateConnectionResponse contains the created connection.
+- name: CreateFileResponse
+  fields: 1
+  description: CreateFileResponse represents a response for creating a file.
+- name: CreateKnowledgeBaseResponse
+  fields: 1
+  description: CreateKnowledgeBaseResponse represents a response for creating a knowledge
+- name: CreateModelResponse
+  fields: 1
+  description: CreateModelResponse contains the created model.
+- name: CreateNamespaceConnectionResponse
+  fields: 1
+  description: CreateNamespaceConnectionResponse contains the created connection.
+- name: CreateNamespaceSecretResponse
+  fields: 1
+  description: CreateNamespaceSecretResponse contains the created secret.
+- name: CreatePipelineReleaseResponse
+  fields: 1
+  description: CreatePipelineReleaseResponse contains the created release.
+- name: CreatePipelineResponse
+  fields: 1
+  description: CreatePipelineResponse contains the created pipeline.
+- name: CreateTokenResponse
+  fields: 1
+  description: CreateTokenResponse contains the created token.
+- name: DataSpecification
+  fields: 2
+  description: DataSpecification describes the JSON schema of component input and output.
+- name: DeleteConnectionResponse
+  fields: 0
+  description: DeleteConnectionResponse is an empty response.
+- name: DeleteFileResponse
+  fields: 1
+  description: DeleteFileResponse represents a response for deleting a file.
+- name: DeleteKnowledgeBaseResponse
+  fields: 1
+  description: DeleteKnowledgeBaseResponse represents a response for deleting a knowledge
+- name: DeleteModelResponse
+  fields: 0
+  description: DeleteModelResponse is an empty response.
+- name: DeleteModelVersionResponse
+  fields: 0
+  description: DeleteModelVersionResponse is an empty response.
+- name: DeleteNamespaceConnectionResponse
+  fields: 0
+  description: DeleteNamespaceConnectionResponse is an empty response.
+- name: DeleteNamespaceSecretResponse
+  fields: 0
+  description: DeleteNamespaceSecretResponse is an empty response.
+- name: DeleteObjectResponse
+  fields: 0
+  description: DeleteObjectResponse is an empty response for deleting an object.
+- name: DeletePipelineReleaseResponse
+  fields: 0
+  description: DeletePipelineReleaseResponse is an empty response.
+- name: DeletePipelineResponse
+  fields: 0
+  description: DeletePipelineResponse is an empty response.
+- name: DeleteTokenResponse
+  fields: 0
+  description: DeleteTokenResponse is an empty response.
+- name: EmbeddingConfig
+  fields: 2
+- name: Endpoints
+  fields: 1
+  description: Endpoints describe the endpoints of a pipeline.
+- name: ErrPipelineValidation
+  fields: 2
+  description: ErrPipelineValidation contains information about a failed pipeline
+- name: EventSpecification
+  fields: 5
+  description: EventSpecification describes the JSON schema of component event setup and examples.
+- name: File
+  fields: 36
+- name: FileReference
+  fields: 4
+  description: FileReference represents metadata for a file.
+- name: GetAuthenticatedUserResponse
+  fields: 1
+  description: GetAuthenticatedUserResponse contains the requested authenticated user.
+- name: GetChunkResponse
+  fields: 1
+  description: GetChunkResponse represents a response for getting a chunk.
+- name: GetConnectionResponse
+  fields: 1
+  description: GetConnectionResponse contains the requested connection.
+- name: GetFileResponse
+  fields: 2
+  description: GetFileResponse represents a response for getting a file.
+- name: GetKnowledgeBaseResponse
+  fields: 1
+  description: GetKnowledgeBaseResponse represents a response for getting a knowledge base.
+- name: GetModelDefinitionResponse
+  fields: 1
+  description: GetModelDefinitionResponse contains the requested model definition.
+- name: GetModelOperationResponse
+  fields: 1
+  description: GetModelOperationResponse represents a response to query a
+- name: GetModelResponse
+  fields: 1
+  description: GetModelResponse contains the requested model.
+- name: GetModelVersionOperationResponse
+  fields: 1
+  description: GetModelVersionOperationResponse represents a response to query a
+- name: GetNamespaceConnectionResponse
+  fields: 1
+  description: GetNamespaceConnectionResponse contains the requested connection.
+- name: GetNamespaceSecretResponse
+  fields: 1
+  description: GetNamespaceSecretResponse contains the requested secret.
+- name: GetObjectDownloadURLResponse
+  fields: 3
+- name: GetObjectResponse
+  fields: 1
+  description: GetObjectResponse contains the requested object.
+- name: GetObjectUploadURLResponse
+  fields: 3
+- name: GetPipelineReleaseResponse
+  fields: 1
+  description: GetPipelineReleaseResponse contains the requested pipeline release.
+- name: GetPipelineResponse
+  fields: 1
+  description: GetPipelineResponse contains the requested pipeline.
+- name: GetTokenResponse
+  fields: 1
+  description: GetTokenResponse contains the requested token.
+- name: GetUserResponse
+  fields: 1
+  description: GetUserResponse contains the requested user.
+- name: Hardware
+  fields: 2
+  description: Hardware describes the hardware title and string value that backend consumes.
+- name: KnowledgeBase
+  fields: 21
+- name: ListAvailableRegionsResponse
+  fields: 1
+  description: ListAvailableRegionsResponse contains a list of available
+- name: ListChunksResponse
+  fields: 1
+  description: ListChunksResponse represents a response containing a list of chunks in the
+- name: ListComponentDefinitionsResponse
+  fields: 4
+  description: ListComponentDefinitionsResponse contains a list of component definitions.
+- name: ListComponentRunsResponse
+  fields: 4
+  description: ListComponentRunsResponse is the response message for ListComponentRuns.
+- name: ListConnectionsResponse
+  fields: 3
+  description: ListConnectionsResponse contains a paginated list of connections.
+- name: ListFilesResponse
+  fields: 4
+  description: ListFilesResponse represents a response for listing files.
+- name: ListKnowledgeBasesResponse
+  fields: 3
+  description: ListKnowledgeBasesResponse represents a response for listing knowledge bases.
+- name: ListModelDefinitionsResponse
+  fields: 3
+  description: ListModelDefinitionsResponse contains a list of model definitions.
+- name: ListModelRunsByRequesterResponse
+  fields: 4
+  description: ListModelRunsByRequesterResponse is the request message for
+- name: ListModelRunsResponse
+  fields: 4
+  description: ListModelRunsResponse contains a list of model runs.
+- name: ListModelTriggerChartRecordsResponse
+  fields: 1
+  description: ListModelTriggerChartRecordsResponse contains a list of model trigger
+- name: ListModelVersionsResponse
+  fields: 4
+  description: ListModelVersionsResponse contains a list of models.
+- name: ListModelsResponse
+  fields: 3
+  description: ListModelsResponse contains a list of models.
+- name: ListNamespaceConnectionsResponse
+  fields: 3
+  description: ListNamespaceConnectionsResponse contains a paginated list of connections.
+- name: ListNamespaceSecretsResponse
+  fields: 3
+  description: ListNamespaceSecretsResponse contains a list of secrets.
+- name: ListPipelineReleasesResponse
+  fields: 3
+  description: ListPipelineReleasesResponse contains a list of pipeline releases.
+- name: ListPipelineRunsByRequesterResponse
+  fields: 4
+  description: ListPipelineRunsByRequesterResponse is the response message for
+- name: ListPipelineRunsResponse
+  fields: 4
+  description: ListPipelineRunsResponse is the response message for ListPipelineRuns.
+- name: ListPipelineTriggerChartRecordsResponse
+  fields: 1
+  description: ListPipelineTriggerChartRecordsResponse contains a list of pipeline trigger
+- name: ListPipelinesResponse
+  fields: 3
+  description: ListPipelinesResponse contains a list of pipelines.
+- name: ListPublicModelsResponse
+  fields: 3
+  description: ListPublicModelsResponse contains a list of public models.
+- name: ListPublicPipelinesResponse
+  fields: 3
+  description: ListPublicPipelinesResponse contains a list of public pipelines.
+- name: ListTokensResponse
+  fields: 3
+  description: ListTokensResponse contains a list of API tokens.
+- name: ListUsersResponse
+  fields: 3
+  description: ListUsersResponse contains a list of users.
+- name: Model
+  fields: 30
+- name: Model.Stats
+  fields: 2
+- name: ModelDefinition
+  fields: 10
+  description: ModelDefinition defines how to configure and import a model.
+- name: ModelRun
+  fields: 16
+  description: ModelRun contains information about a run of models.
+- name: ModelTriggerChartRecord
+  fields: 4
+  description: ModelTriggerChartRecord represents a timeline of model triggers. It
+- name: ModelVersion
+  fields: 5
+  description: ModelVersion contains information about the version of a model.
+- name: Object
+  fields: 15
+  description: Object represents a blob storage object.
+- name: Organization
+  fields: 12
+  description: Organizations group several users. As entities, they can own resources such
+- name: Organization.Stats
+  fields: 1
+  description: The Organization stats.
+- name: OrganizationProfile
+  fields: 7
+  description: OrganizationProfile describes the public data of an organization.
+- name: Owner
+  fields: 2
+  description: Owner is a wrapper for User and Organization, used to embed owner information
+- name: PatchAuthenticatedUserResponse
+  fields: 1
+- name: Pipeline
+  fields: 29
+  description: A Pipeline is an end-to-end workflow that automates a sequence of components
+- name: Pipeline.Stats
+  fields: 3
+- name: PipelineRelease
+  fields: 15
+- name: PipelineRun
+  fields: 20
+  description: PipelineRun represents a single execution of a pipeline.
+- name: PipelineTriggerChartRecord
+  fields: 4
+  description: PipelineTriggerChartRecord represents a timeline of pipeline triggers. It
+- name: Position
+  fields: 2
+  description: Position within a file, as coordinates in a specific unit. The
+- name: Reference
+  fields: 2
+  description: Reference represents the position of a chunk within a file.
+- name: Region
+  fields: 2
+  description: Region describes the supported cloud provider and regions, with
+- name: RenameModelBody
+  fields: 1
+- name: RenameModelResponse
+  fields: 1
+  description: RenameModelResponse contains a renamed model.
+- name: RenamePipelineBody
+  fields: 1
+  description: RenamePipelineRequest represents a request to rename the name of a
+- name: RenamePipelineResponse
+  fields: 1
+  description: RenamePipelineResponse contains a renamed pipeline.
+- name: ReprocessFileBody
+  fields: 0
+  description: ReprocessFileRequest represents a request to reprocess a file.
+- name: ReprocessFileResponse
+  fields: 2
+  description: ReprocessFileResponse represents a response for reprocessing a file.
+- name: SearchChunksBody
+  fields: 9
+  description: SearchChunksRequest represents a request to search for similar chunks.
+- name: SearchChunksResponse
+  fields: 2
+  description: SearchChunksResponse represents a response for searching similar chunks.
+- name: Secret
+  fields: 9
+- name: ShareCode
+  fields: 4
+  description: ShareCode describes a sharing configuration through a link.
+- name: Sharing
+  fields: 2
+  description: Sharing contains the information to share a resource with other users.
+- name: Sharing.User
+  fields: 2
+  description: Describes the sharing configuration with a given user.
+- name: SimilarityChunk
+  fields: 5
+  description: SimilarityChunk represents a chunk with similarity score.
+- name: Spec
+  fields: 3
+  description: Spec represents a specification data model.
+- name: TestConnectionResponse
+  fields: 0
+  description: TestConnectionResponse is an empty response.
+- name: TestNamespaceConnectionResponse
+  fields: 0
+  description: TestNamespaceConnectionResponse is an empty response.
+- name: Trace
+  fields: 5
+  description: Trace contains the execution details of a component.
+- name: TriggerAsyncModelBody
+  fields: 1
+  description: TriggerAsyncModelRequest represents a request to trigger a
+- name: TriggerAsyncModelResponse
+  fields: 1
+  description: TriggerAsyncModelResponse contains the information to access
+- name: TriggerAsyncModelVersionBody
+  fields: 1
+  description: TriggerAsyncModelVersionRequest represents a request to trigger a model
+- name: TriggerAsyncModelVersionResponse
+  fields: 1
+  description: TriggerAsyncModelVersionResponse contains the information to access the
+- name: TriggerAsyncPipelineBody
+  fields: 2
+  description: TriggerPipelineRequest represents a request to trigger a user-owned
+- name: TriggerAsyncPipelineReleaseBody
+  fields: 2
+  description: TriggerPipelineReleaseRequest represents a request to trigger a
+- name: TriggerAsyncPipelineReleaseResponse
+  fields: 1
+  description: TriggerAsyncPipelineReleaseResponse contains the information to
+- name: TriggerAsyncPipelineResponse
+  fields: 1
+  description: TriggerAsyncPipelineResponse contains the information to access the
+- name: TriggerData
+  fields: 3
+  description: TriggerData contains the input data for a pipeline run.
+- name: TriggerMetadata
+  fields: 1
+  description: TriggerMetadata contains the traces of the pipeline inference.
+- name: TriggerModelBody
+  fields: 1
+  description: TriggerModelRequest represents a request to trigger a model
+- name: TriggerModelResponse
+  fields: 2
+  description: TriggerModelResponse contains the model inference results.
+- name: TriggerModelVersionBody
+  fields: 1
+  description: TriggerModelVersionRequest represents a request to trigger a model
+- name: TriggerModelVersionResponse
+  fields: 2
+  description: TriggerModelVersionResponse contains the model inference results.
+- name: TriggerPipelineBody
+  fields: 2
+  description: TriggerPipelineRequest represents a request to trigger a user-owned
+- name: TriggerPipelineReleaseBody
+  fields: 2
+  description: TriggerPipelineReleaseRequest represents a request to trigger a
+- name: TriggerPipelineReleaseResponse
+  fields: 2
+  description: TriggerPipelineReleaseResponse contains the pipeline execution
+- name: TriggerPipelineResponse
+  fields: 2
+  description: TriggerPipelineResponse contains the pipeline execution results,
+- name: TriggerPipelineWithStreamBody
+  fields: 2
+  description: TriggerPipelineWithStreamRequest represents a request to trigger a
+- name: TriggerPipelineWithStreamResponse
+  fields: 2
+  description: TriggerPipelineWithStreamResponse contains the pipeline execution
+- name: UpdateChunkBody
+  fields: 1
+- name: UpdateChunkResponse
+  fields: 1
+  description: UpdateChunkResponse represents a response for updating a chunk.
+- name: UpdateConnectionResponse
+  fields: 1
+  description: UpdateConnectionResponse contains the updated connection.
+- name: UpdateFileResponse
+  fields: 1
+  description: UpdateFileResponse represents a response for updating a file.
+- name: UpdateKnowledgeBaseResponse
+  fields: 1
+  description: UpdateKnowledgeBaseResponse represents a response for updating a knowledge
+- name: UpdateModelResponse
+  fields: 1
+  description: UpdateModelResponse contains the updated model.
+- name: UpdateNamespaceConnectionResponse
+  fields: 1
+  description: UpdateNamespaceConnectionResponse contains the updated connection.
+- name: UpdateNamespaceSecretResponse
+  fields: 1
+  description: UpdateNamespaceSecretResponse contains the updated secret.
+- name: UpdateObjectBody
+  fields: 2
+  description: UpdateObjectRequest represents a request to update an object.
+- name: UpdateObjectResponse
+  fields: 1
+  description: UpdateObjectResponse contains the updated object.
+- name: UpdatePipelineReleaseResponse
+  fields: 1
+  description: UpdatePipelineReleaseResponse contains the updated pipeline release.
+- name: UpdatePipelineResponse
+  fields: 1
+  description: UpdatePipelineResponse contains the updated pipeline.
+- name: UserProfile
+  fields: 8
+  description: UserProfile describes the public data of a user.
+- name: ValidatePipelineBody
+  fields: 0
+  description: ValidatePipelineRequest represents a request to validate a pipeline
+- name: ValidatePipelineResponse
+  fields: 2
+  description: ValidatePipelineResponse contains a validated pipeline.
+- name: ValidateTokenResponse
+  fields: 1
+  description: ValidateTokenResponse contains the validation of a token.
+- name: WatchModelResponse
+  fields: 2
+  description: WatchModelResponse contains the state of the latest model
+- name: WatchModelVersionResponse
+  fields: 2
+  description: WatchModelVersionResponse contains the state of a model.
+- name: WebhookEndpoint
+  fields: 2
+  description: WebhookEndpoint describe a webhook endpoint.
+- name: longrunning.Operation
+  fields: 5
+  description: This resource represents a long-running operation that is the result of a
+- name: mgmt.v1beta.Connection
+  fields: 17
+- name: mgmt.v1beta.GetIntegrationResponse
+  fields: 1
+  description: GetIntegrationResponse contains the requested integration.
+- name: mgmt.v1beta.Integration
+  fields: 9
+  description: Integration contains the parameters to create a connection between
+- name: mgmt.v1beta.Integration.Link
+  fields: 2
+  description: Link contains the information to display an reference to an external URL.
+- name: mgmt.v1beta.Integration.OAuthConfig
+  fields: 3
+  description: OAuthConfig contains the configuration parameters for fetching an access
+- name: mgmt.v1beta.ListIntegrationsResponse
+  fields: 3
+  description: ListIntegrationsResponse contains a paginated list of integrations.
+- name: mgmt.v1beta.ListPipelineIDsByConnectionIDResponse
+  fields: 3
+  description: ListPipelineIDsByConnectionIDResponse contains a paginated list of
+- name: mgmt.v1beta.Permission
+  fields: 1
+  description: Permission defines how a resource can be used.
+- name: pipeline.v1beta.Connection
+  fields: 17
+- name: pipeline.v1beta.GetIntegrationResponse
+  fields: 1
+  description: GetIntegrationResponse contains the requested integration.
+- name: pipeline.v1beta.Integration
+  fields: 9
+  description: Integration contains the parameters to create a connection between
+- name: pipeline.v1beta.Integration.Link
+  fields: 2
+  description: Link contains the information to display an reference to an external URL.
+- name: pipeline.v1beta.Integration.OAuthConfig
+  fields: 3
+  description: OAuthConfig contains the configuration parameters for fetching an access
+- name: pipeline.v1beta.ListIntegrationsResponse
+  fields: 3
+  description: ListIntegrationsResponse contains a paginated list of integrations.
+- name: pipeline.v1beta.ListPipelineIDsByConnectionIDResponse
+  fields: 3
+  description: ListPipelineIDsByConnectionIDResponse contains a paginated list of
+- name: pipeline.v1beta.Permission
+  fields: 3
+  description: Permission defines how a pipeline can be used.
+- name: rpc.Status
+  fields: 3
+  description: The `Status` type defines a logical error model that is suitable for
+- name: v1alpha.GetOperationResponse
+  fields: 1
+  description: GetOperationResponse represents a response to query a long-running
+- name: v1alpha.Permission
+  fields: 2
+  description: Permission defines how a pipeline can be used.
+- name: v1beta.GetOperationResponse
+  fields: 1
+  description: GetOperationResponse contains the long-running operation details.
+- name: v1beta.User
+  fields: 10
+  description: User describes an individual that interacts with Instill AI. It doesn't
+relationships:
+- from: AuthenticatedUser
+  to: UserProfile
+  type: has_one
+  via: profile
+- from: Chunk
+  to: Reference
+  type: has_one
+  via: reference
+- from: Chunk
+  to: Reference
+  type: has_one
+  via: markdownReference
+- from: ClonePipelineBody
+  to: Sharing
+  type: has_one
+  via: sharing
+- from: ClonePipelineReleaseBody
+  to: Sharing
+  type: has_one
+  via: sharing
+- from: ComponentDefinition
+  to: Spec
+  type: has_one
+  via: spec
+- from: ComponentDefinition
+  to: ComponentTask
+  type: has_many
+  via: tasks
+- from: ComponentDefinition
+  to: ComponentEvent
+  type: has_many
+  via: events
+- from: ComponentRun
+  to: FileReference
+  type: has_many
+  via: inputsReference
+- from: ComponentRun
+  to: FileReference
+  type: has_many
+  via: outputsReference
+- from: CreateConnectionResponse
+  to: pipeline.v1beta.Connection
+  type: has_one
+  via: connection
+- from: CreateFileResponse
+  to: File
+  type: has_one
+  via: file
+- from: CreateKnowledgeBaseResponse
+  to: KnowledgeBase
+  type: has_one
+  via: knowledgeBase
+- from: CreateModelResponse
+  to: Model
+  type: has_one
+  via: model
+- from: CreateNamespaceConnectionResponse
+  to: mgmt.v1beta.Connection
+  type: has_one
+  via: connection
+- from: CreateNamespaceSecretResponse
+  to: Secret
+  type: has_one
+  via: secret
+- from: CreatePipelineReleaseResponse
+  to: PipelineRelease
+  type: has_one
+  via: release
+- from: CreatePipelineResponse
+  to: Pipeline
+  type: has_one
+  via: pipeline
+- from: CreateTokenResponse
+  to: ApiToken
+  type: has_one
+  via: token
+- from: DeleteKnowledgeBaseResponse
+  to: KnowledgeBase
+  type: has_one
+  via: knowledgeBase
+- from: File
+  to: Position
+  type: has_one
+  via: length
+- from: GetAuthenticatedUserResponse
+  to: AuthenticatedUser
+  type: has_one
+  via: user
+- from: GetChunkResponse
+  to: Chunk
+  type: has_one
+  via: chunk
+- from: GetConnectionResponse
+  to: pipeline.v1beta.Connection
+  type: has_one
+  via: connection
+- from: GetFileResponse
+  to: File
+  type: has_one
+  via: file
+- from: GetKnowledgeBaseResponse
+  to: KnowledgeBase
+  type: has_one
+  via: knowledgeBase
+- from: GetModelDefinitionResponse
+  to: ModelDefinition
+  type: has_one
+  via: modelDefinition
+- from: GetModelOperationResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: GetModelResponse
+  to: Model
+  type: has_one
+  via: model
+- from: GetModelVersionOperationResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: GetNamespaceConnectionResponse
+  to: mgmt.v1beta.Connection
+  type: has_one
+  via: connection
+- from: GetNamespaceSecretResponse
+  to: Secret
+  type: has_one
+  via: secret
+- from: GetObjectDownloadURLResponse
+  to: Object
+  type: has_one
+  via: object
+- from: GetObjectResponse
+  to: Object
+  type: has_one
+  via: object
+- from: GetObjectUploadURLResponse
+  to: Object
+  type: has_one
+  via: object
+- from: GetPipelineReleaseResponse
+  to: PipelineRelease
+  type: has_one
+  via: release
+- from: GetPipelineResponse
+  to: Pipeline
+  type: has_one
+  via: pipeline
+- from: GetTokenResponse
+  to: ApiToken
+  type: has_one
+  via: token
+- from: GetUserResponse
+  to: v1beta.User
+  type: has_one
+  via: user
+- from: KnowledgeBase
+  to: EmbeddingConfig
+  type: has_one
+  via: embeddingConfig
+- from: KnowledgeBase
+  to: Owner
+  type: has_one
+  via: owner
+- from: KnowledgeBase
+  to: v1beta.User
+  type: has_one
+  via: creator
+- from: ListAvailableRegionsResponse
+  to: Region
+  type: has_many
+  via: regions
+- from: ListChunksResponse
+  to: Chunk
+  type: has_many
+  via: chunks
+- from: ListComponentDefinitionsResponse
+  to: ComponentDefinition
+  type: has_many
+  via: componentDefinitions
+- from: ListComponentRunsResponse
+  to: ComponentRun
+  type: has_many
+  via: componentRuns
+- from: ListConnectionsResponse
+  to: pipeline.v1beta.Connection
+  type: has_many
+  via: connections
+- from: ListFilesResponse
+  to: File
+  type: has_many
+  via: files
+- from: ListKnowledgeBasesResponse
+  to: KnowledgeBase
+  type: has_many
+  via: knowledgeBases
+- from: ListModelDefinitionsResponse
+  to: ModelDefinition
+  type: has_many
+  via: modelDefinitions
+- from: ListModelRunsByRequesterResponse
+  to: ModelRun
+  type: has_many
+  via: runs
+- from: ListModelRunsResponse
+  to: ModelRun
+  type: has_many
+  via: runs
+- from: ListModelTriggerChartRecordsResponse
+  to: ModelTriggerChartRecord
+  type: has_many
+  via: modelTriggerChartRecords
+- from: ListModelVersionsResponse
+  to: ModelVersion
+  type: has_many
+  via: versions
+- from: ListModelsResponse
+  to: Model
+  type: has_many
+  via: models
+- from: ListNamespaceConnectionsResponse
+  to: mgmt.v1beta.Connection
+  type: has_many
+  via: connections
+- from: ListNamespaceSecretsResponse
+  to: Secret
+  type: has_many
+  via: secrets
+- from: ListPipelineReleasesResponse
+  to: PipelineRelease
+  type: has_many
+  via: releases
+- from: ListPipelineRunsByRequesterResponse
+  to: PipelineRun
+  type: has_many
+  via: pipelineRuns
+- from: ListPipelineRunsResponse
+  to: PipelineRun
+  type: has_many
+  via: pipelineRuns
+- from: ListPipelineTriggerChartRecordsResponse
+  to: PipelineTriggerChartRecord
+  type: has_many
+  via: pipelineTriggerChartRecords
+- from: ListPipelinesResponse
+  to: Pipeline
+  type: has_many
+  via: pipelines
+- from: ListPublicModelsResponse
+  to: Model
+  type: has_many
+  via: models
+- from: ListPublicPipelinesResponse
+  to: Pipeline
+  type: has_many
+  via: pipelines
+- from: ListTokensResponse
+  to: ApiToken
+  type: has_many
+  via: tokens
+- from: ListUsersResponse
+  to: v1beta.User
+  type: has_many
+  via: users
+- from: Model
+  to: v1alpha.Permission
+  type: has_one
+  via: permission
+- from: Model
+  to: Model.Stats
+  type: has_one
+  via: stats
+- from: Model
+  to: Owner
+  type: has_one
+  via: owner
+- from: Model
+  to: v1beta.User
+  type: has_one
+  via: creator
+- from: ModelTriggerChartRecord
+  to: Model
+  type: belongs_to
+  via: modelId
+- from: Organization
+  to: OrganizationProfile
+  type: has_one
+  via: profile
+- from: Organization
+  to: mgmt.v1beta.Permission
+  type: has_one
+  via: permission
+- from: Organization
+  to: Organization.Stats
+  type: has_one
+  via: stats
+- from: Owner
+  to: v1beta.User
+  type: has_one
+  via: user
+- from: Owner
+  to: Organization
+  type: has_one
+  via: organization
+- from: PatchAuthenticatedUserResponse
+  to: AuthenticatedUser
+  type: has_one
+  via: user
+- from: Pipeline
+  to: Sharing
+  type: has_one
+  via: sharing
+- from: Pipeline
+  to: pipeline.v1beta.Permission
+  type: has_one
+  via: permission
+- from: Pipeline
+  to: DataSpecification
+  type: has_one
+  via: dataSpecification
+- from: Pipeline
+  to: Pipeline.Stats
+  type: has_one
+  via: stats
+- from: Pipeline
+  to: PipelineRelease
+  type: has_many
+  via: releases
+- from: Pipeline
+  to: Endpoints
+  type: has_one
+  via: endpoints
+- from: Pipeline
+  to: Owner
+  type: has_one
+  via: owner
+- from: Pipeline
+  to: v1beta.User
+  type: has_one
+  via: creator
+- from: PipelineRelease
+  to: DataSpecification
+  type: has_one
+  via: dataSpecification
+- from: PipelineRelease
+  to: Endpoints
+  type: has_one
+  via: endpoints
+- from: PipelineRun
+  to: DataSpecification
+  type: has_one
+  via: dataSpecification
+- from: PipelineTriggerChartRecord
+  to: Pipeline
+  type: belongs_to
+  via: pipelineId
+- from: Reference
+  to: Position
+  type: has_one
+  via: start
+- from: Reference
+  to: Position
+  type: has_one
+  via: end
+- from: Region
+  to: Hardware
+  type: has_many
+  via: hardware
+- from: RenameModelResponse
+  to: Model
+  type: has_one
+  via: model
+- from: RenamePipelineResponse
+  to: Pipeline
+  type: has_one
+  via: pipeline
+- from: ReprocessFileResponse
+  to: File
+  type: has_one
+  via: file
+- from: SearchChunksResponse
+  to: SimilarityChunk
+  type: has_many
+  via: similarChunks
+- from: Sharing
+  to: ShareCode
+  type: has_one
+  via: shareCode
+- from: SimilarityChunk
+  to: Chunk
+  type: has_one
+  via: chunkMetadata
+- from: TriggerAsyncModelResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: TriggerAsyncModelVersionResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: TriggerAsyncPipelineBody
+  to: TriggerData
+  type: has_many
+  via: data
+- from: TriggerAsyncPipelineReleaseBody
+  to: TriggerData
+  type: has_many
+  via: data
+- from: TriggerAsyncPipelineReleaseResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: TriggerAsyncPipelineResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: TriggerPipelineBody
+  to: TriggerData
+  type: has_many
+  via: data
+- from: TriggerPipelineReleaseBody
+  to: TriggerData
+  type: has_many
+  via: data
+- from: TriggerPipelineReleaseResponse
+  to: TriggerMetadata
+  type: has_one
+  via: metadata
+- from: TriggerPipelineResponse
+  to: TriggerMetadata
+  type: has_one
+  via: metadata
+- from: TriggerPipelineWithStreamBody
+  to: TriggerData
+  type: has_many
+  via: data
+- from: TriggerPipelineWithStreamResponse
+  to: TriggerMetadata
+  type: has_one
+  via: metadata
+- from: UpdateChunkResponse
+  to: Chunk
+  type: has_one
+  via: chunk
+- from: UpdateConnectionResponse
+  to: pipeline.v1beta.Connection
+  type: has_one
+  via: connection
+- from: UpdateFileResponse
+  to: File
+  type: has_one
+  via: file
+- from: UpdateKnowledgeBaseResponse
+  to: KnowledgeBase
+  type: has_one
+  via: knowledgeBase
+- from: UpdateModelResponse
+  to: Model
+  type: has_one
+  via: model
+- from: UpdateNamespaceConnectionResponse
+  to: mgmt.v1beta.Connection
+  type: has_one
+  via: connection
+- from: UpdateNamespaceSecretResponse
+  to: Secret
+  type: has_one
+  via: secret
+- from: UpdateObjectResponse
+  to: Object
+  type: has_one
+  via: object
+- from: UpdatePipelineReleaseResponse
+  to: PipelineRelease
+  type: has_one
+  via: release
+- from: UpdatePipelineResponse
+  to: Pipeline
+  type: has_one
+  via: pipeline
+- from: ValidatePipelineResponse
+  to: ErrPipelineValidation
+  type: has_many
+  via: errors
+- from: longrunning.Operation
+  to: Any
+  type: has_one
+  via: metadata
+- from: longrunning.Operation
+  to: rpc.Status
+  type: has_one
+  via: error
+- from: longrunning.Operation
+  to: Any
+  type: has_one
+  via: response
+- from: mgmt.v1beta.GetIntegrationResponse
+  to: mgmt.v1beta.Integration
+  type: has_one
+  via: integration
+- from: mgmt.v1beta.Integration
+  to: mgmt.v1beta.Integration.Link
+  type: has_one
+  via: helpLink
+- from: mgmt.v1beta.Integration
+  to: mgmt.v1beta.Integration.OAuthConfig
+  type: has_one
+  via: oAuthConfig
+- from: mgmt.v1beta.ListIntegrationsResponse
+  to: mgmt.v1beta.Integration
+  type: has_many
+  via: integrations
+- from: mgmt.v1beta.ListPipelineIDsByConnectionIDResponse
+  to: Pipeline
+  type: belongs_to
+  via: pipelineIds
+- from: pipeline.v1beta.GetIntegrationResponse
+  to: pipeline.v1beta.Integration
+  type: has_one
+  via: integration
+- from: pipeline.v1beta.Integration
+  to: pipeline.v1beta.Integration.Link
+  type: has_one
+  via: helpLink
+- from: pipeline.v1beta.Integration
+  to: pipeline.v1beta.Integration.OAuthConfig
+  type: has_one
+  via: oAuthConfig
+- from: pipeline.v1beta.ListIntegrationsResponse
+  to: pipeline.v1beta.Integration
+  type: has_many
+  via: integrations
+- from: pipeline.v1beta.ListPipelineIDsByConnectionIDResponse
+  to: Pipeline
+  type: belongs_to
+  via: pipelineIds
+- from: rpc.Status
+  to: Any
+  type: has_many
+  via: details
+- from: v1alpha.GetOperationResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: v1beta.GetOperationResponse
+  to: longrunning.Operation
+  type: has_one
+  via: operation
+- from: v1beta.User
+  to: UserProfile
+  type: has_one
+  via: profile

@@ -1,0 +1,1540 @@
+openapi: 3.2.0
+info:
+  title: Instill Ai Connection API
+  version: v0.57.0
+  contact:
+    name: Instill AI
+    url: https://github.com/instill-ai
+    email: support@instill-ai.com
+  license:
+    name: MIT
+    url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
+  description: 'Operations tagged Connection across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.instill-ai.com
+- url: http://api.instill-ai.com
+security:
+- Bearer: []
+tags:
+- name: Connection
+  description: Connections to 3rd party apps for use in pipelines.
+paths:
+  /v1beta/{name_1}:
+    delete:
+      summary: Delete a connection
+      description: Deletes a connection.
+      operationId: MgmtPublicService_DeleteNamespaceConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteNamespaceConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the connection to delete.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent}/connections:
+    get:
+      summary: List namespace connections
+      description: Returns a paginated list of connections created by a namespace.
+      operationId: MgmtPublicService_ListNamespaceConnections
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNamespaceConnectionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      - name: pageSize
+        description: 'The maximum number of items to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token. By default, the first page will be returned.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression. The following filters are supported:
+
+          - `integrationId`
+
+          - `qConnection` (fuzzy search on connection ID, integration title or
+
+          vendor)
+
+
+          **Examples**:
+
+          - List connections where app name, vendor or connection ID match `googl`:
+
+          `q="googl"`.
+
+          - List connections where the component type is `openai` (e.g. to setup a
+
+          connector within a pipeline): `integrationId="openai"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Connection
+      x-stage: beta
+    post:
+      summary: Create a connection
+      description: Creates a connection under the ownership of a namespace.
+      operationId: MgmtPublicService_CreateNamespaceConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateNamespaceConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mgmt.v1beta.Connection'
+        description: Properties of the connection to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_2}:
+    get:
+      summary: Get a namespace connection
+      description: Returns the details of a connection.
+      operationId: MgmtPublicService_GetNamespaceConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetNamespaceConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_2
+        description: 'The resource name of the connection.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{connection.name}:
+    patch:
+      summary: Update a connection
+      description: Updates a connection with the supplied connection fields.
+      operationId: MgmtPublicService_UpdateNamespaceConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateNamespaceConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: connection.name
+        description: 'Field 1: Canonical resource name.
+
+          Format: `namespaces/{namespace}/connections/{connection}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+                    Example: "con-8f3a2k9E7c1"'
+                  readOnly: true
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  title: 'Field 4: URL-friendly slug (NO prefix).
+
+                    If omitted, server generates from display_name.
+
+                    If provided, server validates and persists it.
+
+                    Slug is NOT part of resource identity.
+
+                    Example: "my-google-drive"'
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.
+
+                    When display_name changes, a new slug is generated and old slugs are stored
+
+                    here.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Optional description.'
+                createTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 7: Creation time.'
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 8: Last update time.'
+                  readOnly: true
+                namespaceId:
+                  type: string
+                  description: 'Field 9: ID of the namespace owning the connection.'
+                  readOnly: true
+                integrationId:
+                  type: string
+                  description: 'Field 10: Integration ID. It determines for which type of components can
+
+                    reference this connection.'
+                integrationTitle:
+                  type: string
+                  description: 'Field 11: Integration title. This helps the console display the results
+
+                    grouped by integration ID without needing an extra call to fetch title by
+
+                    integration ID.'
+                  readOnly: true
+                method:
+                  description: 'Field 12: Connection method. It references the setup schema provided by the
+
+                    integration.'
+                  allOf:
+                  - $ref: '#/components/schemas/mgmt.v1beta.Connection.Method'
+                setup:
+                  type: object
+                  description: 'Field 13: Connection details. This field is required on creation, optional
+
+                    on view. When viewing the connection details, the setup values will be
+
+                    redacted.'
+                view:
+                  title: 'Field 14: View defines how the connection is presented. The following
+
+                    fields are only shown in the FULL view:
+
+                    - setup
+
+                    - scopes
+
+                    - oAuthAccessDetails'
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/mgmt.v1beta.View'
+                scopes:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 15: A list of scopes that identify the resources that the connection
+
+                    will be able to access on the user''s behalf. This is typically passed on
+
+                    creation when the setup has been generated through an OAuth flow with a
+
+                    limited set of scopes.'
+                oAuthAccessDetails:
+                  type: object
+                  description: 'Field 16: When the connection method is METHOD_OAUTH, the access token
+
+                    might come with some extra information that might vary across vendors. This
+
+                    information is passed as connection metadata.'
+                identity:
+                  type: string
+                  description: 'Field 17: When the connection method is METHOD_OAUTH, this field will hold
+
+                    the identity (e.g., email, username) with which the access token has been
+
+                    generated.'
+              title: 'Connection object with the new properties to be updated. The connection''s
+
+                `name` field identifies the resource.
+
+                Format: `namespaces/{namespace}/connections/{connection}`
+
+                Immutable and output-only fields will be ignored. The Setup property must
+
+                be updated in block (no partial update is supported).'
+              required:
+              - displayName
+              - integrationId
+              - method
+              - setup
+        description: 'Connection object with the new properties to be updated. The connection''s
+
+          `name` field identifies the resource.
+
+          Format: `namespaces/{namespace}/connections/{connection}`
+
+          Immutable and output-only fields will be ignored. The Setup property must
+
+          be updated in block (no partial update is supported).'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}/test:
+    post:
+      summary: Test a connection
+      description: 'Makes a request to the 3rd party app that the connection is configured to
+
+        communicate with, and checks the result of the call. If the test fails,
+
+        the response status and error message will provide more information about
+
+        the failure.
+
+
+        Note that this action might affect the quota or billing of the integrated
+
+        account in the 3rd party app.'
+      operationId: MgmtPublicService_TestNamespaceConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestNamespaceConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the connection to test.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/namespaces/{namespaceId}/connections/{connectionId}/referenced-pipelines:
+    get:
+      summary: List pipelines that reference a connection
+      description: 'Returns a paginated list with the IDs of the pipelines that reference a
+
+        given connection. All the pipelines will belong to the same namespace as
+
+        the connection.'
+      operationId: MgmtPublicService_ListPipelineIDsByConnectionID
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mgmt.v1beta.ListPipelineIDsByConnectionIDResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: namespaceId
+        description: Namespace ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: connectionId
+        description: Connection ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageSize
+        description: 'The maximum number of items to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token. By default, the first page will be returned.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression. The following filters are supported:
+
+          - `q` (fuzzy search on pipeline ID)'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_5}:
+    delete:
+      summary: Delete a connection
+      description: Deletes a connection.
+      operationId: PipelinePublicService_DeleteConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_5
+        description: 'The resource name of the connection to delete.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{parent_1}/connections:
+    get:
+      summary: List connections
+      description: Returns a paginated list of connections created by a namespace.
+      operationId: PipelinePublicService_ListConnections
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListConnectionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent_1
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      - name: pageSize
+        description: 'The maximum number of items to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token. By default, the first page will be returned.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression. The following filters are supported:
+
+          - `integrationId`
+
+          - `qConnection` (fuzzy search on connection ID, integration title or
+
+          vendor)
+
+
+          **Examples**:
+
+          - List connections where app name, vendor or connection ID match `googl`:
+
+          `q="googl"`.
+
+          - List connections where the component type is `openai` (e.g. to setup a
+
+          connector within a pipeline): `integrationId="openai"`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Connection
+      x-stage: beta
+    post:
+      summary: Create a connection
+      description: Creates a connection under the ownership of a namespace.
+      operationId: PipelinePublicService_CreateConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent_1
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pipeline.v1beta.Connection'
+        description: Properties of the connection to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_6}:
+    get:
+      summary: Get a connection
+      description: Returns the details of a connection.
+      operationId: PipelinePublicService_GetConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_6
+        description: 'The resource name of the connection.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired view in the response.\n\n - VIEW_BASIC: Default view.\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{connection.name_1}:
+    patch:
+      summary: Update a connection
+      description: Updates a connection with the supplied connection fields.
+      operationId: PipelinePublicService_UpdateConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: connection.name_1
+        description: 'Field 1: Canonical resource name.
+
+          Format: `namespaces/{namespace}/connections/{connection}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+                    Example: "con-8f3a2k9E7c1"'
+                  readOnly: true
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  title: 'Field 4: URL-friendly slug (NO prefix).
+
+                    If omitted, server generates from display_name.
+
+                    If provided, server validates and persists it.
+
+                    Slug is NOT part of resource identity.
+
+                    Example: "my-google-drive"'
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.
+
+                    When display_name changes, a new slug is generated and old slugs are stored
+
+                    here.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Optional description.'
+                createTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 7: Creation time.'
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 8: Last update time.'
+                  readOnly: true
+                namespaceId:
+                  type: string
+                  description: 'Field 9: ID of the namespace owning the connection.'
+                  readOnly: true
+                integrationId:
+                  type: string
+                  description: 'Field 10: Integration ID. It determines for which type of components can
+
+                    reference this connection.'
+                integrationTitle:
+                  type: string
+                  description: 'Field 11: Integration title. This helps the console display the results
+
+                    grouped by integration ID without needing an extra call to fetch title by
+
+                    integration ID.'
+                  readOnly: true
+                method:
+                  description: 'Field 12: Connection method. It references the setup schema provided by the
+
+                    integration.'
+                  allOf:
+                  - $ref: '#/components/schemas/pipeline.v1beta.Connection.Method'
+                setup:
+                  type: object
+                  description: 'Field 13: Connection details. This field is required on creation, optional
+
+                    on view. When viewing the connection details, the setup values will be
+
+                    redacted.'
+                view:
+                  title: 'Field 14: View defines how the connection is presented. The following
+
+                    fields are only shown in the FULL view:
+
+                    - setup
+
+                    - scopes
+
+                    - oAuthAccessDetails'
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/pipeline.v1beta.View'
+                scopes:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 15: A list of scopes that identify the resources that the connection
+
+                    will be able to access on the user''s behalf. This is typically passed on
+
+                    creation when the setup has been generated through an OAuth flow with a
+
+                    limited set of scopes.'
+                oAuthAccessDetails:
+                  type: object
+                  description: 'Field 16: When the connection method is METHOD_OAUTH, the access token
+
+                    might come with some extra information that might vary across vendors. This
+
+                    information is passed as connection metadata.'
+                identity:
+                  type: string
+                  description: 'Field 17: When the connection method is METHOD_OAUTH, this field will hold
+
+                    the identity (e.g., email, username) with which the access token has been
+
+                    generated.'
+              title: 'Connection object with the new properties to be updated. The connection''s
+
+                `name` field identifies the resource.
+
+                Format: `namespaces/{namespace}/connections/{connection}`
+
+                Immutable and output-only fields will be ignored. The Setup property must
+
+                be updated in block (no partial update is supported).'
+              required:
+              - displayName
+              - integrationId
+              - method
+              - setup
+        description: 'Connection object with the new properties to be updated. The connection''s
+
+          `name` field identifies the resource.
+
+          Format: `namespaces/{namespace}/connections/{connection}`
+
+          Immutable and output-only fields will be ignored. The Setup property must
+
+          be updated in block (no partial update is supported).'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_1}/test:
+    post:
+      summary: Test a connection
+      description: 'Makes a request to the 3rd party app that the connection is configured to
+
+        communicate with, and checks the result of the call. If the test fails,
+
+        the response status and error message will provide more information about
+
+        the failure.
+
+
+        Note that this action might affect the quota or billing of the integrated
+
+        account in the 3rd party app.'
+      operationId: PipelinePublicService_TestConnection
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestConnectionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the connection to test.
+
+          Format: `namespaces/{namespace}/connections/{connection}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/connections/[^/]+
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/namespaces/{namespaceId_1}/connections/{connectionId}/referenced-pipelines:
+    get:
+      summary: List pipelines that reference a connection
+      description: 'Returns a paginated list with the IDs of the pipelines that reference a
+
+        given connection. All the pipelines will belong to the same namespace as
+
+        the connection.'
+      operationId: PipelinePublicService_ListPipelineIDsByConnectionID
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pipeline.v1beta.ListPipelineIDsByConnectionIDResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: namespaceId_1
+        description: Namespace ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: connectionId
+        description: Connection ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageSize
+        description: 'The maximum number of items to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token. By default, the first page will be returned.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression. The following filters are supported:
+
+          - `q` (fuzzy search on pipeline ID)'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Connection
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+components:
+  schemas:
+    mgmt.v1beta.Connection.Method:
+      type: string
+      enum:
+      - METHOD_DICTIONARY
+      - METHOD_OAUTH
+      description: "Method defines how the connection is set up.\n\n - METHOD_DICTIONARY: Key-value collection. The user is responsible of fetching the connection\ndetails from the 3rd party service.\n - METHOD_OAUTH: Access token created via OAuth 2.0 authorization."
+    UpdateNamespaceConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The created connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Connection'
+      description: UpdateNamespaceConnectionResponse contains the updated connection.
+    CreateNamespaceConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The created connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Connection'
+      description: CreateNamespaceConnectionResponse contains the created connection.
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    GetNamespaceConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The requested connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Connection'
+      description: GetNamespaceConnectionResponse contains the requested connection.
+    mgmt.v1beta.Connection:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `namespaces/{namespace}/connections/{connection}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+            Example: "con-8f3a2k9E7c1"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          title: 'Field 4: URL-friendly slug (NO prefix).
+
+            If omitted, server generates from display_name.
+
+            If provided, server validates and persists it.
+
+            Slug is NOT part of resource identity.
+
+            Example: "my-google-drive"'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.
+
+            When display_name changes, a new slug is generated and old slugs are stored
+
+            here.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description.'
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Last update time.'
+          readOnly: true
+        namespaceId:
+          type: string
+          description: 'Field 9: ID of the namespace owning the connection.'
+          readOnly: true
+        integrationId:
+          type: string
+          description: 'Field 10: Integration ID. It determines for which type of components can
+
+            reference this connection.'
+        integrationTitle:
+          type: string
+          description: 'Field 11: Integration title. This helps the console display the results
+
+            grouped by integration ID without needing an extra call to fetch title by
+
+            integration ID.'
+          readOnly: true
+        method:
+          description: 'Field 12: Connection method. It references the setup schema provided by the
+
+            integration.'
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Connection.Method'
+        setup:
+          type: object
+          description: 'Field 13: Connection details. This field is required on creation, optional
+
+            on view. When viewing the connection details, the setup values will be
+
+            redacted.'
+        view:
+          title: 'Field 14: View defines how the connection is presented. The following
+
+            fields are only shown in the FULL view:
+
+            - setup
+
+            - scopes
+
+            - oAuthAccessDetails'
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.View'
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'Field 15: A list of scopes that identify the resources that the connection
+
+            will be able to access on the user''s behalf. This is typically passed on
+
+            creation when the setup has been generated through an OAuth flow with a
+
+            limited set of scopes.'
+        oAuthAccessDetails:
+          type: object
+          description: 'Field 16: When the connection method is METHOD_OAUTH, the access token
+
+            might come with some extra information that might vary across vendors. This
+
+            information is passed as connection metadata.'
+        identity:
+          type: string
+          description: 'Field 17: When the connection method is METHOD_OAUTH, this field will hold
+
+            the identity (e.g., email, username) with which the access token has been
+
+            generated.'
+      title: 'Connection contains the parameters to communicate with a 3rd party app. A
+
+        component may reference a connection in their setup. One connection may be
+
+        used by several components and pipelines.
+
+        Field ordering follows AIP standard: name(1), id(2), display_name(3),
+
+        slug(4), aliases(5), description(6)'
+      required:
+      - displayName
+      - integrationId
+      - method
+      - setup
+    UpdateConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The created connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Connection'
+      description: UpdateConnectionResponse contains the updated connection.
+    TestNamespaceConnectionResponse:
+      type: object
+      description: TestNamespaceConnectionResponse is an empty response.
+    ListConnectionsResponse:
+      type: object
+      properties:
+        connections:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/pipeline.v1beta.Connection'
+          description: A list of connections matching the request parameters.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of items.
+          readOnly: true
+      description: ListConnectionsResponse contains a paginated list of connections.
+    pipeline.v1beta.Connection:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `namespaces/{namespace}/connections/{connection}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+            Example: "con-8f3a2k9E7c1"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          title: 'Field 4: URL-friendly slug (NO prefix).
+
+            If omitted, server generates from display_name.
+
+            If provided, server validates and persists it.
+
+            Slug is NOT part of resource identity.
+
+            Example: "my-google-drive"'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.
+
+            When display_name changes, a new slug is generated and old slugs are stored
+
+            here.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description.'
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Last update time.'
+          readOnly: true
+        namespaceId:
+          type: string
+          description: 'Field 9: ID of the namespace owning the connection.'
+          readOnly: true
+        integrationId:
+          type: string
+          description: 'Field 10: Integration ID. It determines for which type of components can
+
+            reference this connection.'
+        integrationTitle:
+          type: string
+          description: 'Field 11: Integration title. This helps the console display the results
+
+            grouped by integration ID without needing an extra call to fetch title by
+
+            integration ID.'
+          readOnly: true
+        method:
+          description: 'Field 12: Connection method. It references the setup schema provided by the
+
+            integration.'
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Connection.Method'
+        setup:
+          type: object
+          description: 'Field 13: Connection details. This field is required on creation, optional
+
+            on view. When viewing the connection details, the setup values will be
+
+            redacted.'
+        view:
+          title: 'Field 14: View defines how the connection is presented. The following
+
+            fields are only shown in the FULL view:
+
+            - setup
+
+            - scopes
+
+            - oAuthAccessDetails'
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.View'
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'Field 15: A list of scopes that identify the resources that the connection
+
+            will be able to access on the user''s behalf. This is typically passed on
+
+            creation when the setup has been generated through an OAuth flow with a
+
+            limited set of scopes.'
+        oAuthAccessDetails:
+          type: object
+          description: 'Field 16: When the connection method is METHOD_OAUTH, the access token
+
+            might come with some extra information that might vary across vendors. This
+
+            information is passed as connection metadata.'
+        identity:
+          type: string
+          description: 'Field 17: When the connection method is METHOD_OAUTH, this field will hold
+
+            the identity (e.g., email, username) with which the access token has been
+
+            generated.'
+      title: 'Connection contains the parameters to communicate with a 3rd party app. A
+
+        component may reference a connection in their setup. One connection may be
+
+        used by several components and pipelines.
+
+        Field ordering follows AIP standard: name(1), id(2), display_name(3),
+
+        slug(4), aliases(5), description(6)'
+      required:
+      - displayName
+      - integrationId
+      - method
+      - setup
+    GetConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The requested connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Connection'
+      description: GetConnectionResponse contains the requested connection.
+    pipeline.v1beta.ListPipelineIDsByConnectionIDResponse:
+      type: object
+      properties:
+        pipelineIds:
+          type: array
+          items:
+            type: string
+          description: A list of pipeline IDs matching the request parameters.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of items.
+          readOnly: true
+      description: 'ListPipelineIDsByConnectionIDResponse contains a paginated list of
+
+        integrations.'
+    DeleteNamespaceConnectionResponse:
+      type: object
+      description: DeleteNamespaceConnectionResponse is an empty response.
+    pipeline.v1beta.Connection.Method:
+      type: string
+      enum:
+      - METHOD_DICTIONARY
+      - METHOD_OAUTH
+      description: "Method defines how the connection is set up.\n\n - METHOD_DICTIONARY: Key-value collection. The user is responsible of fetching the connection\ndetails from the 3rd party service.\n - METHOD_OAUTH: Access token created via OAuth 2.0 authorization."
+    pipeline.v1beta.View:
+      type: string
+      enum:
+      - VIEW_BASIC
+      - VIEW_FULL
+      description: "View defines how a resource is presented. Most resources can share this view\ndefinition, the particular meaning of each value should be defined in the\nresource itself. Certain resources might have their own View definition if\nthey need to implement more than 2 (basic / full) views.\n\n - VIEW_BASIC: Default view.\n - VIEW_FULL: Full representation."
+    mgmt.v1beta.ListPipelineIDsByConnectionIDResponse:
+      type: object
+      properties:
+        pipelineIds:
+          type: array
+          items:
+            type: string
+          description: A list of pipeline IDs matching the request parameters.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of items.
+          readOnly: true
+      description: 'ListPipelineIDsByConnectionIDResponse contains a paginated list of
+
+        integrations.'
+    mgmt.v1beta.View:
+      type: string
+      enum:
+      - VIEW_BASIC
+      - VIEW_FULL
+      description: "View defines how a resource is presented. It can be used as a parameter in a\nmethod request to allow clients to select the amount of information they\nwant in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
+    TestConnectionResponse:
+      type: object
+      description: TestConnectionResponse is an empty response.
+    CreateConnectionResponse:
+      type: object
+      properties:
+        connection:
+          description: The created connection.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Connection'
+      description: CreateConnectionResponse contains the created connection.
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    DeleteConnectionResponse:
+      type: object
+      description: DeleteConnectionResponse is an empty response.
+    ListNamespaceConnectionsResponse:
+      type: object
+      properties:
+        connections:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/mgmt.v1beta.Connection'
+          description: A list of connections matching the request parameters.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of items.
+          readOnly: true
+      description: ListNamespaceConnectionsResponse contains a paginated list of connections.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`
+      name: Authorization
+      in: header
+      x-default: Bearer instill_sk_***
+externalDocs:
+  description: More about Instill Core
+  url: https://docs.instill-ai.com
+x-refined-from:
+- service.swagger.yaml
+- instill-ai-openapi.yml

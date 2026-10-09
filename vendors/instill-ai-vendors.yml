@@ -1,0 +1,79 @@
+generated: '2026-10-09'
+method: probed
+source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
+registry: all/0-working/vendors.yml
+areas_vocabulary:
+- documentation
+- developer-portal
+- api-gateway
+- cdn
+- hosting
+- sdk-generation
+- api-collections
+- status-page
+- support
+- community
+- identity
+- mcp-hosting
+vendors:
+- vendor: cloudflare
+  name: Cloudflare
+  area: cdn
+  host: docs.instill-ai.com
+  evidence: header:cf-ray
+  signal: header
+  confidence: high
+  kin_score:
+  - https_enforced
+  - hsts
+- vendor: readme
+  name: ReadMe
+  area: developer-portal
+  host: instill-ai.readme.io
+  evidence: https://instill-ai.readme.io/docs/quickstart
+  signal: url:.readme.io
+  confidence: high
+  kin_score:
+  - openapi_published
+  - changelog_present
+  - llms_txt
+  - api_explorer
+- vendor: readme
+  name: ReadMe
+  area: documentation
+  host: docs.instill-ai.com
+  evidence: cname:readmessl.com
+  signal: docs-platform
+  confidence: high
+  kin_score:
+  - openapi_published
+  - changelog_present
+  - llms_txt
+  - api_explorer
+- vendor: vercel
+  name: Vercel
+  area: hosting
+  host: www.instill-ai.com
+  evidence: header:x-vercel-id
+  signal: header
+  confidence: high
+  kin_score: []
+reliance:
+  areas_vendor_served:
+  - cdn
+  - developer-portal
+  - documentation
+  - hosting
+  vendor_count: 3
+  areas_observed: 12
+  share_of_observable_areas: 0.333
+  note: areas where a third party was DETECTED serving this provider; an area absent here was either self-run or not observed, and this script
+    cannot tell those apart
+checked:
+- 'docs-platform: readme'
+- instill-ai.readme.io (GettingStarted)
+- www.instill-ai.com (Website)
+- docs.instill-ai.com (Documentation)
+- docs.instill-ai.com (APIReference)
+- api.instill-ai.com (baseURL)
+- docs.instill-ai.com (mcp)

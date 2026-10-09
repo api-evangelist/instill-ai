@@ -1,0 +1,16 @@
+generated: '2026-10-09'
+method: derived
+source: openapi/instill-ai-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: Bearer
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`
+  sources:
+  - openapi/instill-ai-openapi.yml

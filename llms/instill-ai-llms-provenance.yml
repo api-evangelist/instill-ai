@@ -1,0 +1,6 @@
+generated: '2026-10-09'
+method: probed
+generator: harvest-llms.py
+source: https://docs.instill-ai.com/llms.txt
+bytes: 32457
+note: saved verbatim; the provider's own document

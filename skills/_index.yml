@@ -1,0 +1,38 @@
+generated: '2026-10-09'
+method: generated
+source: openapi/instill-ai-openapi.yml
+skills:
+- name: instill-ai-run-pipeline
+  file: skills/instill-ai-run-pipeline.md
+  description: Find, validate and trigger an Instill Core pipeline synchronously, by stream, or asynchronously with polling of the long-running operation.
+  operations:
+  - PipelinePublicService_ListPipelines
+  - PipelinePublicService_GetPipeline
+  - PipelinePublicService_ValidatePipeline
+  - PipelinePublicService_TriggerPipeline
+  - PipelinePublicService_TriggerPipelineWithStream
+  - PipelinePublicService_TriggerAsyncPipeline
+  - PipelinePublicService_GetOperation
+  - PipelinePublicService_ListPipelineRuns
+- name: instill-ai-knowledge-base-rag
+  file: skills/instill-ai-knowledge-base-rag.md
+  description: Create a knowledge base in Instill Artifact, upload files, wait for processing, and run semantic chunk search for RAG.
+  operations:
+  - ArtifactPublicService_CreateKnowledgeBase
+  - ArtifactPublicService_ListKnowledgeBases
+  - ArtifactPublicService_CreateFile
+  - ArtifactPublicService_GetFile
+  - ArtifactPublicService_ListFiles
+  - ArtifactPublicService_ReprocessFile
+  - ArtifactPublicService_ListChunks
+  - ArtifactPublicService_SearchChunks
+- name: instill-ai-manage-api-tokens
+  file: skills/instill-ai-manage-api-tokens.md
+  description: Create, list, validate and revoke Instill Core API tokens for the authenticated user.
+  operations:
+  - MgmtPublicService_GetAuthenticatedUser
+  - MgmtPublicService_CreateToken
+  - MgmtPublicService_ListTokens
+  - MgmtPublicService_GetToken
+  - MgmtPublicService_ValidateToken
+  - MgmtPublicService_DeleteToken

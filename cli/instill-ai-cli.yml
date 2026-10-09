@@ -1,0 +1,28 @@
+name: Instill AI CLI (inst)
+generated: '2026-10-09'
+method: searched
+source: https://github.com/instill-ai/cli
+docs: https://docs.instill-ai.com/docs/cli
+binary: inst
+description: "`inst` is a command line tool for Instill Core. Works on macOS or Linux, does not support Windows yet."
+install:
+  - method: homebrew
+    command: brew install instill-ai/tap/inst
+  - method: binary
+    url: https://github.com/instill-ai/cli/releases
+latest_release:
+  version: v0.4.1
+  date: '2025-07-03'
+commands:
+  - group: help
+    examples: ["inst help"]
+  - group: local
+    description: Deploy / undeploy a local Instill Core
+    examples: ["inst local deploy", "inst local undeploy"]
+  - group: auth
+    description: Authorization for an instance (default to managed Instill Core https://api.instill-ai.com)
+    examples: ["inst auth login"]
+  - group: api
+    description: REST API request
+    examples: ["inst api vdp/alpha1/pipelines"]
+note: Docs page docs.instill-ai.com/docs/cli answered a bot challenge from this environment on 2026-10-09; surface read from the repo README.

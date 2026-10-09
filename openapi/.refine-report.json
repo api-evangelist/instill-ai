@@ -1,0 +1,35 @@
+{
+  "provider": "instill-ai",
+  "sources": [
+    "_original/service.swagger.yaml",
+    "instill-ai-openapi.yml"
+  ],
+  "outputs": [
+    "instill-ai-artifact-api-openapi.yml",
+    "instill-ai-connection-api-openapi.yml",
+    "instill-ai-integration-api-openapi.yml",
+    "instill-ai-metrics-api-openapi.yml",
+    "instill-ai-model-api-openapi.yml",
+    "instill-ai-namespace-api-openapi.yml",
+    "instill-ai-pipeline-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/instill-ai-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "service.swagger.yaml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "instill-ai-openapi.yml: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "tag 'Artifact' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Connection' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Integration' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Metrics' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Model' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Namespace' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "tag 'Pipeline' spans 2 source specs (service.swagger.yaml, instill-ai-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+7 apis, 7 total)"
+  ],
+  "skipped": []
+}

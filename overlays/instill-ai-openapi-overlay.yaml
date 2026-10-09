@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: 'Instill Core API: API Evangelist enhancements'
+  version: 1.0.0
+extends: ../openapi/_original/instill-ai-openapi.yml
+x-generated: '2026-10-09'
+x-method: generated
+actions:
+- target: $.info
+  description: Point agents at the agent surfaces
+  update:
+    x-mcp-server: https://docs.instill-ai.com/mcp
+    x-llms-txt: https://docs.instill-ai.com/llms.txt
+    x-documentation: https://docs.instill-ai.com/reference
+- target: $.securityDefinitions.Bearer
+  description: Clarify the key format (taken from the spec's own description)
+  update:
+    x-key-prefix: instill_sk_
+    x-header-format: Bearer instill_sk_***
+- target: $.paths.*.*[?(@.operationId == "PipelinePublicService_TriggerAsyncPipeline" || @.operationId == "PipelinePublicService_TriggerAsyncPipelineRelease"
+    || @.operationId == "ModelPublicService_TriggerAsyncModel" || @.operationId == "ModelPublicService_TriggerAsyncModelVersion")]
+  description: Mark async triggers as long-running operations
+  update:
+    x-long-running: true
+    x-poll-operation: PipelinePublicService_GetOperation / ModelPublicService_GetOperation
+- target: $.paths.*.*[?(@.operationId == "PipelinePublicService_TriggerPipelineWithStream")]
+  description: Streaming trigger
+  update:
+    x-streaming: true
+- target: $.paths.*.*[?(@.operationId == "PipelinePublicService_ListPublicPipelines" || @.operationId == "PipelinePublicService_ListPipelines"
+    || @.operationId == "ModelPublicService_ListModels" || @.operationId == "ArtifactPublicService_ListKnowledgeBases" || @.operationId == "ArtifactPublicService_ListFiles")]
+  description: Read-only list operations, safe for agent retries
+  update:
+    x-agent-safe: true

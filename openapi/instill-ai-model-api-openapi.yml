@@ -1,0 +1,2678 @@
+openapi: 3.2.0
+info:
+  title: Instill Ai Model API
+  version: v0.57.0
+  contact:
+    name: Instill AI
+    url: https://github.com/instill-ai
+    email: support@instill-ai.com
+  license:
+    name: MIT
+    url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
+  description: 'Operations tagged Model across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.instill-ai.com
+- url: http://api.instill-ai.com
+security:
+- Bearer: []
+tags:
+- name: Model
+  description: AI Model orchestration
+paths:
+  /v1alpha/{name_3}:
+    delete:
+      summary: Delete a model
+      description: 'Deletes a model, accesing it by its resource name, which is defined by the
+
+        parent namespace and the ID of the model.'
+      operationId: ModelPublicService_DeleteModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_3
+        description: 'The resource name of the model to delete.
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/model-definitions:
+    get:
+      summary: List model definitions
+      description: Returns a paginated list of model definitions.
+      operationId: ModelPublicService_ListModelDefinitions
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelDefinitionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pageSize
+        description: 'The maximum number of model definitions to return. If this parameter
+
+          is unspecified, at most 10 definitions will be returned. The cap value for
+
+          this parameter is 100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired resource view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/available-regions:
+    get:
+      summary: List available regions
+      description: Returns a paginated list of available regions.
+      operationId: ModelPublicService_ListAvailableRegions
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAvailableRegionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/model-definitions/{modelDefinitionId}:
+    get:
+      summary: Get a model definition
+      description: Returns the details of a model definition.
+      operationId: ModelPublicService_GetModelDefinition
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelDefinitionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: modelDefinitionId
+        description: 'The resource name of the model definition, which allows its access by ID.
+
+          - Format: `model-definitions/{id}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired resource view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/models:
+    get:
+      summary: List public models
+      description: Returns a paginated list of public models.
+      operationId: ModelPublicService_ListPublicModels
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPublicModelsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pageSize
+        description: 'The maximum number of models to return. If this parameter is unspecified,
+
+          at most 10 models will be returned. The cap value for this parameter is
+
+          100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired model view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      - name: showDeleted
+        description: Include soft-deleted models in the result.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: visibility
+        description: "Limit results to pipelines with the specified visibility.\n\n - VISIBILITY_PRIVATE: Only the owner can see the model.\n - VISIBILITY_PUBLIC: Other users can see the model."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VISIBILITY_PRIVATE
+          - VISIBILITY_PUBLIC
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{parent}/models:
+    get:
+      summary: List models
+      description: Returns a paginated list of models.
+      operationId: ModelPublicService_ListModels
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      - name: pageSize
+        description: 'The maximum number of models to return. If this parameter is unspecified,
+
+          at most 10 models will be returned. The cap value for this parameter is
+
+          100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired model view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      - name: showDeleted
+        description: Include soft-deleted models in the result.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: visibility
+        description: "Limit results to pipelines with the specified visibility.\n\n - VISIBILITY_PRIVATE: Only the owner can see the model.\n - VISIBILITY_PUBLIC: Other users can see the model."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VISIBILITY_PRIVATE
+          - VISIBILITY_PUBLIC
+      - name: orderBy
+        description: 'Order by field, with options for ordering by `id`, `create_time` or
+
+          `update_time`. Format: `order_by=id` or `order_by=create_time desc`,
+
+          default is `asc`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+    post:
+      summary: Create a new model
+      description: 'Creates a new model under the parenthood of a namespace. This is an
+
+        asynchronous endpoint, i.e., the server will not wait for the model to be
+
+        created in order to respond. Instead, it will return a response with the
+
+        necessary information to access the result and status of the creation
+
+        operation.'
+      operationId: ModelPublicService_CreateModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `namespaces/{namespace}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model'
+        description: The properties of the model to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name_4}:
+    get:
+      summary: Get a model
+      description: 'Returns the detail of a model, accessing it by the model ID and its parent
+
+        namespace.'
+      operationId: ModelPublicService_GetModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_4
+        description: 'The resource name of the model.
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired model view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Model
+      x-stage: alpha
+    delete:
+      summary: Delete a model version
+      description: 'Deletes a model version, accesing it by its resource name, which is defined
+
+        by the parent namespace and the ID of the model, and version.'
+      operationId: ModelPublicService_DeleteModelVersion
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteModelVersionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_4
+        description: 'The resource name of the model version to delete.
+
+          Format: `namespaces/{namespace}/models/{model}/versions/{version}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+/versions/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{model.name}:
+    patch:
+      summary: Update a model
+      description: 'Updates a model, accessing it by its resource name, which is defined by
+
+        the parent namespace and the ID of the model.
+
+
+        In REST requests, only the supplied model fields will be taken into
+
+        account when updating the resource.'
+      operationId: ModelPublicService_UpdateModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: model.name
+        description: 'Field 1: Canonical resource name.
+
+          Format: `namespaces/{namespace}/models/{model}`.'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+                    Example: "mod-8f3a2k9E7c1"'
+                  readOnly: true
+                displayName:
+                  type: string
+                  description: 'Field 3: Human-readable display name for UI.'
+                slug:
+                  type: string
+                  description: 'Field 4: URL-friendly slug (NO prefix).
+
+                    If omitted, server generates from display_name.
+
+                    Slug is NOT part of resource identity.'
+                aliases:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Field 5: Previous slugs for backward compatibility.'
+                  readOnly: true
+                description:
+                  type: string
+                  description: 'Field 6: Optional description.'
+                createTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 7: Creation time.'
+                  readOnly: true
+                updateTime:
+                  type: string
+                  format: date-time
+                  description: 'Field 8: Last update time.'
+                  readOnly: true
+                modelDefinition:
+                  type: string
+                  description: The model definition that has been used to import the model.
+                configuration:
+                  type: object
+                  description: 'Model configuration. This field is validated against the model
+
+                    specification in the model definition.'
+                task:
+                  description: Model task.
+                  allOf:
+                  - $ref: '#/components/schemas/Task'
+                visibility:
+                  description: Model visibility.
+                  allOf:
+                  - $ref: '#/components/schemas/Model.Visibility'
+                permission:
+                  description: Permission defines how the model can be used.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/v1alpha.Permission'
+                region:
+                  type: string
+                  description: Region of choice for the particular provider to host the model.
+                hardware:
+                  type: string
+                  description: Hardware of choice to serve the model.
+                inputSchema:
+                  type: object
+                  description: Input schema for the model.
+                  readOnly: true
+                outputSchema:
+                  type: object
+                  description: Output schema for the model.
+                  readOnly: true
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: Tags.
+                versions:
+                  type: array
+                  items:
+                    type: string
+                  description: Version names.
+                  readOnly: true
+                stats:
+                  description: Statistic data.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Model.Stats'
+                readme:
+                  type: string
+                  description: README holds the model documentation.
+                sourceUrl:
+                  type: string
+                  description: A link to the source code of the model (e.g. to a GitHub repository).
+                documentationUrl:
+                  type: string
+                  description: A link to any extra information.
+                license:
+                  type: string
+                  description: License under which the model is distributed.
+                profileImage:
+                  type: string
+                  description: Model profile image in base64 format.
+                ownerName:
+                  type: string
+                  description: Resource name of the owner namespace.
+                  readOnly: true
+                owner:
+                  description: Model owner (User or Organization).
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/Owner'
+                creatorName:
+                  type: string
+                  title: 'Full resource name of the user who created this model.
+
+                    Format: `users/{user}`'
+                  readOnly: true
+                creator:
+                  description: The user who created this model.
+                  readOnly: true
+                  allOf:
+                  - $ref: '#/components/schemas/v1beta.User'
+                deleteTime:
+                  type: string
+                  format: date-time
+                  description: Soft delete timestamp.
+                  readOnly: true
+              title: 'The model resource to update. The model''s `name` field identifies
+
+                the resource. Format: `namespaces/{namespace}/models/{model}`'
+              required:
+              - displayName
+              - modelDefinition
+              - configuration
+              - task
+              - visibility
+              - region
+              - hardware
+        description: 'The model resource to update. The model''s `name` field identifies
+
+          the resource. Format: `namespaces/{namespace}/models/{model}`'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/rename:
+    post:
+      summary: Rename a model
+      description: 'Renames a model, accesing it by its resource name, which is defined by the
+
+        parent namespace and the ID of the model.'
+      operationId: ModelPublicService_RenameModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenameModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model to rename.
+
+          Format: namespaces/{namespace}/models/{model}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenameModelBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/versions/{version}/watch:
+    get:
+      summary: Watch the state of a model version
+      description: 'Returns the state of a model. The model resource allocation and scaling
+
+        actions take some time, during which a model will be in various state. This
+
+        endpoint allows clients to track the state.'
+      operationId: ModelPublicService_WatchModelVersion
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchModelVersionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model to watch.
+
+          Format: namespaces/{namespace}/models/{model}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: version
+        description: Model version
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/watch:
+    get:
+      summary: Watch the state of the latest model version
+      description: 'Returns the state of the latest model version. The model resource
+
+        allocation and scaling actions take some time, during which a model will be
+
+        in various state. This endpoint allows clients to track the state.'
+      operationId: ModelPublicService_WatchModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model to watch.
+
+          Format: namespaces/{namespace}/models/{model}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{parent}/versions:
+    get:
+      summary: List namespace model versions
+      description: 'Returns a paginated list of version of a model namespace that belong to the
+
+        specified namespace. Contains model version and digest.'
+      operationId: ModelPublicService_ListModelVersions
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelVersionsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name (model).
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: pageSize
+        description: 'The maximum number of versions to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        description: Page number.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/trigger:
+    post:
+      summary: Trigger model inference
+      description: 'Triggers a deployed model to infer the result of a set of task or
+
+        questions.'
+      operationId: ModelPublicService_TriggerModelVersion
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerModelVersionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model version to trigger.
+
+          Format: `namespaces/{namespace}/models/{model}/versions/{version}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+/versions/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerModelVersionBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/trigger-async:
+    post:
+      summary: Trigger model inference asynchronously
+      description: 'Triggers a deployed model to infer the result of a set of task or
+
+        questions.'
+      operationId: ModelPublicService_TriggerAsyncModelVersion
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerAsyncModelVersionResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model version to trigger.
+
+          Format: `namespaces/{namespace}/models/{model}/versions/{version}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+/versions/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerAsyncModelVersionBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name_1}/trigger:
+    post:
+      summary: Trigger model inference
+      description: 'Triggers the latest deployed model version to infer the result of a set of
+
+        task or questions.'
+      operationId: ModelPublicService_TriggerModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the model to trigger (uses latest version).
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerModelBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name_1}/trigger-async:
+    post:
+      summary: Trigger model inference asynchronously
+      description: 'Triggers the latest deployed model version to infer the result of a set of
+
+        task or questions.'
+      operationId: ModelPublicService_TriggerAsyncModel
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerAsyncModelResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the model to trigger (uses latest version).
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerAsyncModelBody'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name}/operation:
+    get:
+      summary: Get the details of the long-running operation from a model version
+      description: 'This method allows requesters to request the status and outcome of
+
+        long-running operations in a model, such as trigger.'
+      operationId: ModelPublicService_GetModelVersionOperation
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelVersionOperationResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the model version.
+
+          Format: `namespaces/{namespace}/models/{model}/versions/{version}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+/versions/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired operation result in the\nresponse.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{name_1}/operation:
+    get:
+      summary: Get the details of the latest long-running operation from a model
+      description: 'This method allows requesters to request the status and outcome of
+
+        long-running operations in a model, such as trigger.'
+      operationId: ModelPublicService_GetModelOperation
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelOperationResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the model.
+
+          Format: `namespaces/{namespace}/models/{model}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired operation result in the\nresponse.\n\n - VIEW_BASIC: Default view, only includes basic information (omits `model_spec`).\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/operations/{operationId}:
+    get:
+      summary: Get the details of a long-running operation
+      description: 'This method allows requesters to request the status and outcome of
+
+        long-running operations in a model, such as trigger.'
+      operationId: ModelPublicService_GetOperation
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1alpha.GetOperationResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: operationId
+        description: The operation ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/{parent}/runs:
+    get:
+      summary: List Model Runs
+      description: 'Returns a paginated list of runs for a given model. When the requester is
+
+        the owner of the model, they will be able to all the model runs,
+
+        regardless who requested the trigger (the view will be partial to hide
+
+        sensitive data like e.g. the trigger input and output). Other requesters
+
+        will only be able to see the runs requested by themselves.'
+      operationId: ModelPublicService_ListModelRuns
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelRunsResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent model resource name.
+
+          Format: namespaces/{namespace}/models/{model}'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: namespaces/[^/]+/models/[^/]+
+      - name: pageSize
+        description: 'The maximum number of runs to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        description: Page number.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        description: 'Sort the results by the given expression.
+
+          Format: `field [ASC | DESC], where `field` can be:
+
+          - `create_time`
+
+          - `update_time`
+
+          By default, results are sorted by descending creation time.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.
+
+          The filter can be applied to the following fields:
+
+          - `create_time`'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: Instill-Requester-Uid
+        description: Indicates the authenticated namespace is making the request on behalf of another entity, typically an organization they belong to
+        in: header
+        required: false
+        schema:
+          type: string
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1alpha/dashboard/models/runs:
+    get:
+      summary: List Model Runs By Requester
+      description: 'Returns a paginated list of runs requested by a namespace. The response
+
+        may contain runs from several models.'
+      operationId: ModelPublicService_ListModelRunsByRequester
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelRunsByRequesterResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: requester
+        description: 'Requester namespace resource name.
+
+          Format: namespaces/{namespace}'
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: pageSize
+        description: 'The maximum number of runs to return. The default and cap values are 10
+
+          and 100, respectively.'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        description: Page number.
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: orderBy
+        description: 'Sort the results by the given expression.
+
+          Format: `field [ASC | DESC], where `field` can be:
+
+          - `create_time`
+
+          - `update_time`
+
+          By default, results are sorted by descending creation time.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `status="RUN_STATUS_COMPLETED"`.
+
+          The filter can be applied to the following fields:
+
+          - `status`
+
+          - `source`'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: start
+        description: 'Beginning of the time range from which the records will be fetched.
+
+          The default value is the beginning of the current day, in UTC.'
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: stop
+        description: 'End of the time range from which the records will be fetched.
+
+          The default value is the current timestamp.'
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - Model
+      x-stage: alpha
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+components:
+  schemas:
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    Region:
+      type: object
+      properties:
+        regionName:
+          type: string
+          title: Concatenate name of provider and region
+        hardware:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Hardware'
+          title: Hardware describes the available hardware types in this region
+      description: 'Region describes the supported cloud provider and regions, with
+
+        their supported GPU respectively.'
+    ModelRun:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The resource name of the model run.
+
+            Format: namespaces/{namespace}/models/{model}/runs/{run}'
+          readOnly: true
+        id:
+          type: string
+          description: Unique identifier for each run (immutable).
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Model run created time.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Model run updated time.
+          readOnly: true
+        runner:
+          type: string
+          description: 'Runner who triggered the run.
+
+            Full resource name: users/{user}.'
+          readOnly: true
+        model:
+          type: string
+          title: 'The model resource name.
+
+            Full resource name: namespaces/{namespace}/models/{model}'
+          readOnly: true
+        requester:
+          type: string
+          description: 'Requester namespace.
+
+            Full resource name: namespaces/{namespace}.'
+          readOnly: true
+        status:
+          description: Model run status.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/RunStatus'
+        source:
+          description: Run source.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/RunSource'
+        totalDuration:
+          type: integer
+          format: int32
+          description: Run total duration in milliseconds.
+          readOnly: true
+        endTime:
+          type: string
+          format: date-time
+          description: Run end time.
+          readOnly: true
+        creditAmount:
+          type: number
+          format: float
+          description: The amount of Instill Credit consumed by the run.
+          readOnly: true
+        error:
+          type: string
+          description: Error message occurred during model run.
+          readOnly: true
+        version:
+          type: string
+          description: The model version identifier, which is same as image tag.
+          readOnly: true
+        taskInputs:
+          type: array
+          items:
+            type: object
+          description: Model inference input.
+          readOnly: true
+        taskOutputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+      description: ModelRun contains information about a run of models.
+    TriggerModelVersionBody:
+      type: object
+      properties:
+        taskInputs:
+          type: array
+          items:
+            type: object
+          description: Model inference inputs.
+      description: 'TriggerModelVersionRequest represents a request to trigger a model
+
+        inference.'
+      required:
+      - taskInputs
+    ListModelDefinitionsResponse:
+      type: object
+      properties:
+        modelDefinitions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ModelDefinition'
+          description: A list of model definition resources.
+        nextPageToken:
+          type: string
+          description: Next page token.
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of model definitions.
+      description: ListModelDefinitionsResponse contains a list of model definitions.
+    ModelVersion:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'The resource name of the model version.
+
+            Format: `namespaces/{namespace}/models/{model}/versions/{version}`.'
+        version:
+          type: string
+          description: The model version identifier, which is equal to image tag.
+        digest:
+          type: string
+          description: Unique identifier, computed from the manifest the Version refers to.
+        state:
+          description: Current state of this model version.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1alpha.State'
+        updateTime:
+          type: string
+          format: date-time
+          description: Version update time, i.e. timestamp of the last push.
+          readOnly: true
+      description: ModelVersion contains information about the version of a model.
+    TriggerAsyncModelVersionBody:
+      type: object
+      properties:
+        taskInputs:
+          type: array
+          items:
+            type: object
+          description: Model inference inputs.
+      description: 'TriggerAsyncModelVersionRequest represents a request to trigger a model
+
+        inference asynchronously.'
+      required:
+      - taskInputs
+    TriggerAsyncModelBody:
+      type: object
+      properties:
+        taskInputs:
+          type: array
+          items:
+            type: object
+          description: Model inference inputs.
+      description: 'TriggerAsyncModelRequest represents a request to trigger a
+
+        model inference asynchronously with the latest uploaded version.'
+      required:
+      - taskInputs
+    RunStatus:
+      type: string
+      enum:
+      - RUN_STATUS_PROCESSING
+      - RUN_STATUS_COMPLETED
+      - RUN_STATUS_FAILED
+      - RUN_STATUS_QUEUED
+      description: "RunStatus defines the status of a pipeline or model run.\n\n - RUN_STATUS_PROCESSING: Run in progress.\n - RUN_STATUS_COMPLETED: Run succeeded.\n - RUN_STATUS_FAILED: Run failed.\n - RUN_STATUS_QUEUED: Run is waiting to be executed."
+    WatchModelVersionResponse:
+      type: object
+      properties:
+        state:
+          description: State.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1alpha.State'
+        message:
+          type: string
+          title: Detail description of the state
+          readOnly: true
+      description: WatchModelVersionResponse contains the state of a model.
+    longrunning.Operation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'The server-assigned name, which is only unique within the same service that
+
+            originally returns it. If you use the default HTTP mapping, the
+
+            `name` should be a resource name ending with `operations/{unique_id}`.'
+        metadata:
+          description: 'Service-specific metadata associated with the operation.  It typically
+
+            contains progress information and common metadata such as create time.
+
+            Some services might not provide such metadata.  Any method that returns a
+
+            long-running operation should document the metadata type, if any.'
+          allOf:
+          - $ref: '#/components/schemas/Any'
+        done:
+          type: boolean
+          description: 'If the value is `false`, it means the operation is still in progress.
+
+            If `true`, the operation is completed, and either `error` or `response` is
+
+            available.'
+        error:
+          description: The error result of the operation in case of failure or cancellation.
+          allOf:
+          - $ref: '#/components/schemas/rpc.Status'
+        response:
+          description: 'The normal, successful response of the operation.  If the original
+
+            method returns no data on success, such as `Delete`, the response is
+
+            `google.protobuf.Empty`.  If the original method is standard
+
+            `Get`/`Create`/`Update`, the response should be the resource.  For other
+
+            methods, the response should have the type `XxxResponse`, where `Xxx`
+
+            is the original method name.  For example, if the original method name
+
+            is `TakeSnapshot()`, the inferred response type is
+
+            `TakeSnapshotResponse`.'
+          allOf:
+          - $ref: '#/components/schemas/Any'
+      description: 'This resource represents a long-running operation that is the result of a
+
+        network API call.'
+    v1alpha.Permission:
+      type: object
+      properties:
+        canEdit:
+          type: boolean
+          description: Defines whether the pipeline can be modified.
+        canTrigger:
+          type: boolean
+          description: Defines whether the pipeline can be executed.
+      description: Permission defines how a pipeline can be used.
+    ListModelRunsByRequesterResponse:
+      type: object
+      properties:
+        runs:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ModelRun'
+          description: A list of runs resources.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of runs.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The requested page size.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The requested page offset.
+          readOnly: true
+      description: 'ListModelRunsByRequesterResponse is the request message for
+
+        ListModelRunsByRequester.'
+    GetModelResponse:
+      type: object
+      properties:
+        model:
+          description: The model resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Model'
+      description: GetModelResponse contains the requested model.
+    TriggerModelVersionResponse:
+      type: object
+      properties:
+        task:
+          description: Task type.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Task'
+        taskOutputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+      description: TriggerModelVersionResponse contains the model inference results.
+    Owner:
+      type: object
+      properties:
+        user:
+          description: User.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+        organization:
+          description: Organization.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+      description: 'Owner is a wrapper for User and Organization, used to embed owner information
+
+        in other resources.'
+    v1beta.User:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
+
+            Format: `users/{user}`.
+
+            Example: "users/john-doe"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "usr-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        profile:
+          description: Profile containing additional user information.
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+        email:
+          type: string
+          description: Email.
+          readOnly: true
+      description: 'User describes an individual that interacts with Instill AI. It doesn''t
+
+        contain any private information about the user.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp'
+    v1alpha.GetOperationResponse:
+      type: object
+      properties:
+        operation:
+          description: The long-running operation.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'GetOperationResponse represents a response to query a long-running
+
+        operation.'
+    ListAvailableRegionsResponse:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Region'
+          title: A list of available region
+          readOnly: true
+      description: 'ListAvailableRegionsResponse contains a list of available
+
+        regions and hardware types a model can be deployed on.'
+    TriggerModelResponse:
+      type: object
+      properties:
+        task:
+          description: Task type.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Task'
+        taskOutputs:
+          type: array
+          items:
+            type: object
+          description: Model inference outputs.
+          readOnly: true
+      description: TriggerModelResponse contains the model inference results.
+    DeleteModelResponse:
+      type: object
+      description: DeleteModelResponse is an empty response.
+    Organization.Stats:
+      type: object
+      properties:
+        userCount:
+          type: integer
+          format: int32
+          description: The number of users in the organization.
+      description: The Organization stats.
+    GetModelVersionOperationResponse:
+      type: object
+      properties:
+        operation:
+          description: The long-running operation.
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'GetModelVersionOperationResponse represents a response to query a
+
+        long-running operation.'
+    GetModelOperationResponse:
+      type: object
+      properties:
+        operation:
+          description: The long-running operation.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'GetModelOperationResponse represents a response to query a
+
+        long-running operation.'
+    WatchModelResponse:
+      type: object
+      properties:
+        state:
+          description: State.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1alpha.State'
+        message:
+          type: string
+          title: Detail description of the state
+          readOnly: true
+      description: 'WatchModelResponse contains the state of the latest model
+
+        version.'
+    Model:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `namespaces/{namespace}/models/{model}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Immutable canonical resource ID (80-96 bits entropy, base62).
+
+            Example: "mod-8f3a2k9E7c1"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            If omitted, server generates from display_name.
+
+            Slug is NOT part of resource identity.'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description.'
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Last update time.'
+          readOnly: true
+        modelDefinition:
+          type: string
+          description: The model definition that has been used to import the model.
+        configuration:
+          type: object
+          description: 'Model configuration. This field is validated against the model
+
+            specification in the model definition.'
+        task:
+          description: Model task.
+          allOf:
+          - $ref: '#/components/schemas/Task'
+        visibility:
+          description: Model visibility.
+          allOf:
+          - $ref: '#/components/schemas/Model.Visibility'
+        permission:
+          description: Permission defines how the model can be used.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1alpha.Permission'
+        region:
+          type: string
+          description: Region of choice for the particular provider to host the model.
+        hardware:
+          type: string
+          description: Hardware of choice to serve the model.
+        inputSchema:
+          type: object
+          description: Input schema for the model.
+          readOnly: true
+        outputSchema:
+          type: object
+          description: Output schema for the model.
+          readOnly: true
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags.
+        versions:
+          type: array
+          items:
+            type: string
+          description: Version names.
+          readOnly: true
+        stats:
+          description: Statistic data.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Model.Stats'
+        readme:
+          type: string
+          description: README holds the model documentation.
+        sourceUrl:
+          type: string
+          description: A link to the source code of the model (e.g. to a GitHub repository).
+        documentationUrl:
+          type: string
+          description: A link to any extra information.
+        license:
+          type: string
+          description: License under which the model is distributed.
+        profileImage:
+          type: string
+          description: Model profile image in base64 format.
+        ownerName:
+          type: string
+          description: Resource name of the owner namespace.
+          readOnly: true
+        owner:
+          description: Model owner (User or Organization).
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Owner'
+        creatorName:
+          type: string
+          title: 'Full resource name of the user who created this model.
+
+            Format: `users/{user}`'
+          readOnly: true
+        creator:
+          description: The user who created this model.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+        deleteTime:
+          type: string
+          format: date-time
+          description: Soft delete timestamp.
+          readOnly: true
+      title: 'Model represents an AI model, i.e. a program that performs tasks as decision
+
+        making or or pattern recognition based on its training data
+
+        Model represents an AI/ML model.
+
+        Field ordering follows AIP standard: name(1), id(2), display_name(3),
+
+        slug(4), aliases(5), description(6)'
+      required:
+      - displayName
+      - modelDefinition
+      - configuration
+      - task
+      - visibility
+      - region
+      - hardware
+    ModelDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'The resource name of the model, which allows its access by ID.
+
+            - Format: `model-definitions/{id}`.'
+          readOnly: true
+        uid:
+          type: string
+          description: Model definition UUID.
+          readOnly: true
+        id:
+          type: string
+          description: 'Model definition resource ID (used in `name` as the last segment). This
+
+            conforms to RFC-1034, which restricts to letters, numbers, and hyphen,
+
+            with the first character a letter, the last a letter or a number, and a 63
+
+            character maximum.'
+          readOnly: true
+        title:
+          type: string
+          description: Official display title.
+          readOnly: true
+        documentationUrl:
+          type: string
+          description: Documentation URL.
+          readOnly: true
+        icon:
+          type: string
+          description: Display icon.
+          readOnly: true
+        releaseStage:
+          description: Release stage.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1alpha.ReleaseStage'
+        modelSpec:
+          type: object
+          description: 'The model specification represented by a JSON schema. It is used to
+
+            validate the JSON configurations of a model created from a specific model
+
+            source, and the resource spec which the model is desired to be deployed on.
+
+            It must be a valid JSON that includes what fields are needed to
+
+            create or display a model.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Creation time.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Update time.
+          readOnly: true
+      description: ModelDefinition defines how to configure and import a model.
+    RenameModelBody:
+      type: object
+      properties:
+        newModelId:
+          type: string
+          description: 'The new resource ID. This will transform the resource name into
+
+            `namespaces/{namespace}/models/{new_model_id}`.'
+      title: RenameModelRequest represents a request to rename a model
+      required:
+      - newModelId
+    RenameModelResponse:
+      type: object
+      properties:
+        model:
+          description: The renamed model resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Model'
+      description: RenameModelResponse contains a renamed model.
+    GetModelDefinitionResponse:
+      type: object
+      properties:
+        modelDefinition:
+          description: The model definition resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ModelDefinition'
+      description: GetModelDefinitionResponse contains the requested model definition.
+    Model.Visibility:
+      type: string
+      enum:
+      - VISIBILITY_PRIVATE
+      - VISIBILITY_PUBLIC
+      description: "Visibility defines who can access the model.\n\n - VISIBILITY_PRIVATE: Only the owner can see the model.\n - VISIBILITY_PUBLIC: Other users can see the model."
+    UserProfile:
+      type: object
+      properties:
+        displayName:
+          type: string
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "John" for user ID "john-doe-8f3A2k9E"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        companyName:
+          type: string
+          description: Company name.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the user''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        fullName:
+          type: string
+          description: 'Full legal name. Used for formal communications.
+
+            Example: "John Doe" - this is also used to auto-generate the user ID.'
+        metadata:
+          type: object
+          title: Flexible metadata
+      description: UserProfile describes the public data of a user.
+      required:
+      - displayName
+    mgmt.v1beta.Permission:
+      type: object
+      properties:
+        canEdit:
+          type: boolean
+          description: Defines whether the resource can be modified.
+          readOnly: true
+      description: Permission defines how a resource can be used.
+    Model.Stats:
+      type: object
+      properties:
+        numberOfRuns:
+          type: integer
+          format: int32
+          description: Number of model runs.
+          readOnly: true
+        lastRunTime:
+          type: string
+          format: date-time
+          description: Last run time.
+          readOnly: true
+      title: Statistic data
+    TriggerModelBody:
+      type: object
+      properties:
+        taskInputs:
+          type: array
+          items:
+            type: object
+          description: Model inference inputs.
+      description: 'TriggerModelRequest represents a request to trigger a model
+
+        inference with the latest uploaded version.'
+      required:
+      - taskInputs
+    ListPublicModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Model'
+          description: A list of model resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of models.
+          readOnly: true
+      description: ListPublicModelsResponse contains a list of public models.
+    TriggerAsyncModelVersionResponse:
+      type: object
+      properties:
+        operation:
+          description: Long-running operation information.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'TriggerAsyncModelVersionResponse contains the information to access the
+
+        status of an asynchronous model inference.'
+    OrganizationProfile:
+      type: object
+      properties:
+        displayName:
+          type: string
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "Instill AI" for organization ID "instill-ai"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the organization''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        metadata:
+          type: object
+          title: Flexible metadata
+        fullName:
+          type: string
+          description: Full legal name. Used for formal communications.
+      description: OrganizationProfile describes the public data of an organization.
+      required:
+      - displayName
+    ListModelVersionsResponse:
+      type: object
+      properties:
+        versions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ModelVersion'
+          description: A list of model resources.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of versions.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The requested page size.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The requested page offset.
+          readOnly: true
+      description: ListModelVersionsResponse contains a list of models.
+    RunSource:
+      type: string
+      enum:
+      - RUN_SOURCE_CONSOLE
+      - RUN_SOURCE_API
+      description: "RunSource defines the source of a pipeline or model run.\n\n - RUN_SOURCE_CONSOLE: Run from frontend UI.\n - RUN_SOURCE_API: Run from API or SDK."
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    Task:
+      type: string
+      enum:
+      - TASK_CLASSIFICATION
+      - TASK_DETECTION
+      - TASK_KEYPOINT
+      - TASK_OCR
+      - TASK_INSTANCE_SEGMENTATION
+      - TASK_SEMANTIC_SEGMENTATION
+      - TASK_TEXT_TO_IMAGE
+      - TASK_IMAGE_TO_IMAGE
+      - TASK_EMBEDDING
+      - TASK_SPEECH_RECOGNITION
+      - TASK_CHAT
+      - TASK_COMPLETION
+      - TASK_CUSTOM
+      description: "Task enumerates the AI task that a model is designed to solve.\n\n - TASK_CLASSIFICATION: Image Classification - classify images into predefined categories.\n - TASK_DETECTION: Object Detection - detect and localize multiple objects in images.\n - TASK_KEYPOINT: Keypoint Detection - detect and localize multiple keypoints of objects in images.\n - TASK_OCR: OCR (Optical Character Recognition) - detect and recognize text in images.\n - TASK_INSTANCE_SEGMENTATION: Instance Segmentation - detect, localize and delineate multiple objects in images.\n - TASK_SEMANTIC_SEGMENTATION: Semantic Segmentation - classify image pixels into predefined categories.\n - TASK_TEXT_TO_IMAGE: Text to Image - generate images from input text prompts.\n - TASK_IMAGE_TO_IMAGE: Image to Image - generate an image from another image.\n - TASK_EMBEDDING: Embedding - generate an embedding (a representation as coordinates) from a multimodal input.\n - TASK_SPEECH_RECOGNITION: Speech Recognition - transcribe the words in an audio input.\n - TASK_CHAT: Conversational Text Generation - generate text as responses to a dialog input.\n - TASK_COMPLETION: Completion Text Generation - generate text following the input prompt.\n - TASK_CUSTOM: Custom - custom task type for free form input/output."
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Model'
+          description: A list of model resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of models.
+          readOnly: true
+      description: ListModelsResponse contains a list of models.
+    ListModelRunsResponse:
+      type: object
+      properties:
+        runs:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ModelRun'
+          description: A list of runs resources.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of runs.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The requested page size.
+          readOnly: true
+        page:
+          type: integer
+          format: int32
+          description: The requested page offset.
+          readOnly: true
+      description: ListModelRunsResponse contains a list of model runs.
+    v1alpha.ReleaseStage:
+      type: string
+      enum:
+      - RELEASE_STAGE_ALPHA
+      - RELEASE_STAGE_BETA
+      - RELEASE_STAGE_GENERALLY_AVAILABLE
+      - RELEASE_STAGE_CUSTOM
+      description: "ReleaseStage defines the stage of a release.\n\n - RELEASE_STAGE_ALPHA: Alpha.\n - RELEASE_STAGE_BETA: Beta.\n - RELEASE_STAGE_GENERALLY_AVAILABLE: Generally available.\n - RELEASE_STAGE_CUSTOM: Custom."
+    Hardware:
+      type: object
+      properties:
+        title:
+          type: string
+          title: Hardware display title
+        value:
+          type: string
+          title: Hardware name value
+      description: Hardware describes the hardware title and string value that backend consumes.
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
+
+            Format: `organizations/{organization}`.
+
+            Example: "organizations/acme-corp"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "org-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "org-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        owner:
+          type: string
+          description: 'Field 9: Owner reference (the user that owns the organization).
+
+            Format: `users/{user}`.'
+          readOnly: true
+        profile:
+          description: Profile containing additional organization information.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationProfile'
+        permission:
+          title: Permission
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Permission'
+        stats:
+          description: The organization stats.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization.Stats'
+      description: 'Organizations group several users. As entities, they can own resources such
+
+        as pipelines or releases.
+
+        Organization represents a group of users working together.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp
+
+        - owner (field 9): Owner reference (string, not embedded object)'
+      required:
+      - profile
+    TriggerAsyncModelResponse:
+      type: object
+      properties:
+        operation:
+          description: Long-running operation information.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/longrunning.Operation'
+      description: 'TriggerAsyncModelResponse contains the information to access
+
+        the status of an asynchronous model inference.'
+    UpdateModelResponse:
+      type: object
+      properties:
+        model:
+          description: The updated model resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Model'
+      description: UpdateModelResponse contains the updated model.
+    CreateModelResponse:
+      type: object
+      properties:
+        model:
+          description: The created model resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Model'
+      description: CreateModelResponse contains the created model.
+    DeleteModelVersionResponse:
+      type: object
+      description: DeleteModelVersionResponse is an empty response.
+    v1alpha.State:
+      type: string
+      enum:
+      - STATE_OFFLINE
+      - STATE_ACTIVE
+      - STATE_IDLE
+      - STATE_ERROR
+      - STATE_STARTING
+      - STATE_SCALING_UP
+      - STATE_SCALING_DOWN
+      description: "State describes the state of a model. See [Deploy\nModels](https://instill-ai.dev/docs/latest/model/deploy) for more\ninformation.\n\n - STATE_OFFLINE: Offline is the state when the model instance number is 0.\n - STATE_ACTIVE: Active is the state when a model is processing requests.\n - STATE_IDLE: Idle is the state when a model is alive but not processing requests.\n - STATE_ERROR: Error is the state when the model is undeployable.\n - STATE_STARTING: Starting is the state when the system is provisioning the necessary\nresources for the model\n - STATE_SCALING_UP: Scaling Up is the transition state when the system is provisioning compute\nresource for this model instance.\n - STATE_SCALING_DOWN: Scaling is the transition state when the system is releasing compute\nresource for this model instance."
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`
+      name: Authorization
+      in: header
+      x-default: Bearer instill_sk_***
+externalDocs:
+  description: More about Instill Core
+  url: https://docs.instill-ai.com
+x-refined-from:
+- service.swagger.yaml
+- instill-ai-openapi.yml

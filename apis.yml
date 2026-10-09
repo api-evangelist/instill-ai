@@ -1,23 +1,320 @@
 aid: instill-ai
+
 name: Instill AI
-description: 'Instill AI is a company surfaced via the API Evangelist harvest backlog (source: spectral-ruleset-github)
-  and added to the network as a stub for full-pipeline profiling.'
+
+description: 'Instill AI (INSTILL AI LTD.) builds Instill Core, an open-source, full-stack AI infrastructure platform for data, pipeline and model orchestration: ETL processing of unstructured data, AI-readiness, open-source LLM hosting and RAG in one platform. It publishes a ReadMe-hosted developer reference at docs.instill-ai.com documenting a REST API at api.instill-ai.com (v1beta), plus Python and TypeScript SDKs, an Instill CLI, a Helm chart and its protobuf API definitions on GitHub. As of 2026-10-09 www.instill-ai.com answers HTTP 503 DEPLOYMENT_PAUSED and the docs guide pages return 404, while the API reference, GitHub org and trust center remain live.'
+
 url: https://raw.githubusercontent.com/api-evangelist/instill-ai/refs/heads/main/apis.yml
+
+image: https://avatars.githubusercontent.com/u/66143470?s=280&v=4
+
 x-type: company
+
 x-source: harvest:spectral-ruleset-github
-x-tier: stub
-x-tier-reason: harvest
+
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-10-09 (modular-v1; was harvest)
+
 specificationVersion: '0.20'
+
 created: '2026-10-09'
+
 modified: '2026-10-09'
+
 tags:
 - Company
-apis: []
+- Artificial Intelligence
+- Unstructured Data
+- Data Pipelines
+- RAG
+- Open Source
+- LLM
+
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+
 common:
+- type: AgenticAccess
+  url: agentic-access/instill-ai-agentic-access.yml
+- type: Spectral
+  url: rules/instill-ai-rules.yml
+- type: Spectral
+  url: rules/instill-ai-protobufs-spectral-rules.yml
+- type: Vocabulary
+  url: vocabulary/instill-ai-vocabulary.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/instill-ai-data-model.yml
+- type: CLI
+  url: cli/instill-ai-cli.yml
+- type: Conventions
+  url: conventions/instill-ai-conventions.yml
+- type: Lifecycle
+  url: lifecycle/instill-ai-lifecycle.yml
+- type: ErrorCatalog
+  url: errors/instill-ai-problem-types.yml
+- type: Conformance
+  url: conformance/instill-ai-conformance.yml
+- type: Protobuf
+  url: grpc/instill-ai-usage-v1beta-usage.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-secret.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-pipeline_private_service.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-pipeline.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-integration.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-component_definition.proto
+- type: Protobuf
+  url: grpc/instill-ai-pipeline-v1beta-common.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-v1alpha-model_private_service.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-v1alpha-model_definition.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-v1alpha-model.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-v1alpha-common.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-ray-v1alpha-user_defined.proto
+- type: Protobuf
+  url: grpc/instill-ai-model-ray-serve.proto
+- type: Protobuf
+  url: grpc/instill-ai-mgmt-v1beta-mgmt_private_service.proto
+- type: Protobuf
+  url: grpc/instill-ai-mgmt-v1beta-mgmt.proto
+- type: Protobuf
+  url: grpc/instill-ai-mgmt-v1beta-metric.proto
+- type: Protobuf
+  url: grpc/instill-ai-mgmt-v1beta-integration.proto
+- type: Protobuf
+  url: grpc/instill-ai-mgmt-v1beta-auth.proto
+- type: Protobuf
+  url: grpc/instill-ai-common-healthcheck-v1beta-healthcheck.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-update.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-system.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-object.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-knowledge_base.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-file.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-chunk.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-artifact_private_service.proto
+- type: Protobuf
+  url: grpc/instill-ai-artifact-v1alpha-artifact.proto
+- type: Overlay
+  url: overlays/instill-ai-openapi-overlay.yaml
+- type: LLMsTxt
+  url: llms/instill-ai-llms.txt
+- type: ToolCrosswalk
+  url: mcp/instill-ai-tool-crosswalk.yml
+- type: MCPServer
+  url: mcp/instill-ai-mcp.yml
+- type: WellKnown
+  url: well-known/instill-ai-well-known.yml
+- type: Hosts
+  url: hosts/instill-ai-hosts.yml
+- type: Vendors
+  url: vendors/instill-ai-vendors.yml
+- type: SDKs
+  url: packages/instill-ai-packages.yml
+- type: Packages
+  url: packages/instill-ai-packages.yml
+- type: Authentication
+  url: authentication/instill-ai-authentication.yml
+- type: DomainSecurity
+  url: security/instill-ai-domain-security.yml
 - type: Website
   url: https://www.instill-ai.com/
+- type: Documentation
+  url: https://docs.instill-ai.com/
+- type: APIReference
+  url: https://docs.instill-ai.com/reference
+- type: GitHubOrganization
+  url: https://github.com/instill-ai
+- type: TrustCenter
+  url: https://trust.instill-ai.com
+- type: Discord
+  url: https://discord.gg/sevxWsqpGh
+- type: SpectralRules
+  url: https://github.com/instill-ai/protobufs/blob/196f236ed9af8f57c672ad730a445de5daef5299/.spectral.yaml
+
+apis:
+- aid: instill-ai:instill-ai-artifact-api
+  name: Instill AI Artifact API
+  description: Data orchestration for unified unstructured data representation.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Artifact
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-artifact-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-connection-api
+  name: Instill AI Connection API
+  description: Connections to 3rd party apps for use in pipelines.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Connection
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-connection-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-integration-api
+  name: Instill AI Integration API
+  description: Integration definitions for creating connections.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Integration
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-integration-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-metrics-api
+  name: Instill AI Metrics API
+  description: Resource usage metrics.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-metrics-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-model-api
+  name: Instill AI Model API
+  description: AI Model orchestration
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Model
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-model-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-namespace-api
+  name: Instill AI Namespace API
+  description: Namespaces (e.g. User, Organization) that structure the resource hierarchy.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Namespace
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-namespace-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+- aid: instill-ai:instill-ai-pipeline-api
+  name: Instill AI Pipeline API
+  description: Pipeline orchestration.
+  humanURL: https://docs.instill-ai.com/reference
+  baseURL: https://api.instill-ai.com
+  tags:
+  - Pipeline
+  properties:
+  - type: OpenAPI
+    url: openapi/instill-ai-pipeline-api-openapi.yml
+  - type: Protobuf
+    url: grpc/instill-ai-pipeline-v1beta-pipeline_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-mgmt-v1beta-mgmt_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-model-v1alpha-model_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-artifact-v1alpha-artifact_public_service.proto
+  - type: Protobuf
+    url: grpc/instill-ai-usage-v1beta-usage_service.proto
+  - type: Documentation
+    url: https://docs.instill-ai.com/reference
+x-enrichment:
+  date: '2026-10-09'
+  status: enriched
+  artifacts_added: 63
+  pass: modular-v1
+  engine: identity=anthropic,contract=anthropic,surfaces=anthropic,docs=anthropic,regulatory=anthropic
+x-coverage:
+  state: covered
+  reason: identity-verified
+  detail: 'Enriched 2026-10-09: website and identity verified (partial) from the provider''s own pages; probed URLs below.'
+  evidence:
+  - url: https://raw.githubusercontent.com/api-evangelist/instill-ai/refs/heads/main/apis.yml
+    status: null

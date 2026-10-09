@@ -1,0 +1,945 @@
+openapi: 3.2.0
+info:
+  title: Instill Ai Namespace API
+  version: v0.57.0
+  contact:
+    name: Instill AI
+    url: https://github.com/instill-ai
+    email: support@instill-ai.com
+  license:
+    name: MIT
+    url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
+  description: 'Operations tagged Namespace across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.instill-ai.com
+- url: http://api.instill-ai.com
+security:
+- Bearer: []
+tags:
+- name: Namespace
+  description: Namespaces (e.g. User, Organization) that structure the resource hierarchy.
+paths:
+  /v1beta/user:
+    get:
+      summary: Get the authenticated user
+      description: Returns the details of the authenticated user.
+      operationId: MgmtPublicService_GetAuthenticatedUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAuthenticatedUserResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Namespace
+      x-stage: beta
+    patch:
+      summary: Update the authenticated user
+      description: 'Updates the information of the authenticated user.
+
+
+        In REST requests, only the supplied user fields will be taken into account
+
+        when updating the resource.'
+      operationId: MgmtPublicService_PatchAuthenticatedUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatchAuthenticatedUserResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Namespace
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatedUser'
+        description: The user fields that will replace the existing ones.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/users:
+    get:
+      summary: List users
+      description: Returns a paginated list of users.
+      operationId: MgmtPublicService_ListUsers
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: pageSize
+        description: 'The maximum number of users to return. If this parameter is unspecified,
+
+          at most 10 pipelines will be returned. The cap value for this parameter is
+
+          100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: view
+        description: "View allows clients to specify the desired resource view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      - name: filter
+        description: 'Filter can hold an [AIP-160](https://google.aip.dev/160)-compliant filter
+
+          expression.
+
+          - Example: `create_time>timestamp("2000-06-19T23:31:08.657Z")`.'
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Namespace
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name}:
+    get:
+      summary: Get a user
+      description: Returns the details of a user by their ID.
+      operationId: MgmtPublicService_GetUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the user.
+
+          Format: `users/{user}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: users/[^/]+
+      - name: view
+        description: "View allows clients to specify the desired resource view in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VIEW_BASIC
+          - VIEW_FULL
+      tags:
+      - Namespace
+      x-stage: beta
+    delete:
+      summary: Delete an API token
+      description: Deletes an API token.
+      operationId: MgmtPublicService_DeleteToken
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteTokenResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name
+        description: 'The resource name of the token to delete.
+
+          Format: `users/{user}/tokens/{token}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: tokens/[^/]+
+      tags:
+      - Namespace
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/tokens:
+    get:
+      summary: List API tokens
+      description: Returns a paginated list of the API tokens of the authenticated user.
+      operationId: MgmtPublicService_ListTokens
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTokensResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: parent
+        description: 'The parent resource name.
+
+          Format: `users/{user}`
+
+          If not provided, defaults to the authenticated user.'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pageSize
+        description: 'The maximum number of tokens to return. If this parameter is unspecified,
+
+          at most 10 tokens will be returned. The cap value for this parameter is
+
+          100 (i.e. any value above that will be coerced to 100).'
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: pageToken
+        description: Page token.
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - Namespace
+      x-stage: beta
+    post:
+      summary: Create an API token
+      description: Creates an API token for the authenticated user.
+      operationId: MgmtPublicService_CreateToken
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTokenResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Namespace
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiToken'
+        description: The properties of the token to be created.
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/{name_1}:
+    get:
+      summary: Get an API token
+      description: Returns the details of an API token.
+      operationId: MgmtPublicService_GetToken
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTokenResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      parameters:
+      - name: name_1
+        description: 'The resource name of the token.
+
+          Format: `users/{user}/tokens/{token}`'
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: tokens/[^/]+
+      tags:
+      - Namespace
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/validate-token:
+    post:
+      summary: Validate an API token
+      description: Validates an API token.
+      operationId: MgmtPublicService_ValidateToken
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateTokenResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Namespace
+      x-stage: beta
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+  /v1beta/check-namespace:
+    post:
+      summary: Check if a namespace is in use
+      description: 'Returns the availability of a namespace or, alternatively, the type of
+
+        resource that is using it.'
+      operationId: MgmtPublicService_CheckNamespace
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckNamespaceResponse'
+        '401':
+          description: Returned when the client credentials are not valid.
+          content:
+            application/json:
+              schema: {}
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/rpc.Status'
+      tags:
+      - Namespace
+      x-stage: beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckNamespaceRequest'
+        description: 'CheckNamespaceRequest represents a request to verify if a namespace is
+
+          available.'
+        required: true
+    servers:
+    - url: https://api.instill-ai.com
+    - url: http://api.instill-ai.com
+components:
+  schemas:
+    AuthenticatedUser:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: Canonical resource name.
+
+            Format: `users/{user}`.'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "usr-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        email:
+          type: string
+          description: Email.
+        role:
+          type: string
+          description: 'Role.
+
+
+            It must be one of the following allowed roles:
+
+            - `manager`
+
+            - `ai-researcher`
+
+            - `ai-engineer`
+
+            - `data-engineer`
+
+            - `data-scientist`
+
+            - `analytics-engineer`
+
+            - `hobbyist`'
+        newsletterSubscription:
+          type: boolean
+          description: This defines whether the user is subscribed to Instill AI's newsletter.
+        cookieToken:
+          type: string
+          description: Console cookie token.
+        onboardingStatus:
+          description: Onboarding Status.
+          allOf:
+          - $ref: '#/components/schemas/OnboardingStatus'
+        profile:
+          description: Profile.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+        isEligibleForOrganizationTrial:
+          type: boolean
+          description: Is eligible for organization trial.
+          readOnly: true
+      description: 'AuthenticatedUser contains the information of an authenticated user, i.e.,
+
+        the public user information plus some fields that should only be accessed by
+
+        the user themselves.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp'
+      required:
+      - email
+      - newsletterSubscription
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    ListTokensResponse:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ApiToken'
+          description: A list of API token resources.
+        nextPageToken:
+          type: string
+          description: Next page token.
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of API token resources.
+      description: ListTokensResponse contains a list of API tokens.
+    GetUserResponse:
+      type: object
+      properties:
+        user:
+          description: The user resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+      description: GetUserResponse contains the requested user.
+    ApiToken.State:
+      type: string
+      enum:
+      - STATE_INACTIVE
+      - STATE_ACTIVE
+      - STATE_EXPIRED
+      description: "State describes the state of an API token.\n\n - STATE_INACTIVE: Inactive.\n - STATE_ACTIVE: Active.\n - STATE_EXPIRED: Expired."
+    CheckNamespaceResponse:
+      type: object
+      properties:
+        type:
+          description: Namespace type.
+          allOf:
+          - $ref: '#/components/schemas/CheckNamespaceResponse.Namespace'
+      description: 'CheckNamespaceResponse contains the availability of a namespace or the type
+
+        of resource that''s using it.'
+    DeleteTokenResponse:
+      type: object
+      description: DeleteTokenResponse is an empty response.
+    GetAuthenticatedUserResponse:
+      type: object
+      properties:
+        user:
+          description: The authenticated user resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/AuthenticatedUser'
+      description: GetAuthenticatedUserResponse contains the requested authenticated user.
+    v1beta.User:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
+
+            Format: `users/{user}`.
+
+            Example: "users/john-doe"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "usr-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        profile:
+          description: Profile containing additional user information.
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+        email:
+          type: string
+          description: Email.
+          readOnly: true
+      description: 'User describes an individual that interacts with Instill AI. It doesn''t
+
+        contain any private information about the user.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp'
+    ValidateTokenResponse:
+      type: object
+      properties:
+        user:
+          type: string
+          title: 'If token is valid, full resource name of the user that owns it.
+
+            Format: `users/{user}`'
+          readOnly: true
+      description: ValidateTokenResponse contains the validation of a token.
+    GetTokenResponse:
+      type: object
+      properties:
+        token:
+          description: The API token resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ApiToken'
+      description: GetTokenResponse contains the requested token.
+    PatchAuthenticatedUserResponse:
+      type: object
+      properties:
+        user:
+          description: The updated user resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/AuthenticatedUser'
+      title: 'PatchAuthenticatedUserResponse contains the updated user.
+
+        the authenticated user resource'
+    CheckNamespaceResponse.Namespace:
+      type: string
+      enum:
+      - NAMESPACE_AVAILABLE
+      - NAMESPACE_USER
+      - NAMESPACE_ORGANIZATION
+      - NAMESPACE_RESERVED
+      description: "Namespace contains information about the availability of a namespace.\n\n - NAMESPACE_AVAILABLE: Available.\n - NAMESPACE_USER: Namespace belongs to a user.\n - NAMESPACE_ORGANIZATION: Namespace belongs to an organization.\n - NAMESPACE_RESERVED: Reserved."
+    UserProfile:
+      type: object
+      properties:
+        displayName:
+          type: string
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "John" for user ID "john-doe-8f3A2k9E"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        companyName:
+          type: string
+          description: Company name.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the user''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        fullName:
+          type: string
+          description: 'Full legal name. Used for formal communications.
+
+            Example: "John Doe" - this is also used to auto-generate the user ID.'
+        metadata:
+          type: object
+          title: Flexible metadata
+      description: UserProfile describes the public data of a user.
+      required:
+      - displayName
+    ApiToken:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The resource name of the token.
+
+            Format: users/{user}/tokens/{token}'
+          readOnly: true
+        id:
+          type: string
+          description: 'API token resource ID (used in `name` as the last segment). This conforms
+
+            to RFC-1034, which restricts to letters, numbers, and hyphen, with the
+
+            first character a letter, the last a letter or a number, and a 63
+
+            character maximum.
+
+
+            This field can reflect the client(s) that will use the token.'
+        createTime:
+          type: string
+          format: date-time
+          description: Creation time.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Update time.
+          readOnly: true
+        accessToken:
+          type: string
+          description: 'An opaque access token representing the API token string.
+
+
+            To validate the token, the recipient of the token needs to call the server
+
+            that issued the token.'
+          readOnly: true
+        state:
+          description: State.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ApiToken.State'
+        tokenType:
+          type: string
+          description: Token type. Value is fixed to "Bearer".
+          readOnly: true
+        lastUseTime:
+          type: string
+          format: date-time
+          description: 'When users trigger a pipeline which uses an API token, the token is
+
+            updated with the current time. This field is used to track the last time
+
+            the token was used.'
+          readOnly: true
+        ttl:
+          type: integer
+          format: int32
+          description: The time-to-live in seconds for this resource.
+        expireTime:
+          type: string
+          format: date-time
+          description: Expiration time.
+      description: API tokens allow users to make requests to the Instill AI API.
+    CheckNamespaceRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The namespace ID to be checked.
+      description: 'CheckNamespaceRequest represents a request to verify if a namespace is
+
+        available.'
+      required:
+      - id
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    CreateTokenResponse:
+      type: object
+      properties:
+        token:
+          description: The created API token resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ApiToken'
+      description: CreateTokenResponse contains the created token.
+    OnboardingStatus:
+      type: string
+      enum:
+      - ONBOARDING_STATUS_IN_PROGRESS
+      - ONBOARDING_STATUS_COMPLETED
+      description: "OnboardingStatus describes the status of the user onboarding process.\n\n - ONBOARDING_STATUS_IN_PROGRESS: In progress, i.e., the user has initiated the onboarding process\nbut has not yet completed it.\n - ONBOARDING_STATUS_COMPLETED: Completed."
+    ListUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/v1beta.User'
+          description: A list of user resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of users.
+          readOnly: true
+      description: ListUsersResponse contains a list of users.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: Enter the token with the `Bearer ` prefix, e.g. `Bearer instill_sk_***`
+      name: Authorization
+      in: header
+      x-default: Bearer instill_sk_***
+externalDocs:
+  description: More about Instill Core
+  url: https://docs.instill-ai.com
+x-refined-from:
+- service.swagger.yaml
+- instill-ai-openapi.yml

@@ -1,0 +1,256 @@
+# Instill Core Developer Platform Documentation
+
+> Instill Core official documentation website
+
+## Documentation: Get Started
+- [Welcome](https://instill-ai.readme.io/docs/welcome.md)
+- [Quickstart](https://instill-ai.readme.io/docs/quickstart.md)
+  - [Artifact](https://instill-ai.readme.io/docs/artifact.md): Quickstart guide for Artifact: learn how to build your own knowledge bases
+  - [Pipeline](https://instill-ai.readme.io/docs/pipeline.md): Quickstart guide for Pipeline: learn how to build your own pipelines
+- [Examples](https://instill-ai.readme.io/docs/examples.md): Start building, testing and sharing your AI applications in minutes.
+- [FAQ](https://instill-ai.readme.io/docs/faq.md): Frequently Asked Questions (FAQ): If you have a question about Instill products, you're in the right place.
+- [Support](https://instill-ai.readme.io/docs/support.md)
+- [License](https://instill-ai.readme.io/docs/license.md)
+
+## Documentation: Instill Core
+- [Introduction](https://instill-ai.readme.io/docs/core-introduction.md)
+- [Deployment](https://instill-ai.readme.io/docs/deployment.md)
+  - [CLI](https://instill-ai.readme.io/docs/cli.md)
+  - [Docker Compose](https://instill-ai.readme.io/docs/docker-compose.md)
+  - [Kubernetes](https://instill-ai.readme.io/docs/kubernetes.md)
+  - [Configuration](https://instill-ai.readme.io/docs/configuration.md)
+- [Observability](https://instill-ai.readme.io/docs/observability.md)
+- [Contributing](https://instill-ai.readme.io/docs/contributing.md)
+  - [Local Development](https://instill-ai.readme.io/docs/set-up-local-development.md)
+- [API Token Management](https://instill-ai.readme.io/docs/api-token-management.md)
+
+## Documentation: Pipeline
+- [Introduction](https://instill-ai.readme.io/docs/pipeline-introduction.md)
+- [Pipeline Recipe](https://instill-ai.readme.io/docs/pipeline-recipe.md)
+- [Instill Types](https://instill-ai.readme.io/docs/instill-types.md)
+- [Supported Data Types](https://instill-ai.readme.io/docs/supported-data-types.md)
+- [Create Pipeline](https://instill-ai.readme.io/docs/create-pipeline.md)
+  - [ Set up Component](https://instill-ai.readme.io/docs/set-up-component.md)
+  - [Manage Component Connections](https://instill-ai.readme.io/docs/manage-component-connections.md)
+  - [Manage Component Secrets](https://instill-ai.readme.io/docs/manage-component-secrets.md)
+- [Run Pipeline](https://instill-ai.readme.io/docs/run-pipeline.md)
+  - [Run on Trigger](https://instill-ai.readme.io/docs/run-on-trigger.md)
+  - [Run on Event](https://instill-ai.readme.io/docs/run-on-event.md)
+  - [Streaming](https://instill-ai.readme.io/docs/streaming.md)
+- [View Runs](https://instill-ai.readme.io/docs/view-runs.md)
+- [Manage Pipelines](https://instill-ai.readme.io/docs/manage-pipelines.md)
+- [Release Pipeline](https://instill-ai.readme.io/docs/release-pipeline.md)
+- [Share Pipeline](https://instill-ai.readme.io/docs/share-pipeline.md)
+
+## Documentation: Component
+- [Introduction](https://instill-ai.readme.io/docs/component-introduction.md)
+- [Generic](https://instill-ai.readme.io/docs/generic.md)
+  - [Collection](https://instill-ai.readme.io/docs/collection.md)
+  - [HTTP](https://instill-ai.readme.io/docs/http.md)
+  - [Scheduler](https://instill-ai.readme.io/docs/scheduler.md)
+- [AI](https://instill-ai.readme.io/docs/ai.md)
+  - [Anthropic](https://instill-ai.readme.io/docs/anthropic.md)
+  - [Cohere](https://instill-ai.readme.io/docs/cohere.md)
+  - [Fireworks AI](https://instill-ai.readme.io/docs/fireworks-ai.md)
+  - [Gemini](https://instill-ai.readme.io/docs/gemini.md)
+  - [Groq](https://instill-ai.readme.io/docs/groq.md)
+  - [Hugging Face](https://instill-ai.readme.io/docs/hugging-face.md)
+  - [Instill Model](https://instill-ai.readme.io/docs/instill-model.md)
+  - [Mistral AI](https://instill-ai.readme.io/docs/mistral-ai.md)
+  - [Ollama](https://instill-ai.readme.io/docs/ollama.md)
+  - [OpenAI](https://instill-ai.readme.io/docs/openai.md)
+  - [Perplexity](https://instill-ai.readme.io/docs/perplexity.md)
+  - [Stability AI](https://instill-ai.readme.io/docs/stability-ai.md)
+- [Data](https://instill-ai.readme.io/docs/data.md)
+  - [BigQuery](https://instill-ai.readme.io/docs/bigquery.md)
+  - [Chroma](https://instill-ai.readme.io/docs/chroma.md)
+  - [Elasticsearch](https://instill-ai.readme.io/docs/elasticsearch.md)
+  - [Google Cloud Storage](https://instill-ai.readme.io/docs/gcs.md)
+  - [Google Drive](https://instill-ai.readme.io/docs/google-drive.md)
+  - [Google Sheets](https://instill-ai.readme.io/docs/google-sheets.md)
+  - [Instill Artifact](https://instill-ai.readme.io/docs/instill-artifact.md)
+  - [Milvus](https://instill-ai.readme.io/docs/milvus.md)
+  - [MongoDB](https://instill-ai.readme.io/docs/mongodb.md)
+  - [Pinecone](https://instill-ai.readme.io/docs/pinecone.md)
+  - [Qdrant](https://instill-ai.readme.io/docs/qdrant.md)
+  - [Redis](https://instill-ai.readme.io/docs/redis.md)
+  - [SQL](https://instill-ai.readme.io/docs/sql.md)
+  - [Weaviate](https://instill-ai.readme.io/docs/weaviate.md)
+  - [Zilliz](https://instill-ai.readme.io/docs/zilliz.md)
+- [Application](https://instill-ai.readme.io/docs/application.md)
+  - [Asana](https://instill-ai.readme.io/docs/asana.md)
+  - [Email](https://instill-ai.readme.io/docs/email.md)
+  - [Freshdesk](https://instill-ai.readme.io/docs/freshdesk.md)
+  - [GitHub](https://instill-ai.readme.io/docs/github.md)
+  - [Google Search](https://instill-ai.readme.io/docs/google-search.md)
+  - [HubSpot](https://instill-ai.readme.io/docs/hubspot.md)
+  - [Jira](https://instill-ai.readme.io/docs/jira.md)
+  - [LeadIQ](https://instill-ai.readme.io/docs/leadiq.md)
+  - [Numbers Protocol](https://instill-ai.readme.io/docs/numbers.md)
+  - [Slack](https://instill-ai.readme.io/docs/slack.md)
+  - [Smartlead](https://instill-ai.readme.io/docs/smartlead.md)
+  - [WhatsApp](https://instill-ai.readme.io/docs/whatsapp.md)
+- [Operator](https://instill-ai.readme.io/docs/operator.md)
+  - [Audio](https://instill-ai.readme.io/docs/audio.md)
+  - [Base64](https://instill-ai.readme.io/docs/base64.md)
+  - [Document](https://instill-ai.readme.io/docs/document.md)
+  - [Image](https://instill-ai.readme.io/docs/image.md)
+  - [JSON](https://instill-ai.readme.io/docs/json.md)
+  - [Text](https://instill-ai.readme.io/docs/text.md)
+  - [Video](https://instill-ai.readme.io/docs/video.md)
+  - [Web](https://instill-ai.readme.io/docs/web.md)
+
+## Documentation: Artifact
+- [Introduction](https://instill-ai.readme.io/docs/artifact-introduction.md)
+- [Supported File Types](https://instill-ai.readme.io/docs/supported-file-types.md)
+- [Create Catalog](https://instill-ai.readme.io/docs/create-catalog.md)
+- [Upload Files into Catalog](https://instill-ai.readme.io/docs/upload-files-into-catalog.md)
+- [Process Files in Catalog](https://instill-ai.readme.io/docs/process-files-in-catalog.md)
+- [Retrieve File Chunks](https://instill-ai.readme.io/docs/retrieve-file-chunks.md)
+- [Ask Catalog](https://instill-ai.readme.io/docs/ask-catalog.md)
+- [Get a File in a Catalog](https://instill-ai.readme.io/docs/get-a-file-in-a-catalog.md)
+- [Manage Catalogs](https://instill-ai.readme.io/docs/manage-catalogs.md)
+- [Manage Files](https://instill-ai.readme.io/docs/manage-files.md)
+- [Manage Chunks](https://instill-ai.readme.io/docs/manage-chunks.md)
+
+## Documentation: Model
+- [Introduction](https://instill-ai.readme.io/docs/model-introduction.md)
+- [AI Task](https://instill-ai.readme.io/docs/ai-task.md)
+- [Create Model](https://instill-ai.readme.io/docs/create-model.md)
+  - [Prepare Model](https://instill-ai.readme.io/docs/prepare-model.md)
+  - [Build Model Image](https://instill-ai.readme.io/docs/build-model-image.md)
+  - [Push Model Image](https://instill-ai.readme.io/docs/push-model-image.md)
+- [Model Inference](https://instill-ai.readme.io/docs/model-inference.md)
+- [Model State](https://instill-ai.readme.io/docs/model-state.md)
+
+## Documentation: SDK
+- [Python SDK](https://instill-ai.readme.io/docs/python-sdk.md)
+- [TypeScript SDK](https://instill-ai.readme.io/docs/typescript-sdk.md)
+
+## Documentation: MCP Server
+- [MCP](https://instill-ai.readme.io/docs/mcp.md)
+
+## API Reference: Instill Core API
+- [Get the authenticated user](https://instill-ai.readme.io/reference/mgmtpublicservice_getauthenticateduser.md): Returns the details of the authenticated user.
+- [Update the authenticated user](https://instill-ai.readme.io/reference/mgmtpublicservice_patchauthenticateduser.md): Updates the information of the authenticated user.  In REST requests, only the supplied user fields will be taken into account when updating the resource.
+- [List users](https://instill-ai.readme.io/reference/mgmtpublicservice_listusers.md): Returns a paginated list of users.
+- [Get a user](https://instill-ai.readme.io/reference/mgmtpublicservice_getuser.md): Returns the details of a user by their ID.
+- [List organizations](https://instill-ai.readme.io/reference/mgmtpublicservice_listorganizations.md): Returns a paginated list of organizations.
+- [Create an organization](https://instill-ai.readme.io/reference/mgmtpublicservice_createorganization.md): Creates an organization.
+- [Get an organization](https://instill-ai.readme.io/reference/mgmtpublicservice_getorganization.md): Returns the organization details by its ID.
+- [Delete an organization](https://instill-ai.readme.io/reference/mgmtpublicservice_deleteorganization.md): Accesses and deletes an organization by ID.
+- [Update an organization](https://instill-ai.readme.io/reference/mgmtpublicservice_updateorganization.md): Accesses and updates an organization by ID.  In REST requests, only the supplied organization fields will be taken into account when updating the resource.
+- [List user memberships](https://instill-ai.readme.io/reference/mgmtpublicservice_listusermemberships.md): Returns the memberships of a user.
+- [Get a user membership](https://instill-ai.readme.io/reference/mgmtpublicservice_getusermembership.md): Returns the details of the relationship between a user and an organization. The authenticated must match the membership parent.
+- [Delete a user membership](https://instill-ai.readme.io/reference/mgmtpublicservice_deleteusermembership.md): Accesses and deletes a user membership by parent and membership IDs.
+- [Update a user membership](https://instill-ai.readme.io/reference/mgmtpublicservice_updateusermembership.md): Accesses and updates a user membership by parent and membership IDs.
+- [List organization memberships](https://instill-ai.readme.io/reference/mgmtpublicservice_listorganizationmemberships.md): Returns a paginated list of the user memberships in an organization.
+- [Get an organization membership](https://instill-ai.readme.io/reference/mgmtpublicservice_getorganizationmembership.md): Returns the details of a user membership within an organization.
+- [Delete an organization membership](https://instill-ai.readme.io/reference/mgmtpublicservice_deleteorganizationmembership.md): Deletes a user membership within an organization.
+- [Update an organization membership](https://instill-ai.readme.io/reference/mgmtpublicservice_updateorganizationmembership.md): Updates a user membership within an organization.
+- [List API tokens](https://instill-ai.readme.io/reference/mgmtpublicservice_listtokens.md): Returns a paginated list of the API tokens of the authenticated user.
+- [Create an API token](https://instill-ai.readme.io/reference/mgmtpublicservice_createtoken.md): Creates an API token for the authenticated user.
+- [Get an API token](https://instill-ai.readme.io/reference/mgmtpublicservice_gettoken.md): Returns the details of an API token.
+- [Delete an API token](https://instill-ai.readme.io/reference/mgmtpublicservice_deletetoken.md): Deletes an API token.
+- [Validate an API token](https://instill-ai.readme.io/reference/mgmtpublicservice_validatetoken.md): Validates an API token.
+- [Check if a namespace is in use](https://instill-ai.readme.io/reference/mgmtpublicservice_checknamespace.md): Returns the availability of a namespace or, alternatively, the type of resource that is using it.
+- [Invite members to an organization](https://instill-ai.readme.io/reference/mgmtpublicservice_inviteorganizationmembers.md): Invites members to an organization.
+- [List accessible pipelines](https://instill-ai.readme.io/reference/pipelinepublicservice_listpipelines.md): Returns a paginated list of pipelines that are visible to the requester.
+- [List namespace pipelines](https://instill-ai.readme.io/reference/pipelinepublicservice_listnamespacepipelines.md): Returns a paginated list of pipelines of a namespace
+- [Create a new pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_createnamespacepipeline.md): Creates a new pipeline under a namespace.
+- [Get a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_getnamespacepipeline.md): Returns the details of a pipeline.
+- [Delete a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_deletenamespacepipeline.md): Deletes a pipeline, accesing it by its resource name, which is defined by the parent namespace and the ID of the pipeline. The authenticated namespace must be the parent of the pipeline in order to…
+- [Update a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_updatenamespacepipeline.md): Udpates a pipeline, accessing it by its resource name, which is defined by the parent namespace and the ID of the pipeline. The authenticated namespace must be the parent of the pipeline in order to…
+- [Validate a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_validatenamespacepipeline.md): Validates a pipeline by its resource name, which is defined by the parent namespace and the ID of the pipeline.  Validation checks the recipe of the pipeline and the status of its components.
+- [Rename a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_renamenamespacepipeline.md): Updates the ID of a pipeline. Since this is an output-only field, a custom method is required to modify it.  The pipeline name will be updated accordingly, as it is  composed by the parent namespace…
+- [Clone a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_clonenamespacepipeline.md): Clones a pipeline owned by a namespace. The new pipeline may have a different parent, and this can be either a namespace or an organization.
+- [Trigger a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_triggernamespacepipeline.md): Triggers the execution of a pipeline synchronously, i.e., the result is sent back to the namespace right after the data is processed. This method is intended for real-time inference when low latency…
+- [Trigger a pipeline via streaming](https://instill-ai.readme.io/reference/pipelinepublicservice_triggernamespacepipelinewithstream.md): Triggers the execution of a pipeline asynchronously and streams back the response. This method is intended for real-time inference when low latency is of concern and the response needs to be…
+- [Trigger a pipeline asynchronously](https://instill-ai.readme.io/reference/pipelinepublicservice_triggerasyncnamespacepipeline.md): Triggers the execution of a pipeline asynchronously, i.e., the result contains the necessary information to access the result and status of the operation. This method is intended for cases that…
+- [List the releases in a pipeline](https://instill-ai.readme.io/reference/pipelinepublicservice_listnamespacepipelinereleases.md): Lists the commited versions of a pipeline, identified by its resource name, which is formed by the parent namespace and ID of the pipeline.
+- [Create a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_createnamespacepipelinerelease.md): Commits the version of a pipeline, identified by its resource name, which is formed by the parent namespace and ID of the pipeline.  The authenticated namespace must be the parent of the pipeline in…
+- [Get a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_getnamespacepipelinerelease.md): Gets the details of a pipeline release, where the pipeline is identified by its resource name, formed by its parent namespace and ID.
+- [Delete a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_deletenamespacepipelinerelease.md): Deletes a pipeline release, where the pipeline is identified by its resource name, formed by its parent namespace and ID.  The authenticated namespace must be the parent of the pipeline in order to…
+- [Update a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_updatenamespacepipelinerelease.md): Updates the details of a pipeline release, where the pipeline is identified by its resource name, formed by its parent namespace and ID.  The authenticated namespace must be the parent of the…
+- [Clone a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_clonenamespacepipelinerelease.md): Clones a pipeline release owned by a namespace. The new pipeline may have a different parent, and this can be either a namespace or an organization.
+- [Trigger a pipeline release](https://instill-ai.readme.io/reference/pipelinepublicservice_triggernamespacepipelinerelease.md): Triggers the synchronous execution of of a pipeline. While the trigger endpoint (where the release version isn't specified) triggers the pipeline at its latest release, this method allows the client…
+- [Trigger a pipeline release asynchronously](https://instill-ai.readme.io/reference/pipelinepublicservice_triggerasyncnamespacepipelinerelease.md): Triggers the asynchronous execution of of a pipeline. While the trigger endpoint (where the release version isn't specified) triggers the pipeline at its latest release, this method allows the client…
+- [List secrets](https://instill-ai.readme.io/reference/pipelinepublicservice_listnamespacesecrets.md): Returns a paginated list of secrets that belong to the specified namespace.
+- [Create a secret](https://instill-ai.readme.io/reference/pipelinepublicservice_createnamespacesecret.md): Creates a new secret under the parenthood of an namespace.
+- [Get a secret](https://instill-ai.readme.io/reference/pipelinepublicservice_getnamespacesecret.md): Returns the details of an namespace-owned secret by its resource name, which is defined by the parent namespace and the ID of the secret.
+- [Delete a secret](https://instill-ai.readme.io/reference/pipelinepublicservice_deletenamespacesecret.md): Deletes a secret, accesing it by its resource name, which is defined by the parent namespace and the ID of the secret.
+- [Update a secret](https://instill-ai.readme.io/reference/pipelinepublicservice_updatenamespacesecret.md): Udpates a secret, accessing it by its resource name, which is defined by  In REST requests, only the supplied secret fields will be taken into account when updating the resource.
+- [List component definitions](https://instill-ai.readme.io/reference/pipelinepublicservice_listcomponentdefinitions.md): Returns a paginated list of component definitions, regardless their type. This offers a single source of truth, with pagination and filter capabilities, for the components that might be used in a…
+- [Get the details of a long-running operation](https://instill-ai.readme.io/reference/pipelinepublicservice_getoperation.md): This method allows requesters to request the status and outcome of long-running operations such as asynchronous pipeline triggers.
+- [List Pipeline Runs](https://instill-ai.readme.io/reference/pipelinepublicservice_listpipelineruns.md): Returns a paginated list of runs for a given pipeline. When the requester is the owner of the pipeline, they will be able to all the pipeline runs, regardless who requested the trigger (the view will…
+- [List Component Runs](https://instill-ai.readme.io/reference/pipelinepublicservice_listcomponentruns.md): Returns the information of each component execution within a pipeline run.
+- [List Pipeline Runs By Requester](https://instill-ai.readme.io/reference/pipelinepublicservice_listpipelinerunsbyrequester.md): Returns a paginated list of runs for requested by a namespace. The response may contain runs from several pipelines.
+- [List namespace connections](https://instill-ai.readme.io/reference/pipelinepublicservice_listnamespaceconnections.md): Returns a paginated list of connections created by a namespace.
+- [Create a connection](https://instill-ai.readme.io/reference/pipelinepublicservice_createnamespaceconnection.md): Creates a connection under the ownership of a namespace.
+- [Get a namespace connection](https://instill-ai.readme.io/reference/pipelinepublicservice_getnamespaceconnection.md): Returns the details of a connection.
+- [Delete a connection](https://instill-ai.readme.io/reference/pipelinepublicservice_deletenamespaceconnection.md): Deletes a connection.
+- [Update a connection](https://instill-ai.readme.io/reference/pipelinepublicservice_updatenamespaceconnection.md): Updates a connection with the supplied connection fields.
+- [Test a connection](https://instill-ai.readme.io/reference/pipelinepublicservice_testnamespaceconnection.md): Makes a request to the 3rd party app that the connection is configured to communicate with, and checks the result of the call. If the test fails, the response status and error message will provide…
+- [List pipelines that reference a connection](https://instill-ai.readme.io/reference/pipelinepublicservice_listpipelineidsbyconnectionid.md): Returns a paginated list with the IDs of the pipelines that reference a given connection. All the pipelines will belong to the same namespace as the connection.
+- [List integrations](https://instill-ai.readme.io/reference/pipelinepublicservice_listintegrations.md): Returns a paginated list of available integrations.
+- [Get an integration](https://instill-ai.readme.io/reference/pipelinepublicservice_getintegration.md): Returns the details of an integration.
+- [Get all catalogs info](https://instill-ai.readme.io/reference/artifactpublicservice_listcatalogs.md): Returns a paginated list of catalogs.
+- [Create a catalog](https://instill-ai.readme.io/reference/artifactpublicservice_createcatalog.md): Creates a catalog.
+- [Get the catalog file.](https://instill-ai.readme.io/reference/artifactpublicservice_getfilecatalog.md): Returns a view of the file within the catalog, with the text and chunks it generated after being processed.
+- [Delete a catalog](https://instill-ai.readme.io/reference/artifactpublicservice_deletecatalog.md): Deletes a catalog.
+- [Update a catalog info](https://instill-ai.readme.io/reference/artifactpublicservice_updatecatalog.md): Updates the information of a catalog.
+- [List catalog files](https://instill-ai.readme.io/reference/artifactpublicservice_listcatalogfiles.md): Returns a paginated list of catalog files.
+- [Create a file](https://instill-ai.readme.io/reference/artifactpublicservice_uploadcatalogfile.md): Creates a file.
+- [Delete a file](https://instill-ai.readme.io/reference/artifactpublicservice_deletecatalogfile.md): Deletes a file.
+- [Process catalog files](https://instill-ai.readme.io/reference/artifactpublicservice_processcatalogfiles.md): Processes catalog files.
+- [Get catalog file](https://instill-ai.readme.io/reference/artifactpublicservice_getcatalogfile.md): Gets the file of a catalog.
+- [List catalog chunks](https://instill-ai.readme.io/reference/artifactpublicservice_listchunks.md): Returns a paginated list of catalog chunks.
+- [Search catalog chunks](https://instill-ai.readme.io/reference/artifactpublicservice_searchchunks.md): Returns a paginated list of catalog chunks based on search criteria.
+- [Get catalog single-source-of-truth file](https://instill-ai.readme.io/reference/artifactpublicservice_getsourcefile.md): Gets the single-source-of-truth file of a catalog.
+- [Get summary from a catalog file](https://instill-ai.readme.io/reference/artifactpublicservice_getfilesummary.md): Gets summary from a catalog file
+- [Search single-source-of-truth files](https://instill-ai.readme.io/reference/artifactpublicservice_searchsourcefiles.md): Searches the single-source-of-truth files of a catalog.
+- [Update catalog chunk](https://instill-ai.readme.io/reference/artifactpublicservice_updatechunk.md): Updates a catalog chunk.
+- [Retrieve similar chunks](https://instill-ai.readme.io/reference/artifactpublicservice_similaritychunkssearch.md): Returns the top-K most similar chunks to a text prompt.
+- [Answer a question](https://instill-ai.readme.io/reference/artifactpublicservice_questionanswering.md): Provides the response to the prompted question, returning contextual information like the chunks used to build the answer.
+- [List Catalog Runs](https://instill-ai.readme.io/reference/artifactpublicservice_listcatalogruns.md): Returns a paginated list of catalog runs.
+- [Get Object Upload URL](https://instill-ai.readme.io/reference/artifactpublicservice_getobjectuploadurl.md): Returns the upload URL of an object.
+- [Get Object Download URL](https://instill-ai.readme.io/reference/artifactpublicservice_getobjectdownloadurl.md): Returns the download URL of an object.
+- [Move file to another catalog](https://instill-ai.readme.io/reference/artifactpublicservice_movefiletocatalog.md): Moves a file to another catalog.
+- [List model definitions](https://instill-ai.readme.io/reference/modelpublicservice_listmodeldefinitions.md): Returns a paginated list of model definitions.
+- [List available regions](https://instill-ai.readme.io/reference/modelpublicservice_listavailableregions.md): Returns a paginated list of available regions.
+- [Get a model definition](https://instill-ai.readme.io/reference/modelpublicservice_getmodeldefinition.md): Returns the details of a model definition.
+- [List models](https://instill-ai.readme.io/reference/modelpublicservice_listmodels.md): Returns a paginated list of models.
+- [List namespace models](https://instill-ai.readme.io/reference/modelpublicservice_listnamespacemodels.md): Returns a paginated list of models.
+- [Create a new model](https://instill-ai.readme.io/reference/modelpublicservice_createnamespacemodel.md): Creates a new model under the parenthood of a namespace. This is an asynchronous endpoint, i.e., the server will not wait for the model to be created in order to respond. Instead, it will return a…
+- [Get a model](https://instill-ai.readme.io/reference/modelpublicservice_getnamespacemodel.md): Returns the detail of a model, accessing it by the model ID and its parent namespace.
+- [Delete a model](https://instill-ai.readme.io/reference/modelpublicservice_deletenamespacemodel.md): Deletes a model, accesing it by its resource name, which is defined by the parent namespace and the ID of the model.
+- [Update a model](https://instill-ai.readme.io/reference/modelpublicservice_updatenamespacemodel.md): Updates a model, accessing it by its resource name, which is defined by the parent namespace and the ID of the model.  In REST requests, only the supplied model fields will be taken into account when…
+- [Rename a model](https://instill-ai.readme.io/reference/modelpublicservice_renamenamespacemodel.md): Renames a model, accesing it by its resource name, which is defined by the parent namespace and the ID of the model.
+- [Watch the state of a model version](https://instill-ai.readme.io/reference/modelpublicservice_watchnamespacemodel.md): Returns the state of a model. The model resource allocation and scaling actions take some time, during which a model will be in various state. This endpoint allows clients to track the state.
+- [Watch the state of the latest model version](https://instill-ai.readme.io/reference/modelpublicservice_watchnamespacelatestmodel.md): Returns the state of the latest model version. The model resource allocation and scaling actions take some time, during which a model will be in various state. This endpoint allows clients to track…
+- [List namespace model versions](https://instill-ai.readme.io/reference/modelpublicservice_listnamespacemodelversions.md): Returns a paginated list of version of a model namespace that belong to the specified namespace. Contains model version and digest.
+- [Delete a model version](https://instill-ai.readme.io/reference/modelpublicservice_deletenamespacemodelversion.md): Deletes a model version, accesing it by its resource name, which is defined by the parent namespace and the ID of the model, and version.
+- [Trigger model inference](https://instill-ai.readme.io/reference/modelpublicservice_triggernamespacemodel.md): Triggers a deployed model to infer the result of a set of task or questions.
+- [Trigger model inference asynchronously](https://instill-ai.readme.io/reference/modelpublicservice_triggerasyncnamespacemodel.md): Triggers a deployed model to infer the result of a set of task or questions.
+- [Trigger model inference](https://instill-ai.readme.io/reference/modelpublicservice_triggernamespacelatestmodel.md): Triggers the latest deployed model version to infer the result of a set of task or questions.
+- [Trigger model inference asynchronously](https://instill-ai.readme.io/reference/modelpublicservice_triggerasyncnamespacelatestmodel.md): Triggers the latest deployed model version to infer the result of a set of task or questions.
+- [Get the details of the long-running operation from a namespace model
+with a particular version](https://instill-ai.readme.io/reference/modelpublicservice_getnamespacemodeloperation.md): This method allows requesters to request the status and outcome of long-running operations in a model, such as trigger.
+- [Get the details of the latest long-running operation from a namespace model](https://instill-ai.readme.io/reference/modelpublicservice_getnamespacelatestmodeloperation.md): This method allows requesters to request the status and outcome of long-running operations in a model, such as trigger.
+- [Get the details of a long-running operation](https://instill-ai.readme.io/reference/modelpublicservice_getmodeloperation.md): This method allows requesters to request the status and outcome of long-running operations in a model, such as trigger.
+- [List Model Runs](https://instill-ai.readme.io/reference/modelpublicservice_listmodelruns.md): Returns a paginated list of runs for a given model. When the requester is the owner of the model, they will be able to all the model runs, regardless who requested the trigger (the view will be…
+- [List Model Runs By Requester](https://instill-ai.readme.io/reference/modelpublicservice_listmodelrunsbyrequester.md): Returns a paginated list of runs requested by a namespace. The response may contain runs from several models.
+- [List pipeline trigger time charts](https://instill-ai.readme.io/reference/mgmtpublicservice_listpipelinetriggerchartrecords.md): Returns a timeline of pipeline trigger counts for a given requester. The response will contain one set of records (datapoints), representing the amount of triggers in a time bucket.
+- [List model trigger time charts](https://instill-ai.readme.io/reference/mgmtpublicservice_listmodeltriggerchartrecords.md): Returns a timeline of model trigger counts for a given requester. The response will contain one set of records (datapoints), representing the amount of triggers in a time bucket.
+
+## Changelog
+- [Version Pinning by Default](https://instill-ai.readme.io/changelog/version-pinned-by-default.md)
+- [Observability](https://instill-ai.readme.io/changelog/observability.md)
+- [MCP is now live for Instill Core docs!](https://instill-ai.readme.io/changelog/mcp-is-now-live-for-instill-core-docs.md)
+- [New Docs Site for Instill Core](https://instill-ai.readme.io/changelog/new-docs-site-for-instill-core.md)
+- [Support Multiple LLM Runtimes](https://instill-ai.readme.io/changelog/support-multiple-llm-runtimes.md)
+- [Split in Pages Task for Document Operator](https://instill-ai.readme.io/changelog/split-in-pages-task-for-document-operator.md)
+- [2025 June Improvements & Fixes](https://instill-ai.readme.io/changelog/2025-june-improvements-fixes.md)
+- [Run-on-Event: Send Slack message on GitHub star event](https://instill-ai.readme.io/changelog/run-on-event-send-slack-message-on-github-star-event.md)
+- [One-click integrations with GitHub, Slack & Google Drive](https://instill-ai.readme.io/changelog/one-click-integrations-with-github-slack-google-drive.md)
+- [Visit Your Dashboard](https://instill-ai.readme.io/changelog/visit-your-dashboard.md)

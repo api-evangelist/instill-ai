@@ -1,0 +1,45 @@
+generated: '2026-10-09'
+method: derived
+generator: derive-vocabulary.py
+source: openapi/instill-ai-openapi.yml
+vocabulary:
+  name: Instill AI Domain Vocabulary
+  description: 'Terms declared by Instill AI''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-10-09'
+  terms:
+  - term: Namespace
+    definition: Namespaces (e.g. User, Organization) that structure the resource hierarchy.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Pipeline
+    definition: Pipeline orchestration.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Artifact
+    definition: Data orchestration for unified unstructured data representation.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Model
+    definition: AI Model orchestration
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Metrics
+    definition: Resource usage metrics.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Connection
+    definition: Connections to 3rd party apps for use in pipelines.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml
+  - term: Integration
+    definition: Integration definitions for creating connections.
+    tags:
+    - Resource Group
+    source: openapi/instill-ai-openapi.yml

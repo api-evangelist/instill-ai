@@ -1,0 +1,429 @@
+syntax = "proto3";
+
+package mgmt.v1beta;
+
+import "google/api/annotations.proto";
+// Google API
+import "google/api/visibility.proto";
+// Core definitions
+import "mgmt/v1beta/auth.proto";
+import "mgmt/v1beta/integration.proto";
+import "mgmt/v1beta/metric.proto";
+import "mgmt/v1beta/mgmt.proto";
+// OpenAPI definition
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// MGMT
+//
+// MgmtPublicService exposes the public Core endpoints that allow clients to
+// manage user resources.
+service MgmtPublicService {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_tag) = {description: "Public Mgmt endpoints"};
+
+  // Check if the MGMT server is alive
+  //
+  // See https://github.com/grpc/grpc/blob/master/doc/health-checking.md.
+  rpc Liveness(LivenessRequest) returns (LivenessResponse) {
+    option (google.api.http) = {
+      get: "/v1beta/__liveness"
+      additional_bindings: [
+        {get: "/v1beta/health/mgmt"}]
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Check if the pipeline server is ready
+  //
+  // See https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+  rpc Readiness(ReadinessRequest) returns (ReadinessResponse) {
+    option (google.api.http) = {
+      get: "/v1beta/__readiness"
+      additional_bindings: [
+        {get: "/v1beta/ready/mgmt"}]
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Authenticate user with username and password
+  //
+  // Validates Basic Auth credentials and returns the user UID.
+  // Used internally by API Gateway for authentication.
+  rpc AuthenticateUser(AuthenticateUserRequest) returns (AuthenticateUserResponse) {
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Get the authenticated user
+  //
+  // Returns the details of the authenticated user.
+  rpc GetAuthenticatedUser(GetAuthenticatedUserRequest) returns (GetAuthenticatedUserResponse) {
+    option (google.api.http) = {get: "/v1beta/user"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update the authenticated user
+  //
+  // Updates the information of the authenticated user.
+  //
+  // In REST requests, only the supplied user fields will be taken into account
+  // when updating the resource.
+  rpc PatchAuthenticatedUser(PatchAuthenticatedUserRequest) returns (PatchAuthenticatedUserResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/user"
+      body: "user"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List users
+  //
+  // Returns a paginated list of users.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {get: "/v1beta/users"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a user
+  //
+  // Returns the details of a user by their ID.
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=users/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Create an API token
+  //
+  // Creates an API token for the authenticated user.
+  rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/tokens"
+      body: "token"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List API tokens
+  //
+  // Returns a paginated list of the API tokens of the authenticated user.
+  rpc ListTokens(ListTokensRequest) returns (ListTokensResponse) {
+    option (google.api.http) = {get: "/v1beta/tokens"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get an API token
+  //
+  // Returns the details of an API token.
+  rpc GetToken(GetTokenRequest) returns (GetTokenResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=tokens/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete an API token
+  //
+  // Deletes an API token.
+  rpc DeleteToken(DeleteTokenRequest) returns (DeleteTokenResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=tokens/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Validate an API token
+  //
+  // Validates an API token.
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse) {
+    option (google.api.http) = {post: "/v1beta/validate-token"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Check if a namespace is in use
+  //
+  // Returns the availability of a namespace or, alternatively, the type of
+  // resource that is using it.
+  rpc CheckNamespace(CheckNamespaceRequest) returns (CheckNamespaceResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/check-namespace"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Namespace"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get pipeline trigger count
+  //
+  // Returns the pipeline trigger count of a given requester within a timespan.
+  // Results are grouped by trigger status.
+  rpc GetPipelineTriggerCount(GetPipelineTriggerCountRequest) returns (GetPipelineTriggerCountResponse) {
+    option (google.api.http) = {get: "/v1beta/pipeline-runs/count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Metrics"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+    // This endpoint will remain hidden until the new dashboard is implemented
+    // in the frontend. Until then, the server might return empty data.
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // Get model trigger count
+  //
+  // Returns the model trigger count of a given requester within a timespan.
+  // Results are grouped by trigger status.
+  rpc GetModelTriggerCount(GetModelTriggerCountRequest) returns (GetModelTriggerCountResponse) {
+    option (google.api.http) = {get: "/v1beta/model-runs/count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Metrics"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+    // This endpoint will remain hidden until the new dashboard is implemented
+    // in the frontend. Until then, the server might return empty data.
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // List pipeline trigger time charts
+  //
+  // Returns a timeline of pipeline trigger counts for a given requester. The
+  // response will contain one set of records (datapoints), representing the
+  // amount of triggers in a time bucket.
+  rpc ListPipelineTriggerChartRecords(ListPipelineTriggerChartRecordsRequest) returns (ListPipelineTriggerChartRecordsResponse) {
+    option (google.api.http) = {get: "/v1beta/pipeline-runs/query-charts"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Metrics"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List model trigger time charts
+  //
+  // Returns a timeline of model trigger counts for a given requester. The
+  // response will contain one set of records (datapoints), representing the
+  // amount of triggers in a time bucket.
+  rpc ListModelTriggerChartRecords(ListModelTriggerChartRecordsRequest) returns (ListModelTriggerChartRecordsResponse) {
+    option (google.api.http) = {get: "/v1beta/model-runs/query-charts"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Metrics"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Change password
+  //
+  // Updates the password of a user.
+  rpc AuthChangePassword(AuthChangePasswordRequest) returns (AuthChangePasswordResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/auth/change-password"
+      body: "*"
+    };
+    option (google.api.method_visibility).restriction = "INTERNAL";
+  }
+
+  // List namespace connections
+  //
+  // Returns a paginated list of connections created by a namespace.
+  rpc ListNamespaceConnections(ListNamespaceConnectionsRequest) returns (ListNamespaceConnectionsResponse) {
+    option (google.api.http) = {get: "/v1beta/{parent=namespaces/*}/connections"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get a namespace connection
+  //
+  // Returns the details of a connection.
+  rpc GetNamespaceConnection(GetNamespaceConnectionRequest) returns (GetNamespaceConnectionResponse) {
+    option (google.api.http) = {get: "/v1beta/{name=namespaces/*/connections/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Create a connection
+  //
+  // Creates a connection under the ownership of a namespace.
+  rpc CreateNamespaceConnection(CreateNamespaceConnectionRequest) returns (CreateNamespaceConnectionResponse) {
+    option (google.api.http) = {
+      post: "/v1beta/{parent=namespaces/*}/connections"
+      body: "connection"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Update a connection
+  //
+  // Updates a connection with the supplied connection fields.
+  rpc UpdateNamespaceConnection(UpdateNamespaceConnectionRequest) returns (UpdateNamespaceConnectionResponse) {
+    option (google.api.http) = {
+      patch: "/v1beta/{connection.name=namespaces/*/connections/*}"
+      body: "connection"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Delete a connection
+  //
+  // Deletes a connection.
+  rpc DeleteNamespaceConnection(DeleteNamespaceConnectionRequest) returns (DeleteNamespaceConnectionResponse) {
+    option (google.api.http) = {delete: "/v1beta/{name=namespaces/*/connections/*}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Test a connection
+  //
+  // Makes a request to the 3rd party app that the connection is configured to
+  // communicate with, and checks the result of the call. If the test fails,
+  // the response status and error message will provide more information about
+  // the failure.
+  //
+  // Note that this action might affect the quota or billing of the integrated
+  // account in the 3rd party app.
+  rpc TestNamespaceConnection(TestNamespaceConnectionRequest) returns (TestNamespaceConnectionResponse) {
+    option (google.api.http) = {post: "/v1beta/{name=namespaces/*/connections/*}/test"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List pipelines that reference a connection
+  //
+  // Returns a paginated list with the IDs of the pipelines that reference a
+  // given connection. All the pipelines will belong to the same namespace as
+  // the connection.
+  rpc ListPipelineIDsByConnectionID(ListPipelineIDsByConnectionIDRequest) returns (ListPipelineIDsByConnectionIDResponse) {
+    option (google.api.http) = {get:
+        "/v1beta/namespaces/{namespace_id}/connections/{connection_id}/"
+        "referenced-pipelines"
+};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Connection"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // List integrations
+  //
+  // Returns a paginated list of available integrations.
+  rpc ListIntegrations(ListIntegrationsRequest) returns (ListIntegrationsResponse) {
+    option (google.api.http) = {get: "/v1beta/integrations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Integration"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+
+  // Get an integration
+  //
+  // Returns the details of an integration.
+  rpc GetIntegration(GetIntegrationRequest) returns (GetIntegrationResponse) {
+    option (google.api.http) = {get: "/v1beta/integrations/{integration_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "Integration"
+      extensions: {
+        key: "x-stage"
+        value: {string_value: "beta"}
+      }
+    };
+  }
+}

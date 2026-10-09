@@ -1,0 +1,44 @@
+name: Instill AI Packages
+generated: '2026-10-09'
+method: searched
+source: https://pypi.org/pypi/instill-sdk/json
+packages:
+- name: instill-sdk
+  registry: pypi
+  url: https://pypi.org/project/instill-sdk/
+  language: python
+  official: true
+  version: 0.18.0
+  published: 2025-06-24
+  repository: https://github.com/instill-ai/python-sdk
+  note: PyPI summary "python sdk for Instill AI products", author instill-ai, MIT; listed in docs index as "Python SDK".
+  ownership_audit: metadata names instill-ai.com
+- name: instill-sdk
+  registry: npm
+  url: https://www.npmjs.com/package/instill-sdk
+  language: typescript
+  official: true
+  version: 0.18.15
+  published: 2026-02-04
+  repository: https://github.com/instill-ai/console (packages/sdk)
+  note: listed in docs index as "TypeScript SDK".
+  ownership_audit: metadata names instill-ai.com
+- name: '@instill-ai/toolkit'
+  registry: npm
+  url: https://www.npmjs.com/package/@instill-ai/toolkit
+  language: typescript
+  official: false
+  version: 0.120.21
+  published: 2026-03-01
+  repository: https://github.com/instill-ai/console (packages/toolkit)
+  note: Console UI toolkit published from the first-party console repo; not an API client.
+  ownership_audit: 'registry has no such package: official downgraded (harvest-packages.py --audit)'
+- name: inst
+  registry: homebrew
+  url: https://github.com/instill-ai/cli
+  language: go
+  official: true
+  version: 0.4.1
+  published: 2025-07-03
+  install: brew install instill-ai/tap/inst
+  note: Version and date read from https://github.com/instill-ai/cli/releases/latest (tap instill-ai/tap; no registry metadata endpoint queried).
