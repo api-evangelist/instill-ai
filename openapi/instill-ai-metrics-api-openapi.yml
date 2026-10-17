@@ -1,6 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Instill Ai Metrics API
+  title: Instill Core Metrics API
+  description: Interact with Instill Core through API
   version: v0.57.0
   contact:
     name: Instill AI
@@ -9,7 +10,6 @@ info:
   license:
     name: MIT
     url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
-  description: 'Operations tagged Metrics across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.instill-ai.com
 - url: http://api.instill-ai.com
@@ -86,9 +86,6 @@ paths:
       tags:
       - Metrics
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/model-runs/query-charts:
     get:
       summary: List model trigger time charts
@@ -156,11 +153,68 @@ paths:
       tags:
       - Metrics
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
 components:
   schemas:
+    ModelTriggerChartRecord:
+      type: object
+      properties:
+        modelId:
+          type: string
+          description: This field will be present when the information is grouped by model.
+          readOnly: true
+        timeBuckets:
+          type: array
+          items:
+            type: string
+            format: date-time
+          description: Time buckets.
+          readOnly: true
+        triggerCounts:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Aggregated trigger count in each time bucket.
+          readOnly: true
+        requesterId:
+          type: string
+          description: The ID of the namespace that requested the model triggers.
+          readOnly: true
+      description: 'ModelTriggerChartRecord represents a timeline of model triggers. It
+
+        contains a collection of (timestamp, count) pairs that represent the total
+
+        model triggers in a given time bucket.'
+    PipelineTriggerChartRecord:
+      type: object
+      properties:
+        pipelineId:
+          type: string
+          description: This field will be present when the information is grouped by pipeline.
+          readOnly: true
+        timeBuckets:
+          type: array
+          items:
+            type: string
+            format: date-time
+          description: Time buckets.
+          readOnly: true
+        triggerCounts:
+          type: array
+          items:
+            type: integer
+            format: int32
+          description: Aggregated trigger count in each time bucket.
+          readOnly: true
+        requesterId:
+          type: string
+          description: The ID of the namespace that requested the pipeline triggers.
+          readOnly: true
+      description: 'PipelineTriggerChartRecord represents a timeline of pipeline triggers. It
+
+        contains a collection of (timestamp, count) pairs that represent the total
+
+        pipeline triggers in a given time bucket.'
     Any:
       type: object
       properties:
@@ -225,36 +279,6 @@ components:
       description: 'ListPipelineTriggerChartRecordsResponse contains a list of pipeline trigger
 
         chart records.'
-    PipelineTriggerChartRecord:
-      type: object
-      properties:
-        pipelineId:
-          type: string
-          description: This field will be present when the information is grouped by pipeline.
-          readOnly: true
-        timeBuckets:
-          type: array
-          items:
-            type: string
-            format: date-time
-          description: Time buckets.
-          readOnly: true
-        triggerCounts:
-          type: array
-          items:
-            type: integer
-            format: int32
-          description: Aggregated trigger count in each time bucket.
-          readOnly: true
-        requesterId:
-          type: string
-          description: The ID of the namespace that requested the pipeline triggers.
-          readOnly: true
-      description: 'PipelineTriggerChartRecord represents a timeline of pipeline triggers. It
-
-        contains a collection of (timestamp, count) pairs that represent the total
-
-        pipeline triggers in a given time bucket.'
     ListModelTriggerChartRecordsResponse:
       type: object
       properties:
@@ -273,36 +297,6 @@ components:
       description: 'ListModelTriggerChartRecordsResponse contains a list of model trigger
 
         chart records.'
-    ModelTriggerChartRecord:
-      type: object
-      properties:
-        modelId:
-          type: string
-          description: This field will be present when the information is grouped by model.
-          readOnly: true
-        timeBuckets:
-          type: array
-          items:
-            type: string
-            format: date-time
-          description: Time buckets.
-          readOnly: true
-        triggerCounts:
-          type: array
-          items:
-            type: integer
-            format: int32
-          description: Aggregated trigger count in each time bucket.
-          readOnly: true
-        requesterId:
-          type: string
-          description: The ID of the namespace that requested the model triggers.
-          readOnly: true
-      description: 'ModelTriggerChartRecord represents a timeline of model triggers. It
-
-        contains a collection of (timestamp, count) pairs that represent the total
-
-        model triggers in a given time bucket.'
   securitySchemes:
     Bearer:
       type: apiKey
@@ -313,6 +307,3 @@ components:
 externalDocs:
   description: More about Instill Core
   url: https://docs.instill-ai.com
-x-refined-from:
-- service.swagger.yaml
-- instill-ai-openapi.yml

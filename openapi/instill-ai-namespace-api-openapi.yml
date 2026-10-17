@@ -1,6 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Instill Ai Namespace API
+  title: Instill Core Namespace API
+  description: Interact with Instill Core through API
   version: v0.57.0
   contact:
     name: Instill AI
@@ -9,7 +10,6 @@ info:
   license:
     name: MIT
     url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
-  description: 'Operations tagged Namespace across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.instill-ai.com
 - url: http://api.instill-ai.com
@@ -82,9 +82,6 @@ paths:
               $ref: '#/components/schemas/AuthenticatedUser'
         description: The user fields that will replace the existing ones.
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/users:
     get:
       summary: List users
@@ -148,9 +145,6 @@ paths:
       tags:
       - Namespace
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/{name}:
     get:
       summary: Get a user
@@ -231,9 +225,6 @@ paths:
       tags:
       - Namespace
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/tokens:
     get:
       summary: List API tokens
@@ -320,9 +311,6 @@ paths:
               $ref: '#/components/schemas/ApiToken'
         description: The properties of the token to be created.
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/{name_1}:
     get:
       summary: Get an API token
@@ -359,9 +347,6 @@ paths:
       tags:
       - Namespace
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/validate-token:
     post:
       summary: Validate an API token
@@ -388,9 +373,6 @@ paths:
       tags:
       - Namespace
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/check-namespace:
     post:
       summary: Check if a namespace is in use
@@ -428,11 +410,63 @@ paths:
 
           available.'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
 components:
   schemas:
+    CreateTokenResponse:
+      type: object
+      properties:
+        token:
+          description: The created API token resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ApiToken'
+      description: CreateTokenResponse contains the created token.
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    GetTokenResponse:
+      type: object
+      properties:
+        token:
+          description: The API token resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/ApiToken'
+      description: GetTokenResponse contains the requested token.
+    GetAuthenticatedUserResponse:
+      type: object
+      properties:
+        user:
+          description: The authenticated user resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/AuthenticatedUser'
+      description: GetAuthenticatedUserResponse contains the requested authenticated user.
+    ListUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/v1beta.User'
+          description: A list of user resources.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of users.
+          readOnly: true
+      description: ListUsersResponse contains a list of users.
     AuthenticatedUser:
       type: object
       properties:
@@ -553,6 +587,47 @@ components:
       required:
       - email
       - newsletterSubscription
+    ValidateTokenResponse:
+      type: object
+      properties:
+        user:
+          type: string
+          title: 'If token is valid, full resource name of the user that owns it.
+
+            Format: `users/{user}`'
+          readOnly: true
+      description: ValidateTokenResponse contains the validation of a token.
+    DeleteTokenResponse:
+      type: object
+      description: DeleteTokenResponse is an empty response.
+    CheckNamespaceRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The namespace ID to be checked.
+      description: 'CheckNamespaceRequest represents a request to verify if a namespace is
+
+        available.'
+      required:
+      - id
+    ListTokensResponse:
+      type: object
+      properties:
+        tokens:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ApiToken'
+          description: A list of API token resources.
+        nextPageToken:
+          type: string
+          description: Next page token.
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of API token resources.
+      description: ListTokensResponse contains a list of API tokens.
     rpc.Status:
       type: object
       properties:
@@ -591,23 +666,52 @@ components:
         You can find out more about this error model and how to work with it in the
 
         [API Design Guide](https://cloud.google.com/apis/design/errors).'
-    ListTokensResponse:
+    CheckNamespaceResponse.Namespace:
+      type: string
+      enum:
+      - NAMESPACE_AVAILABLE
+      - NAMESPACE_USER
+      - NAMESPACE_ORGANIZATION
+      - NAMESPACE_RESERVED
+      description: "Namespace contains information about the availability of a namespace.\n\n - NAMESPACE_AVAILABLE: Available.\n - NAMESPACE_USER: Namespace belongs to a user.\n - NAMESPACE_ORGANIZATION: Namespace belongs to an organization.\n - NAMESPACE_RESERVED: Reserved."
+    UserProfile:
       type: object
       properties:
-        tokens:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/ApiToken'
-          description: A list of API token resources.
-        nextPageToken:
+        displayName:
           type: string
-          description: Next page token.
-        totalSize:
-          type: integer
-          format: int32
-          description: Total number of API token resources.
-      description: ListTokensResponse contains a list of API tokens.
+          title: 'Display name. Required, human-readable name for UI display.
+
+            Example: "John" for user ID "john-doe-8f3A2k9E"'
+        bio:
+          type: string
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        companyName:
+          type: string
+          description: Company name.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Social profile links list the links to the user''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        fullName:
+          type: string
+          description: 'Full legal name. Used for formal communications.
+
+            Example: "John Doe" - this is also used to auto-generate the user ID.'
+        metadata:
+          type: object
+          title: Flexible metadata
+      description: UserProfile describes the public data of a user.
+      required:
+      - displayName
     GetUserResponse:
       type: object
       properties:
@@ -617,35 +721,12 @@ components:
           allOf:
           - $ref: '#/components/schemas/v1beta.User'
       description: GetUserResponse contains the requested user.
-    ApiToken.State:
+    OnboardingStatus:
       type: string
       enum:
-      - STATE_INACTIVE
-      - STATE_ACTIVE
-      - STATE_EXPIRED
-      description: "State describes the state of an API token.\n\n - STATE_INACTIVE: Inactive.\n - STATE_ACTIVE: Active.\n - STATE_EXPIRED: Expired."
-    CheckNamespaceResponse:
-      type: object
-      properties:
-        type:
-          description: Namespace type.
-          allOf:
-          - $ref: '#/components/schemas/CheckNamespaceResponse.Namespace'
-      description: 'CheckNamespaceResponse contains the availability of a namespace or the type
-
-        of resource that''s using it.'
-    DeleteTokenResponse:
-      type: object
-      description: DeleteTokenResponse is an empty response.
-    GetAuthenticatedUserResponse:
-      type: object
-      properties:
-        user:
-          description: The authenticated user resource.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/AuthenticatedUser'
-      description: GetAuthenticatedUserResponse contains the requested authenticated user.
+      - ONBOARDING_STATUS_IN_PROGRESS
+      - ONBOARDING_STATUS_COMPLETED
+      description: "OnboardingStatus describes the status of the user onboarding process.\n\n - ONBOARDING_STATUS_IN_PROGRESS: In progress, i.e., the user has initiated the onboarding process\nbut has not yet completed it.\n - ONBOARDING_STATUS_COMPLETED: Completed."
     v1beta.User:
       type: object
       properties:
@@ -733,82 +814,23 @@ components:
         - create_time (field 7): Creation timestamp
 
         - update_time (field 8): Update timestamp'
-    ValidateTokenResponse:
+    CheckNamespaceResponse:
       type: object
       properties:
-        user:
-          type: string
-          title: 'If token is valid, full resource name of the user that owns it.
-
-            Format: `users/{user}`'
-          readOnly: true
-      description: ValidateTokenResponse contains the validation of a token.
-    GetTokenResponse:
-      type: object
-      properties:
-        token:
-          description: The API token resource.
-          readOnly: true
+        type:
+          description: Namespace type.
           allOf:
-          - $ref: '#/components/schemas/ApiToken'
-      description: GetTokenResponse contains the requested token.
-    PatchAuthenticatedUserResponse:
-      type: object
-      properties:
-        user:
-          description: The updated user resource.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/AuthenticatedUser'
-      title: 'PatchAuthenticatedUserResponse contains the updated user.
+          - $ref: '#/components/schemas/CheckNamespaceResponse.Namespace'
+      description: 'CheckNamespaceResponse contains the availability of a namespace or the type
 
-        the authenticated user resource'
-    CheckNamespaceResponse.Namespace:
+        of resource that''s using it.'
+    ApiToken.State:
       type: string
       enum:
-      - NAMESPACE_AVAILABLE
-      - NAMESPACE_USER
-      - NAMESPACE_ORGANIZATION
-      - NAMESPACE_RESERVED
-      description: "Namespace contains information about the availability of a namespace.\n\n - NAMESPACE_AVAILABLE: Available.\n - NAMESPACE_USER: Namespace belongs to a user.\n - NAMESPACE_ORGANIZATION: Namespace belongs to an organization.\n - NAMESPACE_RESERVED: Reserved."
-    UserProfile:
-      type: object
-      properties:
-        displayName:
-          type: string
-          title: 'Display name. Required, human-readable name for UI display.
-
-            Example: "John" for user ID "john-doe-8f3A2k9E"'
-        bio:
-          type: string
-          description: Biography.
-        avatar:
-          type: string
-          description: Avatar in base64 format.
-        publicEmail:
-          type: string
-          description: Public email.
-        companyName:
-          type: string
-          description: Company name.
-        socialProfileLinks:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'Social profile links list the links to the user''s social profiles.
-
-            The key represents the provider, and the value is the corresponding URL.'
-        fullName:
-          type: string
-          description: 'Full legal name. Used for formal communications.
-
-            Example: "John Doe" - this is also used to auto-generate the user ID.'
-        metadata:
-          type: object
-          title: Flexible metadata
-      description: UserProfile describes the public data of a user.
-      required:
-      - displayName
+      - STATE_INACTIVE
+      - STATE_ACTIVE
+      - STATE_EXPIRED
+      description: "State describes the state of an API token.\n\n - STATE_INACTIVE: Inactive.\n - STATE_ACTIVE: Active.\n - STATE_EXPIRED: Expired."
     ApiToken:
       type: object
       properties:
@@ -876,60 +898,17 @@ components:
           format: date-time
           description: Expiration time.
       description: API tokens allow users to make requests to the Instill AI API.
-    CheckNamespaceRequest:
+    PatchAuthenticatedUserResponse:
       type: object
       properties:
-        id:
-          type: string
-          description: The namespace ID to be checked.
-      description: 'CheckNamespaceRequest represents a request to verify if a namespace is
-
-        available.'
-      required:
-      - id
-    Any:
-      type: object
-      properties:
-        '@type':
-          type: string
-          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
-      additionalProperties: {}
-      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
-    CreateTokenResponse:
-      type: object
-      properties:
-        token:
-          description: The created API token resource.
+        user:
+          description: The updated user resource.
           readOnly: true
           allOf:
-          - $ref: '#/components/schemas/ApiToken'
-      description: CreateTokenResponse contains the created token.
-    OnboardingStatus:
-      type: string
-      enum:
-      - ONBOARDING_STATUS_IN_PROGRESS
-      - ONBOARDING_STATUS_COMPLETED
-      description: "OnboardingStatus describes the status of the user onboarding process.\n\n - ONBOARDING_STATUS_IN_PROGRESS: In progress, i.e., the user has initiated the onboarding process\nbut has not yet completed it.\n - ONBOARDING_STATUS_COMPLETED: Completed."
-    ListUsersResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/v1beta.User'
-          description: A list of user resources.
-          readOnly: true
-        nextPageToken:
-          type: string
-          description: Next page token.
-          readOnly: true
-        totalSize:
-          type: integer
-          format: int32
-          description: Total number of users.
-          readOnly: true
-      description: ListUsersResponse contains a list of users.
+          - $ref: '#/components/schemas/AuthenticatedUser'
+      title: 'PatchAuthenticatedUserResponse contains the updated user.
+
+        the authenticated user resource'
   securitySchemes:
     Bearer:
       type: apiKey
@@ -940,6 +919,3 @@ components:
 externalDocs:
   description: More about Instill Core
   url: https://docs.instill-ai.com
-x-refined-from:
-- service.swagger.yaml
-- instill-ai-openapi.yml

@@ -1,6 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Instill Ai Artifact API
+  title: Instill Core Artifact API
+  description: Interact with Instill Core through API
   version: v0.57.0
   contact:
     name: Instill AI
@@ -9,7 +10,6 @@ info:
   license:
     name: MIT
     url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
-  description: 'Operations tagged Artifact across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.instill-ai.com
 - url: http://api.instill-ai.com
@@ -135,9 +135,6 @@ paths:
               $ref: '#/components/schemas/KnowledgeBase'
         description: "The knowledge base resource to create.\nRequired fields: display_name\nOptional fields: id (auto-generated from display_name if not provided),\n                 description, tags, type, system_id"
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name}:
     get:
       summary: Get a knowledge base
@@ -252,9 +249,6 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateChunkBody'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{knowledgeBase.name}:
     patch:
       summary: Update a knowledge base info
@@ -445,9 +439,6 @@ paths:
 
           Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}`'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{parent}/files:
     get:
       summary: List files
@@ -581,9 +572,6 @@ paths:
               $ref: '#/components/schemas/File'
         description: The file to create.
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name_1}:
     get:
       summary: Get a file
@@ -683,9 +671,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{file.name}:
     patch:
       summary: Update a file
@@ -995,9 +980,6 @@ paths:
 
           `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name}/reprocess:
     post:
       summary: Reprocess a file
@@ -1044,9 +1026,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ReprocessFileBody'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name_2}:
     get:
       summary: Get a chunk
@@ -1130,9 +1109,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{parent}/chunks:
     get:
       summary: List chunks
@@ -1211,9 +1187,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{parent}/search-chunks:
     post:
       summary: Search chunks
@@ -1262,9 +1235,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SearchChunksBody'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{parent}/object-upload-url:
     get:
       summary: Get Object Upload URL
@@ -1338,9 +1308,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name}/download-url:
     get:
       summary: Get Object Download URL
@@ -1408,9 +1375,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{name_3}:
     get:
       summary: Get Object
@@ -1447,9 +1411,6 @@ paths:
       tags:
       - Artifact
       x-stage: alpha
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1alpha/{object.name}:
     patch:
       summary: Update Object
@@ -1492,11 +1453,269 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateObjectBody'
         required: true
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
 components:
   schemas:
+    SearchChunksBody:
+      type: object
+      properties:
+        knowledgeBase:
+          type: string
+          title: 'The knowledge base resource name to filter by (optional).
+
+            Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}`'
+        textPrompt:
+          type: string
+          description: Text prompt to look for similarities.
+        topK:
+          type: integer
+          format: int64
+          description: 'Top K. Default value: 5.'
+        type:
+          description: Chunk type.
+          allOf:
+          - $ref: '#/components/schemas/Chunk.Type'
+        fileMediaType:
+          description: File media type.
+          allOf:
+          - $ref: '#/components/schemas/FileMediaType'
+        files:
+          type: array
+          items:
+            type: string
+          title: 'File resource names to filter by. When this field is provided, the response
+
+            will return only chunks that belong to the specified files.
+
+            Format:
+
+            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
+        tags:
+          type: array
+          items:
+            type: string
+          description: 'Tags to filter by. When multiple tags are provided, OR logic is applied.
+
+            Note: File filter takes precedence over tags, as tags apply to files.'
+        groupByFile:
+          type: boolean
+          description: 'When true, results are grouped by file so that no single file dominates
+
+            the result set. At most group_size chunks are returned per file.'
+        groupSize:
+          type: integer
+          format: int32
+          description: 'Max chunks per file when group_by_file is true. Default: 1.'
+      description: SearchChunksRequest represents a request to search for similar chunks.
+      required:
+      - textPrompt
+    DeleteFileResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'The resource name of the deleted file.
+
+            Format:
+
+            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
+          readOnly: true
+      description: DeleteFileResponse represents a response for deleting a file.
+    GetKnowledgeBaseResponse:
+      type: object
+      properties:
+        knowledgeBase:
+          description: The knowledge base resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/KnowledgeBase'
+      description: GetKnowledgeBaseResponse represents a response for getting a knowledge base.
+    FileProcessStatus:
+      type: string
+      enum:
+      - FILE_PROCESS_STATUS_NOTSTARTED
+      - FILE_PROCESS_STATUS_PROCESSING
+      - FILE_PROCESS_STATUS_CHUNKING
+      - FILE_PROCESS_STATUS_EMBEDDING
+      - FILE_PROCESS_STATUS_COMPLETED
+      - FILE_PROCESS_STATUS_FAILED
+      description: "- FILE_PROCESS_STATUS_NOTSTARTED: NOTSTARTED\n - FILE_PROCESS_STATUS_PROCESSING: file is being processed (parallel architecture: conversion + summarization)\n - FILE_PROCESS_STATUS_CHUNKING: file is chunking\n - FILE_PROCESS_STATUS_EMBEDDING: file is embedding\n - FILE_PROCESS_STATUS_COMPLETED: completed\n - FILE_PROCESS_STATUS_FAILED: failed"
+      title: file embedding process status
+    DeleteKnowledgeBaseResponse:
+      type: object
+      properties:
+        knowledgeBase:
+          description: The deleted knowledge base resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/KnowledgeBase'
+      description: 'DeleteKnowledgeBaseResponse represents a response for deleting a knowledge
+
+        base.'
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    Chunk:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Field 1: The resource name of the chunk.
+
+            Format:
+
+            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}`.'
+          readOnly: true
+        id:
+          type: string
+          description: 'Field 2: The chunk id (unique identifier).'
+          readOnly: true
+        retrievable:
+          type: boolean
+          title: whether the chunk is retrievable
+          readOnly: true
+        tokens:
+          type: integer
+          format: int64
+          title: tokens of the chunk
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          title: creation time of the chunk
+          readOnly: true
+        originalFile:
+          type: string
+          title: 'The resource name of the original file this chunk belongs to.
+
+            Format:
+
+            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
+          readOnly: true
+        type:
+          title: chunk type
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Chunk.Type'
+        reference:
+          description: Reference to the position of the chunk within the original file.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Reference'
+        markdownReference:
+          description: Reference to the position of the chunk within the Markdown (source) file.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Reference'
+      description: The Chunk message represents a chunk of data in the artifact system.
+    UpdateKnowledgeBaseResponse:
+      type: object
+      properties:
+        knowledgeBase:
+          description: The updated knowledge base resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/KnowledgeBase'
+      description: 'UpdateKnowledgeBaseResponse represents a response for updating a knowledge
+
+        base.'
+    Object:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Canonical resource name.
+
+            Format: `namespaces/{namespace}/objects/{object}`'
+          readOnly: true
+        id:
+          type: string
+          description: 'Immutable canonical resource ID (e.g., "obj-3k7m9p2w5t1").
+
+            Hash-based, unique within a namespace.'
+          readOnly: true
+        displayName:
+          type: string
+          description: Human-readable display name (user-provided filename).
+        ownerName:
+          type: string
+          title: 'Resource name of the owner namespace.
+
+            Format: `namespaces/{namespace}`'
+          readOnly: true
+        creatorName:
+          type: string
+          title: 'Full resource name of the user who created this object.
+
+            Format: `users/{user}`'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: Object creation time.
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: Object update time.
+          readOnly: true
+        size:
+          type: string
+          format: int64
+          description: Size in bytes.
+          readOnly: true
+        contentType:
+          type: string
+          description: Content type (MIME type from Content-Type header or file extension).
+          readOnly: true
+        isUploaded:
+          type: boolean
+          description: Whether the file has been uploaded to storage.
+          readOnly: true
+        objectExpireDays:
+          type: integer
+          format: int32
+          description: 'Object expiration time in days.
+
+            If set to 0, the object will not be deleted automatically.'
+        lastModifiedTime:
+          type: string
+          format: date-time
+          description: Last modified time (client-provided metadata).
+        deleteTime:
+          type: string
+          format: date-time
+          description: Object delete time (for soft delete). Output only.
+          readOnly: true
+        slug:
+          type: string
+          title: 'URL-friendly slug derived from display_name.
+
+            Example: "my-document-pdf"'
+        aliases:
+          type: array
+          items:
+            type: string
+          description: Previous slugs for backward compatibility when display_name changes.
+          readOnly: true
+      description: Object represents a blob storage object.
+    GetChunkResponse:
+      type: object
+      properties:
+        chunk:
+          description: 'The chunk metadata, including markdown_reference for extracting content.
+
+            Clients should use GetFile to fetch the full content/summary markdown,
+
+            then use markdown_reference coordinates to extract the specific chunk text.'
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Chunk'
+      description: GetChunkResponse represents a response for getting a chunk.
     UpdateObjectBody:
       type: object
       properties:
@@ -1584,6 +1803,44 @@ components:
         Follows AIP-134: resource''s `name` field identifies it.'
       required:
       - object
+    FileMediaType:
+      type: string
+      enum:
+      - FILE_MEDIA_TYPE_DOCUMENT
+      - FILE_MEDIA_TYPE_IMAGE
+      - FILE_MEDIA_TYPE_AUDIO
+      - FILE_MEDIA_TYPE_VIDEO
+      description: "FileMediaType describes the media category of a knowledge base file.\n\n - FILE_MEDIA_TYPE_DOCUMENT: Document.\n - FILE_MEDIA_TYPE_IMAGE: Image.\n - FILE_MEDIA_TYPE_AUDIO: Audio.\n - FILE_MEDIA_TYPE_VIDEO: Video."
+    ListKnowledgeBasesResponse:
+      type: object
+      properties:
+        knowledgeBases:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/KnowledgeBase'
+          description: The list of knowledge bases.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token for pagination.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of knowledge bases matching the request.
+          readOnly: true
+      description: ListKnowledgeBasesResponse represents a response for listing knowledge bases.
+    Chunk.Type:
+      type: string
+      enum:
+      - TYPE_CONTENT
+      - TYPE_SUMMARY
+      - TYPE_AUGMENTED
+      description: "Type describes the type of a chunk content.\n\n - TYPE_CONTENT: Content.\n - TYPE_SUMMARY: Summary.\n - TYPE_AUGMENTED: Augmented."
+    DeleteObjectResponse:
+      type: object
+      description: DeleteObjectResponse is an empty response for deleting an object.
     CreateFileResponse:
       type: object
       properties:
@@ -1593,268 +1850,50 @@ components:
           allOf:
           - $ref: '#/components/schemas/File'
       description: CreateFileResponse represents a response for creating a file.
-    ListChunksResponse:
+    UpdateChunkBody:
       type: object
       properties:
-        chunks:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/Chunk'
-          title: repeated chunks
-          readOnly: true
-      description: 'ListChunksResponse represents a response containing a list of chunks in the
-
-        artifact system.'
-    rpc.Status:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The status code, which should be an enum value of
-
-            [google.rpc.Code][google.rpc.Code].'
-        message:
-          type: string
-          description: 'A developer-facing error message, which should be in English. Any
-
-            user-facing error message should be localized and sent in the
-
-            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-
-            by the client.'
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/Any'
-          description: 'A list of messages that carry the error details.  There is a common set of
-
-            message types for APIs to use.'
-      description: 'The `Status` type defines a logical error model that is suitable for
-
-        different programming environments, including REST APIs and RPC APIs. It is
-
-        used by [gRPC](https://github.com/grpc). Each `Status` message contains
-
-        three pieces of data: error code, error message, and error details.
-
-
-        You can find out more about this error model and how to work with it in the
-
-        [API Design Guide](https://cloud.google.com/apis/design/errors).'
-    ReprocessFileBody:
-      type: object
-      description: ReprocessFileRequest represents a request to reprocess a file.
-    GetObjectUploadURLResponse:
-      type: object
-      properties:
-        uploadUrl:
-          type: string
-          title: upload url
-        urlExpireAt:
-          type: string
-          format: date-time
-          title: expire at in UTC (UTC+0)
-        object:
-          title: object
-          allOf:
-          - $ref: '#/components/schemas/Object'
-      title: GetObjectUploadURLResponse
-    File.Visibility:
-      type: string
-      enum:
-      - VISIBILITY_PRIVATE
-      - VISIBILITY_PUBLIC
-      - VISIBILITY_WORKSPACE
-      - VISIBILITY_LINK_SHARED
-      description: "Visibility defines who can discover and access the file.\n\n - VISIBILITY_PRIVATE: Reserved for future: truly private (only creator + invited users).\n - VISIBILITY_PUBLIC: Discoverable by anyone, including anonymous visitors.\n - VISIBILITY_WORKSPACE: Org members can access via all-members grant. Default for files.\n - VISIBILITY_LINK_SHARED: Anyone with the share link (/r/{token}) can access via capability token."
-    SearchChunksBody:
-      type: object
-      properties:
-        knowledgeBase:
-          type: string
-          title: 'The knowledge base resource name to filter by (optional).
-
-            Format: `namespaces/{namespace}/knowledge-bases/{knowledge_base}`'
-        textPrompt:
-          type: string
-          description: Text prompt to look for similarities.
-        topK:
-          type: integer
-          format: int64
-          description: 'Top K. Default value: 5.'
-        type:
-          description: Chunk type.
-          allOf:
-          - $ref: '#/components/schemas/Chunk.Type'
-        fileMediaType:
-          description: File media type.
-          allOf:
-          - $ref: '#/components/schemas/FileMediaType'
-        files:
-          type: array
-          items:
-            type: string
-          title: 'File resource names to filter by. When this field is provided, the response
-
-            will return only chunks that belong to the specified files.
-
-            Format:
-
-            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
-        tags:
-          type: array
-          items:
-            type: string
-          description: 'Tags to filter by. When multiple tags are provided, OR logic is applied.
-
-            Note: File filter takes precedence over tags, as tags apply to files.'
-        groupByFile:
+        retrievable:
           type: boolean
-          description: 'When true, results are grouped by file so that no single file dominates
+          title: whether the chunk is retrievable
+      title: 'UpdateChunkRequest represents a request to update a chunk.
 
-            the result set. At most group_size chunks are returned per file.'
-        groupSize:
-          type: integer
-          format: int32
-          description: 'Max chunks per file when group_by_file is true. Default: 1.'
-      description: SearchChunksRequest represents a request to search for similar chunks.
+        Follows AIP-134: https://google.aip.dev/134'
       required:
-      - textPrompt
-    GetObjectResponse:
+      - retrievable
+    OrganizationProfile:
       type: object
       properties:
-        object:
-          description: The requested object.
-          allOf:
-          - $ref: '#/components/schemas/Object'
-      description: GetObjectResponse contains the requested object.
-    Unit:
-      type: string
-      enum:
-      - UNIT_CHARACTER
-      - UNIT_PAGE
-      - UNIT_TIME_MS
-      - UNIT_PIXEL
-      description: "Unit of measurement for a position within a file.\n\n - UNIT_CHARACTER: Character positions (for Markdown and other text files).\n - UNIT_PAGE: Page positions (for documents). For pages, positions are 1-indexed\n(e.g., page 4 of 4) to align with document visualization standards.\n - UNIT_TIME_MS: Time positions in milliseconds (for audio/video files).\n - UNIT_PIXEL: Pixel positions (for images and other 2D content)."
-    ReprocessFileResponse:
-      type: object
-      properties:
-        file:
-          description: The file being reprocessed.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/File'
-        message:
-          type: string
-          description: Status message.
-          readOnly: true
-      description: ReprocessFileResponse represents a response for reprocessing a file.
-    Owner:
-      type: object
-      properties:
-        user:
-          description: User.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/v1beta.User'
-        organization:
-          description: Organization.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Organization'
-      description: 'Owner is a wrapper for User and Organization, used to embed owner information
-
-        in other resources.'
-    v1beta.User:
-      type: object
-      properties:
-        name:
-          type: string
-          title: 'Field 1: Canonical resource name.
-
-            Format: `users/{user}`.
-
-            Example: "users/john-doe"'
-          readOnly: true
-        id:
-          type: string
-          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
-
-            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
-
-            character a letter, the last a letter or a number, and a 63 character
-
-            maximum.
-
-            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
-
-            base62). Example: "usr-8f3A2k9E7c1xYz"'
-          readOnly: true
         displayName:
           type: string
-          description: 'Field 3: Human-readable display name for UI.
+          title: 'Display name. Required, human-readable name for UI display.
 
-            This is copied from profile.display_name for convenience.'
-          readOnly: true
-        slug:
+            Example: "Instill AI" for organization ID "instill-ai"'
+        bio:
           type: string
-          description: 'Field 4: URL-friendly slug (NO prefix).
-
-            Derived from display_name, used for human-friendly URLs.'
-          readOnly: true
-        aliases:
-          type: array
-          items:
+          description: Biography.
+        avatar:
+          type: string
+          description: Avatar in base64 format.
+        publicEmail:
+          type: string
+          description: Public email.
+        socialProfileLinks:
+          type: object
+          additionalProperties:
             type: string
-          description: 'Field 5: Previous slugs for backward compatibility.'
-          readOnly: true
-        description:
+          description: 'Social profile links list the links to the organization''s social profiles.
+
+            The key represents the provider, and the value is the corresponding URL.'
+        metadata:
+          type: object
+          title: Flexible metadata
+        fullName:
           type: string
-          description: 'Field 6: Optional description / bio.'
-          readOnly: true
-        createTime:
-          type: string
-          format: date-time
-          description: 'Field 7: Creation time.'
-          readOnly: true
-        updateTime:
-          type: string
-          format: date-time
-          description: 'Field 8: Update time.'
-          readOnly: true
-        profile:
-          description: Profile containing additional user information.
-          allOf:
-          - $ref: '#/components/schemas/UserProfile'
-        email:
-          type: string
-          description: Email.
-          readOnly: true
-      description: 'User describes an individual that interacts with Instill AI. It doesn''t
-
-        contain any private information about the user.
-
-
-        AIP Standard Field Ordering:
-
-        - name (field 1): Canonical resource name
-
-        - id (field 2): Immutable canonical resource ID
-
-        - display_name (field 3): Human-readable display name
-
-        - slug (field 4): URL-friendly slug
-
-        - aliases (field 5): Previous slugs for backward compatibility
-
-        - description (field 6): Optional description
-
-        - create_time (field 7): Creation timestamp
-
-        - update_time (field 8): Update timestamp'
+          description: Full legal name. Used for formal communications.
+      description: OrganizationProfile describes the public data of an organization.
+      required:
+      - displayName
     Organization.Stats:
       type: object
       properties:
@@ -1863,6 +1902,75 @@ components:
           format: int32
           description: The number of users in the organization.
       description: The Organization stats.
+    File.Visibility:
+      type: string
+      enum:
+      - VISIBILITY_PRIVATE
+      - VISIBILITY_PUBLIC
+      - VISIBILITY_WORKSPACE
+      - VISIBILITY_LINK_SHARED
+      description: "Visibility defines who can discover and access the file.\n\n - VISIBILITY_PRIVATE: Reserved for future: truly private (only creator + invited users).\n - VISIBILITY_PUBLIC: Discoverable by anyone, including anonymous visitors.\n - VISIBILITY_WORKSPACE: Org members can access via all-members grant. Default for files.\n - VISIBILITY_LINK_SHARED: Anyone with the share link (/r/{token}) can access via capability token."
+    File.Type:
+      type: string
+      enum:
+      - TYPE_TEXT
+      - TYPE_MARKDOWN
+      - TYPE_HTML
+      - TYPE_CSV
+      - TYPE_JSON
+      - TYPE_PDF
+      - TYPE_DOC
+      - TYPE_DOCX
+      - TYPE_PPT
+      - TYPE_PPTX
+      - TYPE_XLS
+      - TYPE_XLSX
+      - TYPE_PNG
+      - TYPE_JPEG
+      - TYPE_GIF
+      - TYPE_WEBP
+      - TYPE_TIFF
+      - TYPE_BMP
+      - TYPE_HEIC
+      - TYPE_HEIF
+      - TYPE_AVIF
+      - TYPE_SVG
+      - TYPE_MP3
+      - TYPE_WAV
+      - TYPE_AAC
+      - TYPE_OGG
+      - TYPE_FLAC
+      - TYPE_M4A
+      - TYPE_WMA
+      - TYPE_AIFF
+      - TYPE_WEBM_AUDIO
+      - TYPE_MP4
+      - TYPE_AVI
+      - TYPE_MOV
+      - TYPE_MKV
+      - TYPE_FLV
+      - TYPE_WMV
+      - TYPE_MPEG
+      - TYPE_WEBM_VIDEO
+      description: "- TYPE_TEXT: Text-based document types\ntext\n - TYPE_MARKDOWN: MARKDOWN\n - TYPE_HTML: HTML\n - TYPE_CSV: CSV\n - TYPE_JSON: JSON\n - TYPE_PDF: Container-based document types\nPDF\n - TYPE_DOC: DOC\n - TYPE_DOCX: DOCX\n - TYPE_PPT: PPT\n - TYPE_PPTX: PPTX\n - TYPE_XLS: XLS\n - TYPE_XLSX: XLSX\n - TYPE_PNG: Image types\nPNG\n - TYPE_JPEG: JPEG\n - TYPE_GIF: GIF\n - TYPE_WEBP: WEBP\n - TYPE_TIFF: TIFF\n - TYPE_BMP: BMP\n - TYPE_HEIC: HEIC\n - TYPE_HEIF: HEIF\n - TYPE_AVIF: AVIF\n - TYPE_SVG: SVG\n - TYPE_MP3: Audio types\nMP3\n - TYPE_WAV: WAV\n - TYPE_AAC: AAC\n - TYPE_OGG: OGG\n - TYPE_FLAC: FLAC\n - TYPE_M4A: M4A\n - TYPE_WMA: WMA\n - TYPE_AIFF: AIFF\n - TYPE_WEBM_AUDIO: WEBM (audio)\n - TYPE_MP4: Video types\nMP4\n - TYPE_AVI: AVI\n - TYPE_MOV: MOV\n - TYPE_MKV: MKV\n - TYPE_FLV: FLV\n - TYPE_WMV: WMV\n - TYPE_MPEG: MPEG\n - TYPE_WEBM_VIDEO: WEBM (video)"
+      title: Supported file types
+    ReprocessFileBody:
+      type: object
+      description: ReprocessFileRequest represents a request to reprocess a file.
+    Reference:
+      type: object
+      properties:
+        start:
+          description: Start position of the chunk within the file.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Position'
+        end:
+          description: End position of the chunk within the file.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Position'
+      description: Reference represents the position of a chunk within a file.
     KnowledgeBase:
       type: object
       properties:
@@ -2014,116 +2122,6 @@ components:
         slug(4), aliases(5), description(6)'
       required:
       - displayName
-    UpdateObjectResponse:
-      type: object
-      properties:
-        object:
-          description: The updated object.
-          allOf:
-          - $ref: '#/components/schemas/Object'
-      description: UpdateObjectResponse contains the updated object.
-    Ranker:
-      type: string
-      enum:
-      - RANKER_WEIGHTED
-      - RANKER_RRF
-      description: "Ranker identifies which Milvus hybrid-search reranker produced the\nscores on a `SearchChunksResponse`. The score distribution depends on\nthe reranker, and downstream consumers that apply score-based\nthresholds MUST read this field so they can pick the correct floor\nshape (absolute [0,1] floor for `RANKER_WEIGHTED`; rank-structural\n`1/(k+topK)` floor for `RANKER_RRF`).\n\n - RANKER_WEIGHTED: RANKER_WEIGHTED is Milvus' WeightedRanker (dense + BM25 combined\nwith static weights); scores are normalised to [0,1].\n - RANKER_RRF: RANKER_RRF is Reciprocal Rank Fusion with smoothing constant k\n(Milvus default 60); scores live in (0, 2/(k+1)]."
-    ListFilesResponse:
-      type: object
-      properties:
-        files:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/File'
-          description: The list of files.
-          readOnly: true
-        totalSize:
-          type: integer
-          format: int32
-          description: The total number of files.
-          readOnly: true
-        pageSize:
-          type: integer
-          format: int32
-          description: The requested page size.
-          readOnly: true
-        nextPageToken:
-          type: string
-          title: next page token
-          readOnly: true
-      description: ListFilesResponse represents a response for listing files.
-    GetFileResponse:
-      type: object
-      properties:
-        file:
-          description: The file metadata (always included).
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/File'
-        derivedResourceUri:
-          type: string
-          description: "Derived resource URI based on view and storage provider:\n- VIEW_SUMMARY/CONTENT/STANDARD_FILE_TYPE/ORIGINAL_FILE_TYPE:\n  * STORAGE_PROVIDER_MINIO (default): MinIO pre-signed URL\n  * STORAGE_PROVIDER_GCS: GCS signed URL (file uploaded to GCS if needed)\n- VIEW_CACHE: Gemini/VertexAI cache resource name (format:\ncacheContent/<cacheId>) Only populated for views that return file content."
-          readOnly: true
-      description: GetFileResponse represents a response for getting a file.
-    GetChunkResponse:
-      type: object
-      properties:
-        chunk:
-          description: 'The chunk metadata, including markdown_reference for extracting content.
-
-            Clients should use GetFile to fetch the full content/summary markdown,
-
-            then use markdown_reference coordinates to extract the specific chunk text.'
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Chunk'
-      description: GetChunkResponse represents a response for getting a chunk.
-    Reference:
-      type: object
-      properties:
-        start:
-          description: Start position of the chunk within the file.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Position'
-        end:
-          description: End position of the chunk within the file.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Position'
-      description: Reference represents the position of a chunk within a file.
-    GetObjectDownloadURLResponse:
-      type: object
-      properties:
-        downloadUrl:
-          type: string
-          title: download url
-        urlExpireAt:
-          type: string
-          format: date-time
-          title: expire at in UTC (UTC+0)
-        object:
-          title: object
-          allOf:
-          - $ref: '#/components/schemas/Object'
-      title: GetObjectDownloadURLResponse
-    UpdateChunkResponse:
-      type: object
-      properties:
-        chunk:
-          title: chunk
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Chunk'
-      description: UpdateChunkResponse represents a response for updating a chunk.
-    KnowledgeBaseType:
-      type: string
-      enum:
-      - KNOWLEDGE_BASE_TYPE_PERSISTENT
-      - KNOWLEDGE_BASE_TYPE_EPHEMERAL
-      description: "- KNOWLEDGE_BASE_TYPE_PERSISTENT: PERSISTENT\n - KNOWLEDGE_BASE_TYPE_EPHEMERAL: EPHEMERAL"
-      title: Knowledge Base Type. e.g. "persistent" or "ephemeral"
     SearchChunksResponse:
       type: object
       properties:
@@ -2144,60 +2142,228 @@ components:
           allOf:
           - $ref: '#/components/schemas/Ranker'
       description: SearchChunksResponse represents a response for searching similar chunks.
-    DeleteObjectResponse:
-      type: object
-      description: DeleteObjectResponse is an empty response for deleting an object.
-    GetKnowledgeBaseResponse:
+    Ranker:
+      type: string
+      enum:
+      - RANKER_WEIGHTED
+      - RANKER_RRF
+      description: "Ranker identifies which Milvus hybrid-search reranker produced the\nscores on a `SearchChunksResponse`. The score distribution depends on\nthe reranker, and downstream consumers that apply score-based\nthresholds MUST read this field so they can pick the correct floor\nshape (absolute [0,1] floor for `RANKER_WEIGHTED`; rank-structural\n`1/(k+topK)` floor for `RANKER_RRF`).\n\n - RANKER_WEIGHTED: RANKER_WEIGHTED is Milvus' WeightedRanker (dense + BM25 combined\nwith static weights); scores are normalised to [0,1].\n - RANKER_RRF: RANKER_RRF is Reciprocal Rank Fusion with smoothing constant k\n(Milvus default 60); scores live in (0, 2/(k+1)]."
+    Unit:
+      type: string
+      enum:
+      - UNIT_CHARACTER
+      - UNIT_PAGE
+      - UNIT_TIME_MS
+      - UNIT_PIXEL
+      description: "Unit of measurement for a position within a file.\n\n - UNIT_CHARACTER: Character positions (for Markdown and other text files).\n - UNIT_PAGE: Page positions (for documents). For pages, positions are 1-indexed\n(e.g., page 4 of 4) to align with document visualization standards.\n - UNIT_TIME_MS: Time positions in milliseconds (for audio/video files).\n - UNIT_PIXEL: Pixel positions (for images and other 2D content)."
+    UpdateObjectResponse:
       type: object
       properties:
-        knowledgeBase:
-          description: The knowledge base resource.
-          readOnly: true
+        object:
+          description: The updated object.
           allOf:
-          - $ref: '#/components/schemas/KnowledgeBase'
-      description: GetKnowledgeBaseResponse represents a response for getting a knowledge base.
-    DeleteKnowledgeBaseResponse:
+          - $ref: '#/components/schemas/Object'
+      description: UpdateObjectResponse contains the updated object.
+    UpdateFileResponse:
       type: object
       properties:
-        knowledgeBase:
-          description: The deleted knowledge base resource.
+        file:
+          description: Updated file.
           readOnly: true
           allOf:
-          - $ref: '#/components/schemas/KnowledgeBase'
-      description: 'DeleteKnowledgeBaseResponse represents a response for deleting a knowledge
+          - $ref: '#/components/schemas/File'
+      description: UpdateFileResponse represents a response for updating a file.
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          title: 'Field 1: Canonical resource name.
 
-        base.'
-    ListKnowledgeBasesResponse:
+            Format: `organizations/{organization}`.
+
+            Example: "organizations/acme-corp"'
+          readOnly: true
+        id:
+          type: string
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
+
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
+
+            character a letter, the last a letter or a number, and a 63 character
+
+            maximum.
+
+            Auto-generated by backend: "org-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "org-8f3A2k9E7c1xYz"'
+          readOnly: true
+        displayName:
+          type: string
+          description: 'Field 3: Human-readable display name for UI.
+
+            This is copied from profile.display_name for convenience.'
+          readOnly: true
+        slug:
+          type: string
+          description: 'Field 4: URL-friendly slug (NO prefix).
+
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
+        aliases:
+          type: array
+          items:
+            type: string
+          description: 'Field 5: Previous slugs for backward compatibility.'
+          readOnly: true
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        owner:
+          type: string
+          description: 'Field 9: Owner reference (the user that owns the organization).
+
+            Format: `users/{user}`.'
+          readOnly: true
+        profile:
+          description: Profile containing additional organization information.
+          allOf:
+          - $ref: '#/components/schemas/OrganizationProfile'
+        permission:
+          title: Permission
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Permission'
+        stats:
+          description: The organization stats.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization.Stats'
+      description: 'Organizations group several users. As entities, they can own resources such
+
+        as pipelines or releases.
+
+        Organization represents a group of users working together.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp
+
+        - owner (field 9): Owner reference (string, not embedded object)'
+      required:
+      - profile
+    EmbeddingConfig:
       type: object
       properties:
-        knowledgeBases:
+        modelFamily:
+          type: string
+          title: The AI model family used for embeddings (e.g., "gemini", "openai")
+        dimensionality:
+          type: integer
+          format: int64
+          title: The dimensionality of the embedding vectors
+      title: EmbeddingConfig defines the embedding configuration for a knowledge base
+    Position:
+      type: object
+      properties:
+        unit:
+          description: Unit of measurement for the position.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Unit'
+        coordinates:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: Position value.
+          readOnly: true
+      description: 'Position within a file, as coordinates in a specific unit. The
+
+        number of dimensions of the coordinate depends on the unit type.'
+    mgmt.v1beta.Permission:
+      type: object
+      properties:
+        canEdit:
+          type: boolean
+          description: Defines whether the resource can be modified.
+          readOnly: true
+      description: Permission defines how a resource can be used.
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/KnowledgeBase'
-          description: The list of knowledge bases.
-          readOnly: true
-        nextPageToken:
-          type: string
-          description: Next page token for pagination.
-          readOnly: true
-        totalSize:
-          type: integer
-          format: int32
-          description: Total number of knowledge bases matching the request.
-          readOnly: true
-      description: ListKnowledgeBasesResponse represents a response for listing knowledge bases.
-    UpdateChunkBody:
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    CreateKnowledgeBaseResponse:
       type: object
       properties:
-        retrievable:
-          type: boolean
-          title: whether the chunk is retrievable
-      title: 'UpdateChunkRequest represents a request to update a chunk.
+        knowledgeBase:
+          description: The created knowledge base resource.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/KnowledgeBase'
+      description: 'CreateKnowledgeBaseResponse represents a response for creating a knowledge
 
-        Follows AIP-134: https://google.aip.dev/134'
-      required:
-      - retrievable
+        base.'
     UserProfile:
       type: object
       properties:
@@ -2236,211 +2402,261 @@ components:
       description: UserProfile describes the public data of a user.
       required:
       - displayName
-    mgmt.v1beta.Permission:
+    ListChunksResponse:
       type: object
       properties:
-        canEdit:
-          type: boolean
-          description: Defines whether the resource can be modified.
+        chunks:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Chunk'
+          title: repeated chunks
           readOnly: true
-      description: Permission defines how a resource can be used.
-    DeleteFileResponse:
+      description: 'ListChunksResponse represents a response containing a list of chunks in the
+
+        artifact system.'
+    SimilarityChunk:
+      type: object
+      properties:
+        chunk:
+          type: string
+          title: 'Chunk resource name.
+
+            Full resource name:
+
+            namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}'
+          readOnly: true
+        similarityScore:
+          type: number
+          format: float
+          description: Similarity score.
+          readOnly: true
+        textContent:
+          type: string
+          description: Content.
+          readOnly: true
+        file:
+          type: string
+          title: 'Source file resource name.
+
+            Full resource name:
+
+            namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}'
+          readOnly: true
+        chunkMetadata:
+          description: Chunk metadata.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Chunk'
+      description: SimilarityChunk represents a chunk with similarity score.
+    ReprocessFileResponse:
+      type: object
+      properties:
+        file:
+          description: The file being reprocessed.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/File'
+        message:
+          type: string
+          description: Status message.
+          readOnly: true
+      description: ReprocessFileResponse represents a response for reprocessing a file.
+    v1beta.User:
       type: object
       properties:
         name:
           type: string
-          title: 'The resource name of the deleted file.
+          title: 'Field 1: Canonical resource name.
 
-            Format:
+            Format: `users/{user}`.
 
-            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
-          readOnly: true
-      description: DeleteFileResponse represents a response for deleting a file.
-    Chunk:
-      type: object
-      properties:
-        name:
-          type: string
-          description: 'Field 1: The resource name of the chunk.
-
-            Format:
-
-            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}`.'
+            Example: "users/john-doe"'
           readOnly: true
         id:
           type: string
-          description: 'Field 2: The chunk id (unique identifier).'
-          readOnly: true
-        retrievable:
-          type: boolean
-          title: whether the chunk is retrievable
-          readOnly: true
-        tokens:
-          type: integer
-          format: int64
-          title: tokens of the chunk
-          readOnly: true
-        createTime:
-          type: string
-          format: date-time
-          title: creation time of the chunk
-          readOnly: true
-        originalFile:
-          type: string
-          title: 'The resource name of the original file this chunk belongs to.
+          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
 
-            Format:
+            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
 
-            `namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}`'
-          readOnly: true
-        type:
-          title: chunk type
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Chunk.Type'
-        reference:
-          description: Reference to the position of the chunk within the original file.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Reference'
-        markdownReference:
-          description: Reference to the position of the chunk within the Markdown (source) file.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Reference'
-      description: The Chunk message represents a chunk of data in the artifact system.
-    Object:
-      type: object
-      properties:
-        name:
-          type: string
-          title: 'Canonical resource name.
+            character a letter, the last a letter or a number, and a 63 character
 
-            Format: `namespaces/{namespace}/objects/{object}`'
-          readOnly: true
-        id:
-          type: string
-          description: 'Immutable canonical resource ID (e.g., "obj-3k7m9p2w5t1").
+            maximum.
 
-            Hash-based, unique within a namespace.'
+            Auto-generated by backend: "usr-" prefix + immutable hash (80 bits entropy,
+
+            base62). Example: "usr-8f3A2k9E7c1xYz"'
           readOnly: true
         displayName:
           type: string
-          description: Human-readable display name (user-provided filename).
-        ownerName:
-          type: string
-          title: 'Resource name of the owner namespace.
+          description: 'Field 3: Human-readable display name for UI.
 
-            Format: `namespaces/{namespace}`'
-          readOnly: true
-        creatorName:
-          type: string
-          title: 'Full resource name of the user who created this object.
-
-            Format: `users/{user}`'
-          readOnly: true
-        createTime:
-          type: string
-          format: date-time
-          description: Object creation time.
-          readOnly: true
-        updateTime:
-          type: string
-          format: date-time
-          description: Object update time.
-          readOnly: true
-        size:
-          type: string
-          format: int64
-          description: Size in bytes.
-          readOnly: true
-        contentType:
-          type: string
-          description: Content type (MIME type from Content-Type header or file extension).
-          readOnly: true
-        isUploaded:
-          type: boolean
-          description: Whether the file has been uploaded to storage.
-          readOnly: true
-        objectExpireDays:
-          type: integer
-          format: int32
-          description: 'Object expiration time in days.
-
-            If set to 0, the object will not be deleted automatically.'
-        lastModifiedTime:
-          type: string
-          format: date-time
-          description: Last modified time (client-provided metadata).
-        deleteTime:
-          type: string
-          format: date-time
-          description: Object delete time (for soft delete). Output only.
+            This is copied from profile.display_name for convenience.'
           readOnly: true
         slug:
           type: string
-          title: 'URL-friendly slug derived from display_name.
+          description: 'Field 4: URL-friendly slug (NO prefix).
 
-            Example: "my-document-pdf"'
+            Derived from display_name, used for human-friendly URLs.'
+          readOnly: true
         aliases:
           type: array
           items:
             type: string
-          description: Previous slugs for backward compatibility when display_name changes.
+          description: 'Field 5: Previous slugs for backward compatibility.'
           readOnly: true
-      description: Object represents a blob storage object.
-    CreateKnowledgeBaseResponse:
+        description:
+          type: string
+          description: 'Field 6: Optional description / bio.'
+          readOnly: true
+        createTime:
+          type: string
+          format: date-time
+          description: 'Field 7: Creation time.'
+          readOnly: true
+        updateTime:
+          type: string
+          format: date-time
+          description: 'Field 8: Update time.'
+          readOnly: true
+        profile:
+          description: Profile containing additional user information.
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+        email:
+          type: string
+          description: Email.
+          readOnly: true
+      description: 'User describes an individual that interacts with Instill AI. It doesn''t
+
+        contain any private information about the user.
+
+
+        AIP Standard Field Ordering:
+
+        - name (field 1): Canonical resource name
+
+        - id (field 2): Immutable canonical resource ID
+
+        - display_name (field 3): Human-readable display name
+
+        - slug (field 4): URL-friendly slug
+
+        - aliases (field 5): Previous slugs for backward compatibility
+
+        - description (field 6): Optional description
+
+        - create_time (field 7): Creation timestamp
+
+        - update_time (field 8): Update timestamp'
+    UpdateChunkResponse:
       type: object
       properties:
-        knowledgeBase:
-          description: The created knowledge base resource.
+        chunk:
+          title: chunk
           readOnly: true
           allOf:
-          - $ref: '#/components/schemas/KnowledgeBase'
-      description: 'CreateKnowledgeBaseResponse represents a response for creating a knowledge
-
-        base.'
-    OrganizationProfile:
+          - $ref: '#/components/schemas/Chunk'
+      description: UpdateChunkResponse represents a response for updating a chunk.
+    GetObjectResponse:
       type: object
       properties:
-        displayName:
+        object:
+          description: The requested object.
+          allOf:
+          - $ref: '#/components/schemas/Object'
+      description: GetObjectResponse contains the requested object.
+    GetObjectDownloadURLResponse:
+      type: object
+      properties:
+        downloadUrl:
           type: string
-          title: 'Display name. Required, human-readable name for UI display.
+          title: download url
+        urlExpireAt:
+          type: string
+          format: date-time
+          title: expire at in UTC (UTC+0)
+        object:
+          title: object
+          allOf:
+          - $ref: '#/components/schemas/Object'
+      title: GetObjectDownloadURLResponse
+    ListFilesResponse:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/File'
+          description: The list of files.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: The total number of files.
+          readOnly: true
+        pageSize:
+          type: integer
+          format: int32
+          description: The requested page size.
+          readOnly: true
+        nextPageToken:
+          type: string
+          title: next page token
+          readOnly: true
+      description: ListFilesResponse represents a response for listing files.
+    GetFileResponse:
+      type: object
+      properties:
+        file:
+          description: The file metadata (always included).
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/File'
+        derivedResourceUri:
+          type: string
+          description: "Derived resource URI based on view and storage provider:\n- VIEW_SUMMARY/CONTENT/STANDARD_FILE_TYPE/ORIGINAL_FILE_TYPE:\n  * STORAGE_PROVIDER_MINIO (default): MinIO pre-signed URL\n  * STORAGE_PROVIDER_GCS: GCS signed URL (file uploaded to GCS if needed)\n- VIEW_CACHE: Gemini/VertexAI cache resource name (format:\ncacheContent/<cacheId>) Only populated for views that return file content."
+          readOnly: true
+      description: GetFileResponse represents a response for getting a file.
+    Owner:
+      type: object
+      properties:
+        user:
+          description: User.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/v1beta.User'
+        organization:
+          description: Organization.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/Organization'
+      description: 'Owner is a wrapper for User and Organization, used to embed owner information
 
-            Example: "Instill AI" for organization ID "instill-ai"'
-        bio:
-          type: string
-          description: Biography.
-        avatar:
-          type: string
-          description: Avatar in base64 format.
-        publicEmail:
-          type: string
-          description: Public email.
-        socialProfileLinks:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'Social profile links list the links to the organization''s social profiles.
-
-            The key represents the provider, and the value is the corresponding URL.'
-        metadata:
-          type: object
-          title: Flexible metadata
-        fullName:
-          type: string
-          description: Full legal name. Used for formal communications.
-      description: OrganizationProfile describes the public data of an organization.
-      required:
-      - displayName
-    FileMediaType:
+        in other resources.'
+    KnowledgeBaseType:
       type: string
       enum:
-      - FILE_MEDIA_TYPE_DOCUMENT
-      - FILE_MEDIA_TYPE_IMAGE
-      - FILE_MEDIA_TYPE_AUDIO
-      - FILE_MEDIA_TYPE_VIDEO
-      description: "FileMediaType describes the media category of a knowledge base file.\n\n - FILE_MEDIA_TYPE_DOCUMENT: Document.\n - FILE_MEDIA_TYPE_IMAGE: Image.\n - FILE_MEDIA_TYPE_AUDIO: Audio.\n - FILE_MEDIA_TYPE_VIDEO: Video."
+      - KNOWLEDGE_BASE_TYPE_PERSISTENT
+      - KNOWLEDGE_BASE_TYPE_EPHEMERAL
+      description: "- KNOWLEDGE_BASE_TYPE_PERSISTENT: PERSISTENT\n - KNOWLEDGE_BASE_TYPE_EPHEMERAL: EPHEMERAL"
+      title: Knowledge Base Type. e.g. "persistent" or "ephemeral"
+    GetObjectUploadURLResponse:
+      type: object
+      properties:
+        uploadUrl:
+          type: string
+          title: upload url
+        urlExpireAt:
+          type: string
+          format: date-time
+          title: expire at in UTC (UTC+0)
+        object:
+          title: object
+          allOf:
+          - $ref: '#/components/schemas/Object'
+      title: GetObjectUploadURLResponse
     File:
       type: object
       properties:
@@ -2711,264 +2927,6 @@ components:
         slug(4), aliases(5), description(6)'
       required:
       - displayName
-    UpdateFileResponse:
-      type: object
-      properties:
-        file:
-          description: Updated file.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/File'
-      description: UpdateFileResponse represents a response for updating a file.
-    Any:
-      type: object
-      properties:
-        '@type':
-          type: string
-          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
-      additionalProperties: {}
-      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
-    UpdateKnowledgeBaseResponse:
-      type: object
-      properties:
-        knowledgeBase:
-          description: The updated knowledge base resource.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/KnowledgeBase'
-      description: 'UpdateKnowledgeBaseResponse represents a response for updating a knowledge
-
-        base.'
-    Position:
-      type: object
-      properties:
-        unit:
-          description: Unit of measurement for the position.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Unit'
-        coordinates:
-          type: array
-          items:
-            type: integer
-            format: int64
-          description: Position value.
-          readOnly: true
-      description: 'Position within a file, as coordinates in a specific unit. The
-
-        number of dimensions of the coordinate depends on the unit type.'
-    File.Type:
-      type: string
-      enum:
-      - TYPE_TEXT
-      - TYPE_MARKDOWN
-      - TYPE_HTML
-      - TYPE_CSV
-      - TYPE_JSON
-      - TYPE_PDF
-      - TYPE_DOC
-      - TYPE_DOCX
-      - TYPE_PPT
-      - TYPE_PPTX
-      - TYPE_XLS
-      - TYPE_XLSX
-      - TYPE_PNG
-      - TYPE_JPEG
-      - TYPE_GIF
-      - TYPE_WEBP
-      - TYPE_TIFF
-      - TYPE_BMP
-      - TYPE_HEIC
-      - TYPE_HEIF
-      - TYPE_AVIF
-      - TYPE_SVG
-      - TYPE_MP3
-      - TYPE_WAV
-      - TYPE_AAC
-      - TYPE_OGG
-      - TYPE_FLAC
-      - TYPE_M4A
-      - TYPE_WMA
-      - TYPE_AIFF
-      - TYPE_WEBM_AUDIO
-      - TYPE_MP4
-      - TYPE_AVI
-      - TYPE_MOV
-      - TYPE_MKV
-      - TYPE_FLV
-      - TYPE_WMV
-      - TYPE_MPEG
-      - TYPE_WEBM_VIDEO
-      description: "- TYPE_TEXT: Text-based document types\ntext\n - TYPE_MARKDOWN: MARKDOWN\n - TYPE_HTML: HTML\n - TYPE_CSV: CSV\n - TYPE_JSON: JSON\n - TYPE_PDF: Container-based document types\nPDF\n - TYPE_DOC: DOC\n - TYPE_DOCX: DOCX\n - TYPE_PPT: PPT\n - TYPE_PPTX: PPTX\n - TYPE_XLS: XLS\n - TYPE_XLSX: XLSX\n - TYPE_PNG: Image types\nPNG\n - TYPE_JPEG: JPEG\n - TYPE_GIF: GIF\n - TYPE_WEBP: WEBP\n - TYPE_TIFF: TIFF\n - TYPE_BMP: BMP\n - TYPE_HEIC: HEIC\n - TYPE_HEIF: HEIF\n - TYPE_AVIF: AVIF\n - TYPE_SVG: SVG\n - TYPE_MP3: Audio types\nMP3\n - TYPE_WAV: WAV\n - TYPE_AAC: AAC\n - TYPE_OGG: OGG\n - TYPE_FLAC: FLAC\n - TYPE_M4A: M4A\n - TYPE_WMA: WMA\n - TYPE_AIFF: AIFF\n - TYPE_WEBM_AUDIO: WEBM (audio)\n - TYPE_MP4: Video types\nMP4\n - TYPE_AVI: AVI\n - TYPE_MOV: MOV\n - TYPE_MKV: MKV\n - TYPE_FLV: FLV\n - TYPE_WMV: WMV\n - TYPE_MPEG: MPEG\n - TYPE_WEBM_VIDEO: WEBM (video)"
-      title: Supported file types
-    Organization:
-      type: object
-      properties:
-        name:
-          type: string
-          title: 'Field 1: Canonical resource name.
-
-            Format: `organizations/{organization}`.
-
-            Example: "organizations/acme-corp"'
-          readOnly: true
-        id:
-          type: string
-          title: 'Field 2: Resource ID (used in `name` as the last segment). This conforms to
-
-            RFC-1034, which restricts to letters, numbers, and hyphen, with the first
-
-            character a letter, the last a letter or a number, and a 63 character
-
-            maximum.
-
-            Auto-generated by backend: "org-" prefix + immutable hash (80 bits entropy,
-
-            base62). Example: "org-8f3A2k9E7c1xYz"'
-          readOnly: true
-        displayName:
-          type: string
-          description: 'Field 3: Human-readable display name for UI.
-
-            This is copied from profile.display_name for convenience.'
-          readOnly: true
-        slug:
-          type: string
-          description: 'Field 4: URL-friendly slug (NO prefix).
-
-            Derived from display_name, used for human-friendly URLs.'
-          readOnly: true
-        aliases:
-          type: array
-          items:
-            type: string
-          description: 'Field 5: Previous slugs for backward compatibility.'
-          readOnly: true
-        description:
-          type: string
-          description: 'Field 6: Optional description / bio.'
-          readOnly: true
-        createTime:
-          type: string
-          format: date-time
-          description: 'Field 7: Creation time.'
-          readOnly: true
-        updateTime:
-          type: string
-          format: date-time
-          description: 'Field 8: Update time.'
-          readOnly: true
-        owner:
-          type: string
-          description: 'Field 9: Owner reference (the user that owns the organization).
-
-            Format: `users/{user}`.'
-          readOnly: true
-        profile:
-          description: Profile containing additional organization information.
-          allOf:
-          - $ref: '#/components/schemas/OrganizationProfile'
-        permission:
-          title: Permission
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/mgmt.v1beta.Permission'
-        stats:
-          description: The organization stats.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Organization.Stats'
-      description: 'Organizations group several users. As entities, they can own resources such
-
-        as pipelines or releases.
-
-        Organization represents a group of users working together.
-
-
-        AIP Standard Field Ordering:
-
-        - name (field 1): Canonical resource name
-
-        - id (field 2): Immutable canonical resource ID
-
-        - display_name (field 3): Human-readable display name
-
-        - slug (field 4): URL-friendly slug
-
-        - aliases (field 5): Previous slugs for backward compatibility
-
-        - description (field 6): Optional description
-
-        - create_time (field 7): Creation timestamp
-
-        - update_time (field 8): Update timestamp
-
-        - owner (field 9): Owner reference (string, not embedded object)'
-      required:
-      - profile
-    EmbeddingConfig:
-      type: object
-      properties:
-        modelFamily:
-          type: string
-          title: The AI model family used for embeddings (e.g., "gemini", "openai")
-        dimensionality:
-          type: integer
-          format: int64
-          title: The dimensionality of the embedding vectors
-      title: EmbeddingConfig defines the embedding configuration for a knowledge base
-    Chunk.Type:
-      type: string
-      enum:
-      - TYPE_CONTENT
-      - TYPE_SUMMARY
-      - TYPE_AUGMENTED
-      description: "Type describes the type of a chunk content.\n\n - TYPE_CONTENT: Content.\n - TYPE_SUMMARY: Summary.\n - TYPE_AUGMENTED: Augmented."
-    FileProcessStatus:
-      type: string
-      enum:
-      - FILE_PROCESS_STATUS_NOTSTARTED
-      - FILE_PROCESS_STATUS_PROCESSING
-      - FILE_PROCESS_STATUS_CHUNKING
-      - FILE_PROCESS_STATUS_EMBEDDING
-      - FILE_PROCESS_STATUS_COMPLETED
-      - FILE_PROCESS_STATUS_FAILED
-      description: "- FILE_PROCESS_STATUS_NOTSTARTED: NOTSTARTED\n - FILE_PROCESS_STATUS_PROCESSING: file is being processed (parallel architecture: conversion + summarization)\n - FILE_PROCESS_STATUS_CHUNKING: file is chunking\n - FILE_PROCESS_STATUS_EMBEDDING: file is embedding\n - FILE_PROCESS_STATUS_COMPLETED: completed\n - FILE_PROCESS_STATUS_FAILED: failed"
-      title: file embedding process status
-    SimilarityChunk:
-      type: object
-      properties:
-        chunk:
-          type: string
-          title: 'Chunk resource name.
-
-            Full resource name:
-
-            namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}/chunks/{chunk}'
-          readOnly: true
-        similarityScore:
-          type: number
-          format: float
-          description: Similarity score.
-          readOnly: true
-        textContent:
-          type: string
-          description: Content.
-          readOnly: true
-        file:
-          type: string
-          title: 'Source file resource name.
-
-            Full resource name:
-
-            namespaces/{namespace}/knowledge-bases/{knowledge_base}/files/{file}'
-          readOnly: true
-        chunkMetadata:
-          description: Chunk metadata.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/Chunk'
-      description: SimilarityChunk represents a chunk with similarity score.
   securitySchemes:
     Bearer:
       type: apiKey
@@ -2979,6 +2937,3 @@ components:
 externalDocs:
   description: More about Instill Core
   url: https://docs.instill-ai.com
-x-refined-from:
-- service.swagger.yaml
-- instill-ai-openapi.yml

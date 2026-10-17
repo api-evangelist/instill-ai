@@ -1,6 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Instill Ai Integration API
+  title: Instill Core Integration API
+  description: Interact with Instill Core through API
   version: v0.57.0
   contact:
     name: Instill AI
@@ -9,7 +10,6 @@ info:
   license:
     name: MIT
     url: https://github.com/instill-ai/protobufs/blob/main/LICENSE
-  description: 'Operations tagged Integration across 2 of this provider''s published API definitions: service.swagger.yaml, instill-ai-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.instill-ai.com
 - url: http://api.instill-ai.com
@@ -76,9 +76,6 @@ paths:
       tags:
       - Integration
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/integrations/{integrationId}:
     get:
       summary: Get an integration
@@ -121,9 +118,6 @@ paths:
       tags:
       - Integration
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
   /v1beta/integrations/{integrationId_1}:
     get:
       summary: Get an integration
@@ -166,69 +160,54 @@ paths:
       tags:
       - Integration
       x-stage: beta
-    servers:
-    - url: https://api.instill-ai.com
-    - url: http://api.instill-ai.com
 components:
   schemas:
-    Any:
+    pipeline.v1beta.ListIntegrationsResponse:
       type: object
       properties:
-        '@type':
-          type: string
-          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
-      additionalProperties: {}
-      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
-    rpc.Status:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: 'The status code, which should be an enum value of
-
-            [google.rpc.Code][google.rpc.Code].'
-        message:
-          type: string
-          description: 'A developer-facing error message, which should be in English. Any
-
-            user-facing error message should be localized and sent in the
-
-            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
-
-            by the client.'
-        details:
+        integrations:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/Any'
-          description: 'A list of messages that carry the error details.  There is a common set of
-
-            message types for APIs to use.'
-      description: 'The `Status` type defines a logical error model that is suitable for
-
-        different programming environments, including REST APIs and RPC APIs. It is
-
-        used by [gRPC](https://github.com/grpc). Each `Status` message contains
-
-        three pieces of data: error code, error message, and error details.
-
-
-        You can find out more about this error model and how to work with it in the
-
-        [API Design Guide](https://cloud.google.com/apis/design/errors).'
-    mgmt.v1beta.Integration.Link:
+            $ref: '#/components/schemas/pipeline.v1beta.Integration'
+          description: A list of integrations matching the request parameters.
+          readOnly: true
+        nextPageToken:
+          type: string
+          description: Next page token.
+          readOnly: true
+        totalSize:
+          type: integer
+          format: int32
+          description: Total number of items.
+          readOnly: true
+      description: ListIntegrationsResponse contains a paginated list of integrations.
+    mgmt.v1beta.Integration.OAuthConfig:
       type: object
       properties:
-        text:
+        authUrl:
           type: string
-          description: Text contains the message to display.
+          description: 'The URL of the OAuth server to initiate the authentication and
+
+            authorization process.'
           readOnly: true
-        url:
+        accessUrl:
           type: string
-          description: URL contains the reference the link will redirect to.
+          description: 'The URL of the OAuth server to exchange the authorization code for an
+
+            access token.'
           readOnly: true
-      description: Link contains the information to display an reference to an external URL.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'A list of scopes that identify the resources that the connection will be
+
+            able to access on the user''s behalf.'
+          readOnly: true
+      description: 'OAuthConfig contains the configuration parameters for fetching an access
+
+        token via an OAuth 2.0 flow.'
     mgmt.v1beta.Integration:
       type: object
       properties:
@@ -298,6 +277,106 @@ components:
       description: 'Integration contains the parameters to create a connection between
 
         components and 3rd party apps.'
+    pipeline.v1beta.GetIntegrationResponse:
+      type: object
+      properties:
+        integration:
+          description: The requested integration.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/pipeline.v1beta.Integration'
+      description: GetIntegrationResponse contains the requested integration.
+    Any:
+      type: object
+      properties:
+        '@type':
+          type: string
+          description: "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com. As of May 2023, there are no widely used type server\nimplementations and no plans to implement one.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+      additionalProperties: {}
+      description: "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(&foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n    // or ...\n    if (any.isSameTypeAs(Foo.getDefaultInstance())) {\n      foo = any.unpack(Foo.getDefaultInstance());\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := &pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := &pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": <string>,\n      \"lastName\": <string>\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    mgmt.v1beta.GetIntegrationResponse:
+      type: object
+      properties:
+        integration:
+          description: The requested integration.
+          readOnly: true
+          allOf:
+          - $ref: '#/components/schemas/mgmt.v1beta.Integration'
+      description: GetIntegrationResponse contains the requested integration.
+    mgmt.v1beta.Integration.Link:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Text contains the message to display.
+          readOnly: true
+        url:
+          type: string
+          description: URL contains the reference the link will redirect to.
+          readOnly: true
+      description: Link contains the information to display an reference to an external URL.
+    rpc.Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: 'The status code, which should be an enum value of
+
+            [google.rpc.Code][google.rpc.Code].'
+        message:
+          type: string
+          description: 'A developer-facing error message, which should be in English. Any
+
+            user-facing error message should be localized and sent in the
+
+            [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+
+            by the client.'
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/Any'
+          description: 'A list of messages that carry the error details.  There is a common set of
+
+            message types for APIs to use.'
+      description: 'The `Status` type defines a logical error model that is suitable for
+
+        different programming environments, including REST APIs and RPC APIs. It is
+
+        used by [gRPC](https://github.com/grpc). Each `Status` message contains
+
+        three pieces of data: error code, error message, and error details.
+
+
+        You can find out more about this error model and how to work with it in the
+
+        [API Design Guide](https://cloud.google.com/apis/design/errors).'
+    pipeline.v1beta.Integration.Link:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Text contains the message to display.
+          readOnly: true
+        url:
+          type: string
+          description: URL contains the reference the link will redirect to.
+          readOnly: true
+      description: Link contains the information to display an reference to an external URL.
+    pipeline.v1beta.View:
+      type: string
+      enum:
+      - VIEW_BASIC
+      - VIEW_FULL
+      description: "View defines how a resource is presented. Most resources can share this view\ndefinition, the particular meaning of each value should be defined in the\nresource itself. Certain resources might have their own View definition if\nthey need to implement more than 2 (basic / full) views.\n\n - VIEW_BASIC: Default view.\n - VIEW_FULL: Full representation."
+    mgmt.v1beta.View:
+      type: string
+      enum:
+      - VIEW_BASIC
+      - VIEW_FULL
+      description: "View defines how a resource is presented. It can be used as a parameter in a\nmethod request to allow clients to select the amount of information they\nwant in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
     pipeline.v1beta.Integration.OAuthConfig:
       type: object
       properties:
@@ -324,94 +403,6 @@ components:
       description: 'OAuthConfig contains the configuration parameters for fetching an access
 
         token via an OAuth 2.0 flow.'
-    mgmt.v1beta.Integration.OAuthConfig:
-      type: object
-      properties:
-        authUrl:
-          type: string
-          description: 'The URL of the OAuth server to initiate the authentication and
-
-            authorization process.'
-          readOnly: true
-        accessUrl:
-          type: string
-          description: 'The URL of the OAuth server to exchange the authorization code for an
-
-            access token.'
-          readOnly: true
-        scopes:
-          type: array
-          items:
-            type: string
-          description: 'A list of scopes that identify the resources that the connection will be
-
-            able to access on the user''s behalf.'
-          readOnly: true
-      description: 'OAuthConfig contains the configuration parameters for fetching an access
-
-        token via an OAuth 2.0 flow.'
-    pipeline.v1beta.GetIntegrationResponse:
-      type: object
-      properties:
-        integration:
-          description: The requested integration.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/pipeline.v1beta.Integration'
-      description: GetIntegrationResponse contains the requested integration.
-    pipeline.v1beta.Integration.Link:
-      type: object
-      properties:
-        text:
-          type: string
-          description: Text contains the message to display.
-          readOnly: true
-        url:
-          type: string
-          description: URL contains the reference the link will redirect to.
-          readOnly: true
-      description: Link contains the information to display an reference to an external URL.
-    pipeline.v1beta.ListIntegrationsResponse:
-      type: object
-      properties:
-        integrations:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/pipeline.v1beta.Integration'
-          description: A list of integrations matching the request parameters.
-          readOnly: true
-        nextPageToken:
-          type: string
-          description: Next page token.
-          readOnly: true
-        totalSize:
-          type: integer
-          format: int32
-          description: Total number of items.
-          readOnly: true
-      description: ListIntegrationsResponse contains a paginated list of integrations.
-    pipeline.v1beta.View:
-      type: string
-      enum:
-      - VIEW_BASIC
-      - VIEW_FULL
-      description: "View defines how a resource is presented. Most resources can share this view\ndefinition, the particular meaning of each value should be defined in the\nresource itself. Certain resources might have their own View definition if\nthey need to implement more than 2 (basic / full) views.\n\n - VIEW_BASIC: Default view.\n - VIEW_FULL: Full representation."
-    mgmt.v1beta.View:
-      type: string
-      enum:
-      - VIEW_BASIC
-      - VIEW_FULL
-      description: "View defines how a resource is presented. It can be used as a parameter in a\nmethod request to allow clients to select the amount of information they\nwant in the response.\n\n - VIEW_BASIC: Default view, only includes basic information.\n - VIEW_FULL: Full representation."
-    mgmt.v1beta.GetIntegrationResponse:
-      type: object
-      properties:
-        integration:
-          description: The requested integration.
-          readOnly: true
-          allOf:
-          - $ref: '#/components/schemas/mgmt.v1beta.Integration'
-      description: GetIntegrationResponse contains the requested integration.
     pipeline.v1beta.Integration:
       type: object
       properties:
@@ -491,6 +482,3 @@ components:
 externalDocs:
   description: More about Instill Core
   url: https://docs.instill-ai.com
-x-refined-from:
-- service.swagger.yaml
-- instill-ai-openapi.yml
