@@ -25,6 +25,14 @@ tags:
 - Company
 - Artificial Intelligence
 - Unstructured Data
+- Data Pipeline
+- RAG
+- Open Source
+- LLM
+tags_raw:
+- Company
+- Artificial Intelligence
+- Unstructured Data
 - Data Pipelines
 - RAG
 - Open Source
@@ -289,6 +297,8 @@ apis:
   humanURL: https://docs.instill-ai.com/reference
   baseURL: https://api.instill-ai.com
   tags:
+  - Pipelines
+  tags_raw:
   - Pipeline
   properties:
   - type: OpenAPI
