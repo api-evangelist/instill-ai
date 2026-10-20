@@ -27,9 +27,9 @@ server_info:
   protocolVersion: '2025-06-18'
 tools:
 - name: list-endpoints
-  title: List API Endpoints
   description: Lists all API paths and their HTTP methods with summaries, organized by path. Results can
     be passed directly into 'get-endpoint'.
+  title: List API Endpoints
   inputSchema:
     type: object
     $schema: https://json-schema.org/draft/2020-12/schema
@@ -39,9 +39,9 @@ tools:
     destructiveHint: false
     openWorldHint: false
 - name: get-endpoint
-  title: Get Endpoint Details
   description: Gets detailed information about a specific API endpoint, including security schemes and
     servers
+  title: Get Endpoint Details
   inputSchema:
     type: object
     $schema: https://json-schema.org/draft/2020-12/schema
@@ -60,10 +60,10 @@ tools:
     destructiveHint: false
     openWorldHint: false
 - name: search-endpoints
-  title: Search API Endpoints
   description: Performs a deep search through paths, operations, and parameters to discover relevant API
     endpoints. Use this tool to find specific API capabilities, required parameters, or data models based
     on search keywords. Results can be passed directly into 'get-endpoint'.
+  title: Search API Endpoints
   inputSchema:
     type: object
     $schema: https://json-schema.org/draft/2020-12/schema
@@ -78,8 +78,8 @@ tools:
     destructiveHint: false
     openWorldHint: false
 - name: execute-request
-  title: Execute API Request
   description: Executes an API request with a given HAR request object.
+  title: Execute API Request
   inputSchema:
     type: object
     $schema: https://json-schema.org/draft/2020-12/schema
@@ -164,8 +164,8 @@ tools:
     destructiveHint: true
     openWorldHint: true
 - name: get-server-variables
-  title: Get Server Variables
   description: Gets the server variables for each server within a specific OpenAPI spec.
+  title: Get Server Variables
   inputSchema:
     type: object
     $schema: https://json-schema.org/draft/2020-12/schema
@@ -204,3 +204,4 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools_count: 5
